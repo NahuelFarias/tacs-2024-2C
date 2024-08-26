@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3841b191-8e83-43d4-8c09-db73c1522009" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/controllers/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Evento.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Ticket.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Ubicacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/reservation/Reserva.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/users/Usuario.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/server/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/server/Router.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tacs/server/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Evento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Evento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tacs/models/domain/events/Ticket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,16 +27,12 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
   <component name="ProjectId" id="2l7uurIz06LGOdrl9tXIgJeCRpl" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -61,18 +45,25 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "JUnit.AppTest.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "model-creation",
     "ignore.virus.scanning.warn.message": "true",
     "jdk.selected.JAVA_MODULE": "openjdk-20",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/ivanm/OneDrive/Escritorio/tacs-2024-2C/src/main/java",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -133,6 +124,13 @@
         <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-1.8.0_392-temurin-1.8.0_392-4caba194b151-6335d3f8" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
