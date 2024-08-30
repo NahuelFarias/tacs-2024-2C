@@ -29,6 +29,12 @@ public class UsuarioController {
         usuarioService.createUsuario(usuario);
     }
 
+    @GetMapping 
+    @ResponseBody
+    public List<Usuario> getAllUsers() {
+        return usuarioService.getAllUsuarios();
+    }
+
     @GetMapping("/{id}") 
     @ResponseBody
     public Optional<Usuario> getUser(@PathVariable Integer id) {
@@ -41,11 +47,4 @@ public class UsuarioController {
         //TODO: Definir logica en el service
         return "hola" + id;
     }
-
-    @GetMapping("/all") 
-    @ResponseBody
-    public List<Usuario> getAllUsers() {
-        return usuarioService.getAllUsuarios();
-    }
-
 }
