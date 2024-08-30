@@ -1,4 +1,4 @@
-package org.example;
+package tacs.models.domain;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

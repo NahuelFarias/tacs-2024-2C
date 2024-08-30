@@ -3,16 +3,15 @@ package tacs.models.domain.events;
 import tacs.models.domain.users.Usuario;
 
 public class Ticket {
-    public double precio;
-    public String butaca;
-    public Evento eventoAsociado;
-    public boolean fueUsado;
-    public Usuario duenio;
 
-    public Ticket(double precio, String butaca, Evento eventoAsociado) {
-        this.precio = precio;
-        this.butaca = butaca;
+    private Ubicacion ubicacion;
+    private Evento eventoAsociado;
+    private boolean fueUsado;
+    private Usuario duenio;
+
+    public Ticket(Evento eventoAsociado, Ubicacion ubicacion) {
         this.eventoAsociado = eventoAsociado;
+        this.ubicacion = ubicacion;
         this.fueUsado = false;
     }
 
@@ -24,11 +23,19 @@ public class Ticket {
         this.fueUsado = false;
     }
 
-    public double getPrecio() {
-        return this.precio;
-    }
-
     public boolean fueUsado() {
         return this.fueUsado;
+    }
+
+    public Evento getEventoAsociado() {
+        return eventoAsociado;
+    }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public double buscarPrecio() {
+        return this.ubicacion.getPrecio();
     }
 }
