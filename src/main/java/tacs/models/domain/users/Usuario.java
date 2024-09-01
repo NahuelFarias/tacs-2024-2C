@@ -8,17 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Basic
+    @JsonProperty("name")
     public String username;
+    @JsonProperty("tickets")
+    @OneToMany(mappedBy = "duenio", cascade = CascadeType.ALL)
     public List<Ticket> ticketsAsociados;
-
-    public Evento buscarEvento(String nombreEvento) {
-        List<Evento> eventosAsociados = this.ticketsAsociados.stream().map(t -> t.getEventoAsociado())
-                .collect(Collectors.toList());
-        return eventosAsociados.stream().filter(e -> e.getNombre() == nombreEvento)
-                .collect(Collectors.toList()).get(0);
-    }
 
     public Usuario(String username) {
         this.username = username;
@@ -35,6 +48,13 @@ public class Usuario {
 
     public List<Ticket> getTicketsAsociados() {
         return this.ticketsAsociados;
+    }
+
+    public Evento buscarEvento(String nombreEvento) {
+        List<Evento> eventosAsociados = this.ticketsAsociados.stream().map(t -> t.getEventoAsociado())
+                .collect(Collectors.toList());
+        return eventosAsociados.stream().filter(e -> e.getNombre() == nombreEvento)
+                .collect(Collectors.toList()).get(0);
     }
 
 }
