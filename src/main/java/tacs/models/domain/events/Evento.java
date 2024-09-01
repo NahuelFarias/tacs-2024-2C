@@ -7,11 +7,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor
 public class Evento {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Basic
     public String nombre;
     public LocalDateTime fecha;
+    @JsonProperty("venta_abierta")
     public boolean ventaAbierta;
+    @OneToMany(mappedBy = "eventoAsociado", cascade = CascadeType.ALL)
     public List<Ticket> tickets;
 
     public Evento(String nombre, LocalDateTime fecha, GeneradorTickets generador) {
@@ -33,6 +52,10 @@ public class Evento {
         return this.tickets.stream().filter(t -> !t.fueUsado()).collect(Collectors.toList());
     }
 
+    public long getCantidadTicketsDisponibles() {
+        return this.getTicketsDisponibles().stream().count();
+    }
+
     public double obtenerVentaTotal() {
         return this.getTicketsVendidos().stream().mapToDouble(Ticket::buscarPrecio).sum();
     }
@@ -45,6 +68,10 @@ public class Evento {
         this.ventaAbierta = false;
     }
 
+    public void modificarVenta(Boolean state) {
+        this.ventaAbierta = state;
+    }
+
     public Ticket realizarReserva(Ubicacion ubicacion) {
         if(!this.ventaAbierta)
             throw new VentaCerradaException();
@@ -53,6 +80,7 @@ public class Evento {
                 .stream().filter(t -> t.getUbicacion().equals(ubicacion)).collect(Collectors.toList());
 
         if(ticketsDisponibles.stream().count() > 0)
+        //TODO: Descontar de los tickets disponibles
             return ticketsDisponibles.get(0);
         else throw new TicketsAgotadosException();
     }
