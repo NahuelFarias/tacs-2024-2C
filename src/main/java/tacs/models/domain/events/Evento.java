@@ -6,7 +6,9 @@ import tacs.models.domain.exception.VentaCerradaException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Basic;
@@ -30,6 +32,7 @@ public class Evento {
     public LocalDateTime fecha;
     @JsonProperty("venta_abierta")
     public boolean ventaAbierta;
+    @JsonIgnore
     @OneToMany(mappedBy = "eventoAsociado", cascade = CascadeType.ALL)
     public List<Ticket> tickets;
 
@@ -40,20 +43,22 @@ public class Evento {
         this.ventaAbierta = true;
     }
 
+    @JsonIgnore
     public List<Ticket> getTicketsVendidos() {
-        return tickets.stream().filter(Ticket::fueUsado).collect(Collectors.toList());
+        return this.tickets.stream().filter(Ticket::vendido).collect(Collectors.toList());
     }
 
     public long getCantidadTicketsVendidos() {
-        return this.getTicketsVendidos().stream().count();
+        return this.getTicketsVendidos().size();
     }
 
+    @JsonIgnore
     public List<Ticket> getTicketsDisponibles() {
-        return this.tickets.stream().filter(t -> !t.fueUsado()).collect(Collectors.toList());
+        return this.tickets.stream().filter(t -> !t.vendido()).collect(Collectors.toList());
     }
 
     public long getCantidadTicketsDisponibles() {
-        return this.getTicketsDisponibles().stream().count();
+        return this.getTicketsDisponibles().size();
     }
 
     public double obtenerVentaTotal() {
@@ -73,16 +78,18 @@ public class Evento {
     }
 
     public Ticket realizarReserva(Ubicacion ubicacion) {
-        if(!this.ventaAbierta)
-            throw new VentaCerradaException();
+        if(!this.ventaAbierta) throw new VentaCerradaException();
 
-        List<Ticket> ticketsDisponibles = this.getTicketsDisponibles()
-                .stream().filter(t -> t.getUbicacion().equals(ubicacion)).collect(Collectors.toList());
+        Optional<Ticket> opcTicket = this.getTicketsDisponibles().stream()
+            .filter(t -> t.getUbicacion().equals(ubicacion)).findFirst();
 
-        if(ticketsDisponibles.stream().count() > 0)
-        //TODO: Descontar de los tickets disponibles
-            return ticketsDisponibles.get(0);
-        else throw new TicketsAgotadosException();
+        if(!opcTicket.isPresent()) throw new TicketsAgotadosException();
+
+        Ticket ticketReservado = opcTicket.get();
+
+        ticketReservado.seVendio();
+
+        return ticketReservado;
     }
 
     public boolean ventaAbierta() {

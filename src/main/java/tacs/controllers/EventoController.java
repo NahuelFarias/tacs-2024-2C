@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tacs.dto.CrearEvento;
-import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Ubicacion;
 import tacs.service.EventoService;
 
@@ -43,8 +42,8 @@ public class EventoController {
     }
 
     @PostMapping("/{id}/reserves")
-    public void createReserves(@PathVariable Integer id, @RequestBody Ubicacion ubicacion) {
-        eventoService.createReserves(id, ubicacion);
+    public void createReserves(@PathVariable Integer id, @RequestParam("user_id") Integer userId, @RequestBody Ubicacion ubicacion) {
+        eventoService.createReserves(id, userId, ubicacion);
     }
 
 }

@@ -1,15 +1,17 @@
 package tacs.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import tacs.dto.CrearGenerador;
 import tacs.models.domain.events.Evento;
 import tacs.models.domain.events.GeneradorTickets;
-import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Ubicacion;
 import tacs.repository.EventoRepository;
 
@@ -18,6 +20,7 @@ import tacs.repository.EventoRepository;
 public class EventoService {
 
     private final EventoRepository eventoRepository;
+    private final UsuarioService usuarioService;
 
     public void createEvent(String nombre, LocalDateTime fecha, CrearGenerador crearGenerador) {
         GeneradorTickets generador = new GeneradorTickets(crearGenerador.getUbicaciones(), crearGenerador.getMapaTickets());
@@ -26,21 +29,30 @@ public class EventoService {
     }
 
     public Evento getEvento(Integer id) {
-        return eventoRepository.findById(id).orElse(null);
+        Optional<Evento> opcEvento = eventoRepository.findById(id);
+        if (opcEvento.isPresent()) {
+            Evento evento = opcEvento.get();
+            return evento;
+        } 
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        }
     }
 
+    @Transactional
     public void setState(Integer id, Boolean state) {
-        Evento evento = getEvento(id);
-        evento.modificarVenta(state); 
+        Evento evento = this.getEvento(id);
+        evento.modificarVenta(state);
     }
 
-    public void createReserves(Integer id, Ubicacion ubicacion) {
-        Evento evento = getEvento(id);
-        evento.realizarReserva(ubicacion);
+    @Transactional
+    public void createReserves(Integer id, Integer userId, Ubicacion ubicacion) {
+        Evento evento = this.getEvento(id);
+        usuarioService.resevarTicket(userId, evento, ubicacion);
     }
 
     public long getTicketsForSale(Integer id) {
-        Evento evento = getEvento(id);
+        Evento evento = this.getEvento(id);
         return evento.getCantidadTicketsDisponibles();
     }
 
