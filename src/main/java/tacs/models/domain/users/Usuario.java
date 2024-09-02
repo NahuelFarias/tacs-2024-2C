@@ -26,7 +26,9 @@ public class Usuario {
     }
 
     public void resevarTicket(Evento evento, Ubicacion ubicacion) {
-        this.ticketsAsociados.add( evento.realizarReserva(ubicacion));
+        Ticket ticketReservado = evento.realizarReserva(ubicacion);
+        ticketReservado.ticketTomado();
+        this.ticketsAsociados.add(ticketReservado);
     }
 
     public void aniadirTicket(Ticket ticketNuevo) {

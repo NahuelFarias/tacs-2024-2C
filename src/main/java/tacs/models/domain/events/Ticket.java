@@ -23,8 +23,11 @@ public class Ticket {
         this.fueUsado = false;
     }
 
-    public boolean fueUsado() {
+    public boolean getFueUsado() {
         return this.fueUsado;
+    }
+    public void ticketTomado() {
+        this.fueUsado = true;
     }
 
     public Evento getEventoAsociado() {

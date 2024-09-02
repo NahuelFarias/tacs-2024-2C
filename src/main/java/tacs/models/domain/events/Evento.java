@@ -22,7 +22,7 @@ public class Evento {
     }
 
     public List<Ticket> getTicketsVendidos() {
-        return tickets.stream().filter(Ticket::fueUsado).collect(Collectors.toList());
+        return tickets.stream().filter(Ticket::getFueUsado).collect(Collectors.toList());
     }
 
     public long getCantidadTicketsVendidos() {
@@ -30,7 +30,7 @@ public class Evento {
     }
 
     public List<Ticket> getTicketsDisponibles() {
-        return this.tickets.stream().filter(t -> !t.fueUsado()).collect(Collectors.toList());
+        return this.tickets.stream().filter(t -> !t.getFueUsado()).collect(Collectors.toList());
     }
 
     public double obtenerVentaTotal() {
