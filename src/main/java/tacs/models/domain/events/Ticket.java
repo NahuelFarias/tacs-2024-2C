@@ -1,5 +1,7 @@
 package tacs.models.domain.events;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,13 +21,14 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Basic
+    private boolean vendido;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
     @ManyToOne
     @JoinColumn(name = "evento_id")
     private Evento eventoAsociado;
-    private boolean fueUsado;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario duenio;
@@ -33,19 +36,19 @@ public class Ticket {
     public Ticket(Evento eventoAsociado, Ubicacion ubicacion) {
         this.eventoAsociado = eventoAsociado;
         this.ubicacion = ubicacion;
-        this.fueUsado = false;
+        this.vendido = false;
     }
 
     public void cambiarDuenio(Usuario nuevoDuenio) {
         this.duenio = nuevoDuenio;
     }
 
-    public void consumite() {
-        this.fueUsado = false;
+    public void seVendio() {
+        this.vendido = true;
     }
 
-    public boolean fueUsado() {
-        return this.fueUsado;
+    public boolean vendido() {
+        return this.vendido;
     }
 
     public Evento getEventoAsociado() {
