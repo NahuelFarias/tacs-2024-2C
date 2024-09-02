@@ -6,14 +6,6 @@ import java.util.List;
 
 public class EstadisticasUsuarios implements Estadisticas<Usuario>{
 
-    private static EstadisticasUsuarios instance;
-
-    public static EstadisticasUsuarios getInstance() {
-        if (instance == null) {
-            instance = new EstadisticasUsuarios();
-        }
-        return instance;
-    }
     @Override
     public Integer generarEstadistica(List<Usuario> usuarios) {
         return usuarios.size();

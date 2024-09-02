@@ -59,7 +59,7 @@ public class TestEstadisticas {
     @Test
     public void estadisticaUsuarioTest() {
         this.generadorEstadisticas = new GeneradorEstadisticas();
-        this.estadisticasUsuarios = EstadisticasUsuarios.getInstance();
+        this.estadisticasUsuarios = new EstadisticasUsuarios();
         Map<String, List<?>> usuariosLogueados = new HashMap<>();
         usuariosLogueados.put("Usuarios", this.usuariosTest);
 
@@ -72,7 +72,7 @@ public class TestEstadisticas {
     @Test
     public void estadisticaEventosTest() {
         this.generadorEstadisticas = new GeneradorEstadisticas();
-        this.estadisticasEventos = EstadisticasEventos.getInstance();
+        this.estadisticasEventos = new EstadisticasEventos();
         Map<String, List<?>> eventosCreados = new HashMap<>();
         eventosCreados.put("Eventos", this.eventosTest);
 
@@ -86,7 +86,7 @@ public class TestEstadisticas {
     public void estadisticaTicketsTest() {
 
         this.generadorEstadisticas = new GeneradorEstadisticas();
-        this.estadisticasTickets = EstadisticasTickets.getInstance();
+        this.estadisticasTickets = new EstadisticasTickets();
 
         this.usuarioTest.resevarTicket(this.eventoTest, this.ubicacionTest);
         Map<String, List<?>> ticketsVendidos = new HashMap<>();
@@ -102,9 +102,9 @@ public class TestEstadisticas {
     @Test
    public void estadisticasTest() {
         this.generadorEstadisticas = new GeneradorEstadisticas();
-         this.estadisticasUsuarios = EstadisticasUsuarios.getInstance();
-         this.estadisticasEventos = EstadisticasEventos.getInstance();
-         this.estadisticasTickets = EstadisticasTickets.getInstance();
+         this.estadisticasUsuarios = new EstadisticasUsuarios();
+         this.estadisticasEventos = new EstadisticasEventos();
+         this.estadisticasTickets = new EstadisticasTickets();
         this.usuarioTest.resevarTicket(this.eventoTest, this.ubicacionTest);
         Map<String, List<?>> cosasParaEstadisticas = new HashMap<>();
         cosasParaEstadisticas.put("Usuarios", this.usuariosTest);
