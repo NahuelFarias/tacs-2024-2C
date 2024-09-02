@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,22 +42,24 @@ public class Usuario {
     }
 
     public void resevarTicket(Evento evento, Ubicacion ubicacion) {
-        this.ticketsAsociados.add( evento.realizarReserva(ubicacion));
+        Ticket ticket = evento.realizarReserva(ubicacion);
+        this.aniadirTicket(ticket);
+        ticket.cambiarDuenio(this);
     }
 
     public void aniadirTicket(Ticket ticketNuevo) {
-        ticketsAsociados.add(ticketNuevo);
+        this.ticketsAsociados.add(ticketNuevo);
     }
 
     public List<Ticket> getTicketsAsociados() {
         return this.ticketsAsociados;
     }
 
-    public Evento buscarEvento(String nombreEvento) {
+    public Optional<Evento> buscarEvento(String nombreEvento) {
         List<Evento> eventosAsociados = this.ticketsAsociados.stream().map(t -> t.getEventoAsociado())
                 .collect(Collectors.toList());
         return eventosAsociados.stream().filter(e -> e.getNombre() == nombreEvento)
-                .collect(Collectors.toList()).get(0);
+                .findFirst();
     }
 
 }
