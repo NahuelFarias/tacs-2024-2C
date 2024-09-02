@@ -1,13 +1,15 @@
-package tacs.models.domain.statistics;
+package tacs.statistics;
+
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ResultadosEstadisticas {
 
-    private Map<Estadisticas, Integer> resultados;
+    @Getter
+    private Map<Estadisticas<?>, Integer> resultados;
     private LocalDateTime fechaCreacion;
 
     public ResultadosEstadisticas(){

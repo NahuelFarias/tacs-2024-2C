@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tacs.models.domain.users.Usuario;
-import tacs.models.domain.users.UsuarioService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UsuarioController {
-
+/*
     private final UsuarioService usuarioService;
     
     @PostMapping
@@ -40,7 +39,7 @@ public class UsuarioController {
     public Optional<Usuario> getUser(@PathVariable Integer id) {
         return usuarioService.getUsuario(id);
     }
-
+    */
     @GetMapping("/{id}/reserves") 
     @ResponseBody
     public String getReserves(@PathVariable Integer id) {

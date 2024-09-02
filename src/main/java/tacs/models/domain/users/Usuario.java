@@ -1,17 +1,32 @@
 package tacs.models.domain.users;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import tacs.models.domain.events.Evento;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Ubicacion;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
+@NoArgsConstructor
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Basic
+    @JsonProperty("name")
     public String username;
+    @JsonProperty("tickets")
+    @OneToMany(mappedBy = "duenio", cascade = CascadeType.ALL)
     public List<Ticket> ticketsAsociados;
+    @Column
+    public LocalDateTime ultimoLogin;
 
     public Evento buscarEvento(String nombreEvento) {
         List<Evento> eventosAsociados = this.ticketsAsociados.stream().map(t -> t.getEventoAsociado())
@@ -37,4 +52,11 @@ public class Usuario {
         return this.ticketsAsociados;
     }
 
+    public void setUltimoLogin(LocalDateTime ultimoLogin) {
+        this.ultimoLogin = ultimoLogin;
+    }
+
+    public LocalDateTime getUltimoLogin() {
+        return ultimoLogin;
+    }
 }

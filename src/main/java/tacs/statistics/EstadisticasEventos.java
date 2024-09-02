@@ -1,10 +1,8 @@
-package tacs.models.domain.statistics;
+package tacs.statistics;
 
 import tacs.models.domain.events.Evento;
-import tacs.models.domain.events.Ticket;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class EstadisticasEventos implements Estadisticas<Evento>{
     @Override

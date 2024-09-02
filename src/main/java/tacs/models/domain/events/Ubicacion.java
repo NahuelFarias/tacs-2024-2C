@@ -1,7 +1,16 @@
 package tacs.models.domain.events;
 
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor
 public class Ubicacion {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Basic
     public String nombre;
     public double precio;
 

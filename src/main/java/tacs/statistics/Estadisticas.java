@@ -1,4 +1,4 @@
-package tacs.models.domain.statistics;
+package tacs.statistics;
 
 import tacs.models.domain.events.Ticket;
 
