@@ -2,6 +2,16 @@ package tacs.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tacs.dto.CrearEvento;
+import tacs.models.domain.events.Ubicacion;
+import tacs.service.EventoService;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/events")
@@ -10,20 +20,26 @@ public class EventoController {
 
     //private final EventoService eventoService;
 
+    @GetMapping("/{id}/tickets")
+    @ResponseBody
+    public long getTicketsForSale(@PathVariable Integer id) {
+        return eventoService.getTicketsForSale(id);
+    }
+
     @PutMapping("/{id}/sales")
     @ResponseBody
-    public String setStatusSales(@PathVariable Integer id, @RequestParam String state) {
-        return "ID: " + id + " Name: " + state;
+    public void setStatusSales(@PathVariable Integer id, @RequestParam Boolean state) {
+        eventoService.setState(id, state);
     }
 
     @PostMapping
-    public String createEvent(@RequestBody String entity) {
-        return "HOLA";
+    public void createEvent(@RequestBody CrearEvento evento) {
+        eventoService.createEvent(evento.getName(), evento.getFecha(), evento.getGeneradorTickets());
     }
 
     @PostMapping("/{id}/reserves")
-    public String createReserves(@RequestBody String entity) {
-        return "HOLA";
+    public void createReserves(@PathVariable Integer id, @RequestParam("user_id") Integer userId, @RequestBody Ubicacion ubicacion) {
+        eventoService.createReserves(id, userId, ubicacion);
     }
 
 }
