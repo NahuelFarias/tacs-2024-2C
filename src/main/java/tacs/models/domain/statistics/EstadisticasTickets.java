@@ -7,7 +7,7 @@ import java.util.List;
 public class EstadisticasTickets implements Estadisticas<Ticket> {
     @Override
     public Integer generarEstadistica(List<Ticket> tickets) {
-        return tickets.stream().filter(Ticket::getFueUsado).toList().size();
+        return tickets.stream().filter(Ticket::vendido).toList().size();
     }
 
     @Override

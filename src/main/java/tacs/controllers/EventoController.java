@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class EventoController {
 
-    //private final EventoService eventoService;
+    private final EventoService eventoService;
 
     @GetMapping("/{id}/tickets")
     @ResponseBody

@@ -50,9 +50,6 @@ public class Ticket {
     public boolean vendido() {
         return this.vendido;
     }
-    public void ticketTomado() {
-        this.fueUsado = true;
-    }
 
     public Evento getEventoAsociado() {
         return eventoAsociado;
