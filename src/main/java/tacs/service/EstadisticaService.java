@@ -1,13 +1,10 @@
 package tacs.service;
 
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import tacs.dto.RespuestaEstadisticas;
 import tacs.dto.RespuestaEstadisticasPorEvento;
 import tacs.models.domain.events.Evento;
-import tacs.models.domain.events.GeneradorTickets;
 import tacs.models.domain.events.Ticket;
-import tacs.models.domain.events.Ubicacion;
 import tacs.models.domain.users.Usuario;
 import tacs.repository.EventoRepository;
 import tacs.repository.TicketRepository;
@@ -15,12 +12,10 @@ import tacs.repository.UsuarioRepository;
 import tacs.statistics.*;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +35,6 @@ public class EstadisticaService {
     }
 
     public List<RespuestaEstadisticas> obtenerEstadisticas(){
-        this.test();
         List<RespuestaEstadisticas> resultados = new ArrayList<>();
 
         LocalDateTime ahora = LocalDateTime.now();
@@ -124,52 +118,5 @@ public class EstadisticaService {
         LocalDateTime comienzoDia = ahora.toLocalDate().atStartOfDay();
         resultados.setCantidadTicketsDia(this.estadisticaTicketPorId(comienzoDia, ahora,"Diario",unId));
         return resultados;
-    }
-
-    @Transactional
-    protected void test() {
-
-        Ubicacion preferencia = new Ubicacion("Preferencia", 500);
-        Ubicacion eastStand = new Ubicacion("East Stand", 200);
-        Ubicacion tribunaNorte = new Ubicacion("Tribuna Norte", 400);
-        Ubicacion gradaSur = new Ubicacion("Grada Sur", 100);
-
-        List<Ubicacion> ubicaciones = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
-        Map<String, Integer> mapaTickets = Map.of(
-                "Preferencia", 1,
-                "East Stand", 11,
-                "Tribuna Norte", 50,
-                "Grada Sur", 23
-        );
-
-        GeneradorTickets generador = new GeneradorTickets(ubicaciones,mapaTickets);
-
-        Evento eventoTest = new Evento("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),generador);
-        this.repositorioEventos.saveAndFlush(eventoTest);
-
-        Evento eventoTest2 = new Evento("River", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),generador);
-        eventoTest2.fechaCreacion = LocalDate.of(2024, Month.FEBRUARY, 9).atStartOfDay();
-        this.repositorioEventos.saveAndFlush(eventoTest2);
-
-        Evento eventoTest3 = new Evento("Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),generador);
-        eventoTest3.fechaCreacion = LocalDate.of(2024, Month.SEPTEMBER, 2).atTime(0,1);
-        this.repositorioEventos.saveAndFlush(eventoTest3);
-
-        Evento eventoTest4 = new Evento("Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),generador);
-        eventoTest4.fechaCreacion = LocalDate.of(2024, Month.AUGUST, 24).atTime(11,0);
-        this.repositorioEventos.saveAndFlush(eventoTest4);
-
-
-        String nombreUsuario = "Pepe Rodriguez";
-        Usuario usuarioTest= new Usuario(nombreUsuario);
-        usuarioTest.setUltimoLogin(LocalDateTime.now());    // Simulamos login
-        this.repositorioUsuarios.saveAndFlush(usuarioTest);
-
-        usuarioTest.resevarTicket(eventoTest,preferencia);
-        usuarioTest.resevarTicket(eventoTest,eastStand);
-        usuarioTest.resevarTicket(eventoTest,eastStand);
-        usuarioTest.resevarTicket(eventoTest2,eastStand);
-
-        this.repositorioTickets.saveAllAndFlush(usuarioTest.getTicketsAsociados());
     }
 }
