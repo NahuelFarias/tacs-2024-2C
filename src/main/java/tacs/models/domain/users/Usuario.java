@@ -51,6 +51,7 @@ public class Usuario {
         Ticket ticket = evento.realizarReserva(ubicacion);
         this.aniadirTicket(ticket);
         ticket.cambiarDuenio(this);
+        ticket.setFechaReserva(LocalDateTime.now());
     }
 
     public void aniadirTicket(Ticket ticketNuevo) {

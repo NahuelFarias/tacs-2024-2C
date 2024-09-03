@@ -33,7 +33,6 @@ public class Ticket {
     public Ticket(Evento eventoAsociado, Ubicacion ubicacion) {
         this.eventoAsociado = eventoAsociado;
         this.ubicacion = ubicacion;
-        this.fechaReserva = LocalDateTime.now();
         this.vendido = false;
     }
 
