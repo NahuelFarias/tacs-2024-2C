@@ -1,14 +1,18 @@
 package tacs.models.domain.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 import tacs.models.domain.exception.TicketsAgotadosException;
 import tacs.models.domain.exception.VentaCerradaException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
@@ -20,31 +24,38 @@ public class Evento {
     @Basic
     public String nombre;
     public LocalDateTime fecha;
-    @Column
-    public LocalDateTime fechaCreacion;
     @JsonProperty("venta_abierta")
     public boolean ventaAbierta;
+    @Column
+    public LocalDateTime fechaCreacion;
+    @JsonIgnore
     @OneToMany(mappedBy = "eventoAsociado", cascade = CascadeType.ALL)
     public List<Ticket> tickets;
 
     public Evento(String nombre, LocalDateTime fecha, GeneradorTickets generador) {
         this.nombre = nombre;
         this.fecha = fecha;
-        this.fechaCreacion = LocalDateTime.now();
         this.tickets = generador.generar(this);
+        this.fechaCreacion = LocalDateTime.now();
         this.ventaAbierta = true;
     }
 
+    @JsonIgnore
     public List<Ticket> getTicketsVendidos() {
-        return tickets.stream().filter(Ticket::fueUsado).collect(Collectors.toList());
+        return this.tickets.stream().filter(Ticket::vendido).collect(Collectors.toList());
     }
 
     public long getCantidadTicketsVendidos() {
-        return this.getTicketsVendidos().stream().count();
+        return this.getTicketsVendidos().size();
     }
 
+    @JsonIgnore
     public List<Ticket> getTicketsDisponibles() {
-        return this.tickets.stream().filter(t -> !t.fueUsado()).collect(Collectors.toList());
+        return this.tickets.stream().filter(t -> !t.vendido()).collect(Collectors.toList());
+    }
+
+    public long getCantidadTicketsDisponibles() {
+        return this.getTicketsDisponibles().size();
     }
 
     public double obtenerVentaTotal() {
@@ -59,19 +70,23 @@ public class Evento {
         this.ventaAbierta = false;
     }
 
+    public void modificarVenta(Boolean state) {
+        this.ventaAbierta = state;
+    }
+
     public Ticket realizarReserva(Ubicacion ubicacion) {
-        if(!this.ventaAbierta)
-            throw new VentaCerradaException();
+        if(!this.ventaAbierta) throw new VentaCerradaException();
 
-        List<Ticket> ticketsDisponibles = this.getTicketsDisponibles()
-                .stream().filter(t -> t.getUbicacion().equals(ubicacion)).collect(Collectors.toList());
+        Optional<Ticket> opcTicket = this.getTicketsDisponibles().stream()
+            .filter(t -> t.getUbicacion().equals(ubicacion)).findFirst();
 
-        if(ticketsDisponibles.stream().count() > 0) {
-            Ticket ticketReservado = ticketsDisponibles.get(0);
-            ticketReservado.consumite();
-            return ticketReservado;
-        }
-        else throw new TicketsAgotadosException();
+        if(!opcTicket.isPresent()) throw new TicketsAgotadosException();
+
+        Ticket ticketReservado = opcTicket.get();
+
+        ticketReservado.seVendio();
+
+        return ticketReservado;
     }
 
     public boolean ventaAbierta() {

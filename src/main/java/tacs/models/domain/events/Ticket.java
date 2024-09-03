@@ -1,5 +1,7 @@
 package tacs.models.domain.events;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.users.Usuario;
@@ -14,14 +16,14 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Basic
+    private boolean vendido;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
     @ManyToOne
     @JoinColumn(name = "evento_id")
     private Evento eventoAsociado;
-    @Column
-    private boolean fueUsado;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario duenio;
@@ -32,19 +34,19 @@ public class Ticket {
         this.eventoAsociado = eventoAsociado;
         this.ubicacion = ubicacion;
         this.fechaReserva = LocalDateTime.now();
-        this.fueUsado = false;
+        this.vendido = false;
     }
 
     public void cambiarDuenio(Usuario nuevoDuenio) {
         this.duenio = nuevoDuenio;
     }
 
-    public void consumite() {
-        this.fueUsado = true;
+    public void seVendio() {
+        this.vendido = true;
     }
 
-    public boolean fueUsado() {
-        return this.fueUsado;
+    public boolean vendido() {
+        return this.vendido;
     }
 
     public Evento getEventoAsociado() {
@@ -66,4 +68,5 @@ public class Ticket {
     public void setFechaReserva(LocalDateTime fechaReserva) {
         this.fechaReserva = fechaReserva;
     }
+
 }
