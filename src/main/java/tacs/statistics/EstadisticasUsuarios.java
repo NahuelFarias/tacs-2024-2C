@@ -3,7 +3,6 @@ package tacs.statistics;
 import tacs.models.domain.users.Usuario;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EstadisticasUsuarios implements Estadisticas<Usuario>{
 
