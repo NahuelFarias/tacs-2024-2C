@@ -1,8 +1,10 @@
 package tacs.models.domain.statistics;
 
+import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.Usuario;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class EstadisticasUsuarios implements Estadisticas<Usuario>{
 

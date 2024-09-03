@@ -45,7 +45,6 @@ public class Evento {
 
     @JsonIgnore
     public List<Ticket> getTicketsVendidos() {
-
         return this.tickets.stream().filter(Ticket::vendido).collect(Collectors.toList());
     }
 
