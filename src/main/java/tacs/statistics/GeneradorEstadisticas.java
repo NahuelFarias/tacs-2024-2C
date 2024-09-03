@@ -1,6 +1,7 @@
 package tacs.statistics;
 
 import lombok.Getter;
+import tacs.models.domain.exception.EstadisticasInvalidasException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,15 @@ public class GeneradorEstadisticas {
     }
 
     public ResultadosEstadisticas generarEstadisticas(Map<String,List<?>> datos){
-        for(Estadisticas estadistica : this.estadisticas){
-            resultadosEstadisticas.agregarEstadisticas(estadistica, estadistica.generarEstadistica(datos.get(estadistica.name())));
-        }
+        for(Estadisticas estadistica : this.estadisticas) {
+            if (datos.containsKey(estadistica.name())) {
+                resultadosEstadisticas.agregarEstadisticas(estadistica, estadistica.generarEstadistica(datos.get(estadistica.name())));
 
+            }
+            else{
+                throw new EstadisticasInvalidasException();
+            }
+        }
         return this.resultadosEstadisticas;
     }
 }
