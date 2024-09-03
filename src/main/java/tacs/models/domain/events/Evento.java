@@ -1,5 +1,6 @@
 package tacs.models.domain.events;
 
+import jakarta.persistence.*;
 import tacs.models.domain.exception.TicketsAgotadosException;
 import tacs.models.domain.exception.VentaCerradaException;
 
@@ -11,13 +12,6 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -32,6 +26,8 @@ public class Evento {
     public LocalDateTime fecha;
     @JsonProperty("venta_abierta")
     public boolean ventaAbierta;
+    @Column
+    public LocalDateTime fechaCreacion;
     @JsonIgnore
     @OneToMany(mappedBy = "eventoAsociado", cascade = CascadeType.ALL)
     public List<Ticket> tickets;
@@ -40,6 +36,7 @@ public class Evento {
         this.nombre = nombre;
         this.fecha = fecha;
         this.tickets = generador.generar(this);
+        this.fechaCreacion = LocalDateTime.now();
         this.ventaAbierta = true;
     }
 
@@ -94,5 +91,13 @@ public class Evento {
 
     public boolean ventaAbierta() {
         return this.ventaAbierta;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

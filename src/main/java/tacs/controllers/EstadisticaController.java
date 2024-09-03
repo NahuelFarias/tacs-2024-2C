@@ -1,27 +1,32 @@
 package tacs.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import lombok.RequiredArgsConstructor;
-import tacs.models.domain.statistics.EstadisticaService;
+import tacs.dto.RespuestaEstadisticas;
+import tacs.dto.RespuestaEstadisticasPorEvento;
+import tacs.service.EstadisticaService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/statistics")
-@RequiredArgsConstructor
 public class EstadisticaController {
 
     private final EstadisticaService estadisticaService;
 
+    public EstadisticaController(EstadisticaService estadisticaService) {
+        this.estadisticaService = estadisticaService;
+    }
+
     @GetMapping("/use")
-    public String getUseStatistics() {
-        return "todo bien loko";
+    @ResponseBody
+    public List<RespuestaEstadisticas> getUseStatistics() {
+        return estadisticaService.obtenerEstadisticas();
     }
 
     @GetMapping("/events/{id}/tickets")
-    public String getTicketsSales(@PathVariable Integer id) {
-        return "todo bien loko";
+    @ResponseBody
+    public RespuestaEstadisticasPorEvento getTicketsSales(@PathVariable Integer id) {
+        return estadisticaService.obtenerEstadisticaPorID(id);
     }
 }

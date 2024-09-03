@@ -1,26 +1,26 @@
 package tacs.models.domain.users;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import tacs.models.domain.events.Evento;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Ubicacion;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
@@ -35,6 +35,8 @@ public class Usuario {
     @JsonProperty("tickets")
     @OneToMany(mappedBy = "duenio", cascade = CascadeType.ALL)
     public List<Ticket> ticketsAsociados;
+    @Column
+    public LocalDateTime ultimoLogin;
 
     public Usuario(String username) {
         this.username = username;
@@ -45,6 +47,7 @@ public class Usuario {
         Ticket ticket = evento.realizarReserva(ubicacion);
         this.aniadirTicket(ticket);
         ticket.cambiarDuenio(this);
+        ticket.setFechaReserva(LocalDateTime.now());
     }
 
     public void aniadirTicket(Ticket ticketNuevo) {
@@ -62,4 +65,11 @@ public class Usuario {
                 .findFirst();
     }
 
+    public void setUltimoLogin(LocalDateTime ultimoLogin) {
+        this.ultimoLogin = ultimoLogin;
+    }
+
+    public LocalDateTime getUltimoLogin() {
+        return ultimoLogin;
+    }
 }

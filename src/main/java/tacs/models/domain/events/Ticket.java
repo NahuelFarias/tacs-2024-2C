@@ -2,16 +2,11 @@ package tacs.models.domain.events;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.users.Usuario;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -32,6 +27,8 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario duenio;
+    @Column
+    public LocalDateTime fechaReserva;
 
     public Ticket(Evento eventoAsociado, Ubicacion ubicacion) {
         this.eventoAsociado = eventoAsociado;
@@ -62,4 +59,13 @@ public class Ticket {
     public double buscarPrecio() {
         return this.ubicacion.getPrecio();
     }
+
+    public LocalDateTime getFechaReserva() {
+        return fechaReserva;
+    }
+
+    public void setFechaReserva(LocalDateTime fechaReserva) {
+        this.fechaReserva = fechaReserva;
+    }
+
 }
