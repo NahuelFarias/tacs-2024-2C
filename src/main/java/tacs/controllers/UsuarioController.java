@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tacs.dto.CrearUsuario;
-import tacs.dto.GetUsuario;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.Usuario;
 import tacs.service.UsuarioService;
