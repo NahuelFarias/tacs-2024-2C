@@ -1,11 +1,7 @@
 package tacs.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import tacs.dto.CrearEvento;
 import tacs.models.domain.events.Ubicacion;
 import tacs.service.EventoService;

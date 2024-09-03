@@ -1,6 +1,7 @@
 package tacs.models.domain.statistics;
 
 import lombok.Getter;
+import tacs.models.domain.exception.EstadisticasIncorrectasException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,26 +12,32 @@ public class GeneradorEstadisticas {
 
     @Getter
     private ResultadosEstadisticas resultadosEstadisticas;
-    private static GeneradorEstadisticas instance;
+/*    private static GeneradorEstadisticas instance;
 
     public static GeneradorEstadisticas getInstance() {
         if (instance == null) {
             instance = new GeneradorEstadisticas();
         }
         return instance;
-    }
+    }*/
     public GeneradorEstadisticas() {
         this.estadisticas = new ArrayList<>();
-//        this.resultadosRanking = new ResultadosRanking();
+        this.resultadosEstadisticas = new ResultadosEstadisticas();
     }
 
-    public void agregarEstadistica(Estadisticas<Object> estadistica) {
+    public void agregarEstadistica(Estadisticas estadistica) {
         this.estadisticas.add(estadistica);
     }
 
-    public ResultadosEstadisticas generarEstadisticas(Map<String,List<Object>> datos){
-        for(Estadisticas<Object> estadistica : this.estadisticas){
-            resultadosEstadisticas.agregarEstadisticas(estadistica, estadistica.generarEstadistica(datos.get(estadistica.name())));
+    public ResultadosEstadisticas generarEstadisticas(Map<String,List<?>> datos){
+        for(Estadisticas estadistica : this.estadisticas){
+            if(datos.containsKey(estadistica.name())){
+                resultadosEstadisticas.agregarEstadisticas(estadistica, estadistica.generarEstadistica(datos.get(estadistica.name())));
+            }
+            else{
+                System.out.println(estadistica.name());
+                throw new EstadisticasIncorrectasException();
+            }
         }
 
         return this.resultadosEstadisticas;
