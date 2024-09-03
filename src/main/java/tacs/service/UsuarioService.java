@@ -2,7 +2,6 @@ package tacs.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,8 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import tacs.dto.GetUsuario;
-import tacs.dto.TicketUser;
 import tacs.models.domain.events.Evento;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Ubicacion;
