@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import tacs.models.domain.users.Usuario;
+import tacs.models.domain.users.User;
 
 import java.time.LocalDateTime;
 
@@ -16,56 +16,56 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Basic
-    private boolean vendido;
+    private boolean sold;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ubicacion_id")
-    private Ubicacion ubicacion;
+    @JoinColumn(name = "location_id")
+    private Location location;
     @ManyToOne
-    @JoinColumn(name = "evento_id")
-    private Evento eventoAsociado;
+    @JoinColumn(name = "event_id")
+    private Event event;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario duenio;
+    @JoinColumn(name = "user_id")
+    private User owner;
     @Column
-    public LocalDateTime fechaReserva;
+    public LocalDateTime reservationDate;
 
-    public Ticket(Evento eventoAsociado, Ubicacion ubicacion) {
-        this.eventoAsociado = eventoAsociado;
-        this.ubicacion = ubicacion;
-        this.vendido = false;
+    public Ticket(Event event, Location location) {
+        this.event = event;
+        this.location = location;
+        this.sold = false;
     }
 
-    public void cambiarDuenio(Usuario nuevoDuenio) {
-        this.duenio = nuevoDuenio;
+    public void changeOwner(User newOwner) {
+        this.owner = newOwner;
     }
 
-    public void seVendio() {
-        this.vendido = true;
+    public void sell() {
+        this.sold = true;
     }
 
-    public boolean vendido() {
-        return this.vendido;
+    public boolean isSold() {
+        return this.sold;
     }
 
-    public Evento getEventoAsociado() {
-        return eventoAsociado;
+    public Event getEvent() {
+        return event;
     }
 
-    public Ubicacion getUbicacion() {
-        return ubicacion;
+    public Location getLocation() {
+        return location;
     }
 
-    public double buscarPrecio() {
-        return this.ubicacion.getPrecio();
+    public double searchPrice() {
+        return this.location.getPrice();
     }
 
-    public LocalDateTime getFechaReserva() {
-        return fechaReserva;
+    public LocalDateTime getReservationDate() {
+        return reservationDate;
     }
 
-    public void setFechaReserva(LocalDateTime fechaReserva) {
-        this.fechaReserva = fechaReserva;
+    public void setReservationDate(LocalDateTime reservationDate) {
+        this.reservationDate = reservationDate;
     }
 
 }
