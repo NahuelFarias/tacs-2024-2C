@@ -4,7 +4,7 @@ import Menu from './components/Menu';
 import SearchBar from './components/SearchBar';
 import EventCard from './components/EventCard';
 import Footer from './components/Footer';
-import axios from 'axios';
+import { getUsers } from './services/userService'; // Importa el servicio
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -17,12 +17,12 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8080/users') //TODO: Sacar a var de entorno
-        .then(({data}) => {
-          console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA", data)
-          setEventos(data);  // Actualiza el estado con los eventos recibidos
-        })
-        .catch(error => console.error('Error fetching events:', error));
+    getUsers()
+      .then(data => {
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA", data)
+        setEventos(data);  // Actualiza el estado con los eventos recibidos
+      })
+      .catch(error => console.error('Error fetching events:', error));
   }, []);
 
 
