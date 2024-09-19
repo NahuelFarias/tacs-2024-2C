@@ -2,6 +2,7 @@ package tacs.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,10 @@ public class EventoService {
         else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
+    }
+
+    public List<Evento> getEvents() {
+        return eventoRepository.findAll();
     }
 
     @Transactional

@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tacs.dto.CrearEvento;
+import tacs.models.domain.events.Evento;
 import tacs.models.domain.events.Ubicacion;
 import tacs.service.EventoService;
+
+import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class EventoController {
 
     private final EventoService eventoService;
+
+    @GetMapping()
+    public List<Evento> getEvents() {
+        return eventoService.getEvents();
+    }
 
     @GetMapping("/{id}/tickets")
     @ResponseBody
