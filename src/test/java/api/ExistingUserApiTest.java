@@ -10,7 +10,7 @@ import org.springframework.http.*;
 import tacs.App;
 import tacs.dto.CreateUser;
 import tacs.models.domain.events.Ticket;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 import java.util.List;
 
@@ -49,13 +49,13 @@ public class ExistingUserApiTest {
     @Order(1)
     public void getUserTest() {
         String url = "http://localhost:" + port + "/users";
-        ResponseEntity<List<User>> response = restTemplate.exchange(
+        ResponseEntity<List<NormalUser>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<User>>() {}
+                new ParameterizedTypeReference<List<NormalUser>>() {}
         );
-        List<User> users = response.getBody();
+        List<NormalUser> users = response.getBody();
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(1, users.size());
@@ -66,9 +66,9 @@ public class ExistingUserApiTest {
     public void getUserDataTest(){
         String url = "http://localhost:" + port + "/users/1";
 
-        ResponseEntity<User> response = restTemplate.getForEntity(url, User.class);
+        ResponseEntity<NormalUser> response = restTemplate.getForEntity(url, NormalUser.class);
 
-        User user = response.getBody();
+        NormalUser user = response.getBody();
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals("Pepita", user.username);
     }

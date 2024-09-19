@@ -2,7 +2,7 @@ package tacs.models.domain;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 public class UserTest {
 
@@ -10,7 +10,7 @@ public class UserTest {
     public void generateUserTest() {
         String username = "Pepe Rodriguez";
 
-        User user = new User(username);
+        NormalUser user = new NormalUser(username);
         Assertions.assertEquals(user.username, username);
     }
 }

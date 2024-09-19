@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
-    List<Ticket> findByReservationDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Ticket> findAllByReservationDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

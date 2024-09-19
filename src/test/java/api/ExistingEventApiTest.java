@@ -12,7 +12,7 @@ import tacs.dto.CreateEvent;
 import tacs.dto.CreateGenerator;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -33,14 +33,14 @@ public class ExistingEventApiTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private User testUser;
+    private NormalUser testUser;
     private Event testEvent;
     private Location testLocation;
 
     @BeforeEach
     public void setUp() {
         String username = "Pepe Rodriguez";
-        this.testUser = new User(username);
+        this.testUser = new NormalUser(username);
 
         Location preferencia = new Location("Preferencia", 500);
         Location eastStand = new Location("East Stand", 200);

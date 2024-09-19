@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +26,7 @@ public class Ticket {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User owner;
+    private NormalUser owner;
     @Column
     public LocalDateTime reservationDate;
 
@@ -36,7 +36,7 @@ public class Ticket {
         this.sold = false;
     }
 
-    public void changeOwner(User newOwner) {
+    public void changeOwner(NormalUser newOwner) {
         this.owner = newOwner;
     }
 

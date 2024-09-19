@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 import tacs.repository.UserRepository;
 
 @Service
@@ -20,26 +20,26 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void createUser(String name) {
-        userRepository.save(new User(name));
+        userRepository.save(new NormalUser(name));
     }
 
-    public List<User> getAllUsers() {
+    public List<NormalUser> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User getUsers(Integer id) {
+    public NormalUser getUsers(Integer id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     public List<Ticket> getReservations(Integer id) {
-        User user = this.getUsers(id);
-        return user.getOwnedTickets();
+        NormalUser user = this.getUsers(id);
+        return user.getTicketsOwned();
     }
 
     @Transactional
     public void reserveTicket(Integer id, Event event, Location location) {
-        User user = this.getUsers(id);
+        NormalUser user = this.getUsers(id);
         user.reserveTicket(event, location);
     }
 

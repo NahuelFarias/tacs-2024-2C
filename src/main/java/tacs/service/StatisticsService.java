@@ -5,7 +5,7 @@ import tacs.dto.StatisticsResponse;
 import tacs.dto.EventStatisticsResponse;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 import tacs.repository.EventRepository;
 import tacs.repository.TicketRepository;
 import tacs.repository.UserRepository;
@@ -54,9 +54,9 @@ public class StatisticsService {
                                                  String rangoTemporal){
         StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
 
-        List<Event> events = this.eventsRepository.findByCreationDateBetween(fechaInicio,fechaFin);
-        List<Ticket> tickets = this.ticketsRepository.findByReservationDateBetween(fechaInicio, fechaFin);
-        List<User> users = this.usersRepository.findByLastLoginBetween(fechaInicio,fechaFin);
+        List<Event> events = this.eventsRepository.findAllByCreationDateBetween(fechaInicio,fechaFin);
+        List<Ticket> tickets = this.ticketsRepository.findAllByReservationDateBetween(fechaInicio, fechaFin);
+        List<NormalUser> users = this.usersRepository.findAllByLastLoginBetween(fechaInicio,fechaFin);
 
         EventStatistics eventStatis = new EventStatistics();
         TicketStatistics ticketStatistics = new TicketStatistics();
@@ -87,7 +87,7 @@ public class StatisticsService {
     public Integer getTicketStatisticsById(LocalDateTime startDate, LocalDateTime endDate,
                                            String timeRange, int id) {
         StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
-        List<Ticket> tickets = this.ticketsRepository.findByReservationDateBetween(startDate, endDate);
+        List<Ticket> tickets = this.ticketsRepository.findAllByReservationDateBetween(startDate, endDate);
 
         // Esto, por ahora propongo simularlo asi, dado que deberia generarse una consulta (dialecto SQL de hibernate)
         // en el repo, y no vamos a utilizar una BBDD de tipo relacional

@@ -31,8 +31,8 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     public List<Ticket> tickets;
 
-    public Event(String nombre, LocalDateTime date, TicketGenerator generator) {
-        this.name = nombre;
+    public Event(String name, LocalDateTime date, TicketGenerator generator) {
+        this.name = name;
         this.date = date;
         this.tickets = generator.generate(this);
         this.creationDate = LocalDateTime.now();

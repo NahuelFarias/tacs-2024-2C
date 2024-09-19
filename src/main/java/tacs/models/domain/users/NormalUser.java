@@ -23,8 +23,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @NoArgsConstructor
-public class User {
-
+public class NormalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -37,7 +36,7 @@ public class User {
     @Column
     public LocalDateTime lastLogin;
 
-    public User(String username) {
+    public NormalUser(String username) {
         this.username = username;
         this.ticketsOwned = new ArrayList<>();
     }
@@ -53,7 +52,7 @@ public class User {
         this.ticketsOwned.add(ticket);
     }
 
-    public List<Ticket> getOwnedTickets() {
+    public List<Ticket> getTicketsOwned() {
         return this.ticketsOwned;
     }
 

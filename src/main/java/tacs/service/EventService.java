@@ -21,9 +21,9 @@ public class EventService {
     private final EventRepository eventRepository;
     private final UserService userService;
 
-    public void createEvent(String nombre, LocalDateTime date, CreateGenerator createGenerator) {
+    public void createEvent(String name, LocalDateTime date, CreateGenerator createGenerator) {
         TicketGenerator generator = new TicketGenerator(createGenerator.getLocations(), createGenerator.getTicketsMap());
-        Event event = new Event(nombre, date, generator);
+        Event event = new Event(name, date, generator);
         eventRepository.save(event);
     }
 

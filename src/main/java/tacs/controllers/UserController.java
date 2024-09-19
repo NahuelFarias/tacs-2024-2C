@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import tacs.dto.CreateUser;
 import tacs.models.domain.events.Ticket;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 import tacs.service.UserService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,13 +32,13 @@ public class UserController {
 
     @GetMapping 
     @ResponseBody
-    public List<User> getAllUsers() {
+    public List<NormalUser> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}") 
     @ResponseBody
-    public User getDataUser(@PathVariable Integer id) {
+    public NormalUser getDataUser(@PathVariable Integer id) {
         return userService.getUsers(id);
     }
 

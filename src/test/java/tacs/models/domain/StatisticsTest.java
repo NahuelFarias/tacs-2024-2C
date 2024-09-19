@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.TicketGenerator;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 import tacs.statistics.*;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.time.Month;
 import java.util.*;
 
 public class StatisticsTest {
-    private User testUser;
+    private NormalUser testUser;
     private Event testEvent;
     private Location testLocation;
     private UserStatistics userStatistics;
@@ -23,13 +23,13 @@ public class StatisticsTest {
     private TicketStatistics ticketStatistics;
     private StatisticsGenerator statisticsGenerator;
     private StatisticsResults statisticsResults;
-    private List<User> testUsers;
+    private List<NormalUser> testUsers;
     private List<Event> testEvents;
 
     @BeforeEach
     public void setUp() {
         String username = "Pepe Rodriguez";
-        this.testUser = new User(username);
+        this.testUser = new NormalUser(username);
         this.testUser.setLastLogin(LocalDateTime.now());
         Location preferencia = new Location("Preferencia", 500);
         Location eastStand = new Location("East Stand", 200);
@@ -92,7 +92,7 @@ public class StatisticsTest {
         this.testUser.reserveTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> soldTickets = new HashMap<>();
 
-        soldTickets.put("Tickets", this.testUser.getOwnedTickets());
+        soldTickets.put("Tickets", this.testUser.getTicketsOwned());
 
         this.statisticsGenerator.addStatistics(this.ticketStatistics);
         this.statisticsResults = this.statisticsGenerator.generateStatistics(soldTickets);
@@ -110,7 +110,7 @@ public class StatisticsTest {
         Map<String, List<?>> statisticsTestData = new HashMap<>();
         statisticsTestData.put("Users", this.testUsers);
         statisticsTestData.put("Events", this.testEvents);
-        statisticsTestData.put("Tickets", this.testUser.getOwnedTickets());
+        statisticsTestData.put("Tickets", this.testUser.getTicketsOwned());
         this.statisticsGenerator.addStatistics(this.userStatistics);
         this.statisticsGenerator.addStatistics(this.eventStatistics);
         this.statisticsGenerator.addStatistics(this.ticketStatistics);

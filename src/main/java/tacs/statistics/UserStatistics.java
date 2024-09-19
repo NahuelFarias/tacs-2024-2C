@@ -1,13 +1,13 @@
 package tacs.statistics;
 
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 import java.util.List;
 
-public class UserStatistics implements Statistics<User> {
+public class UserStatistics implements Statistics<NormalUser> {
 
     @Override
-    public Integer generateStatistics(List<User> users) {
+    public Integer generateStatistics(List<NormalUser> users) {
         return (int) users.stream().filter(u -> u.getLastLogin() != null).count();
     }
 

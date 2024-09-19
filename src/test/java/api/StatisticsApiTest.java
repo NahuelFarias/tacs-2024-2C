@@ -15,7 +15,7 @@ import tacs.dto.StatisticsResponse;
 import tacs.dto.EventStatisticsResponse;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -32,14 +32,14 @@ public class StatisticsApiTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private User testUser;
+    private NormalUser testUser;
     private Event testEvent;
     private Location testLocation;
 
     @BeforeEach
     public void setUp() {
         String username = "Pepe Rodriguez";
-        this.testUser = new User(username);
+        this.testUser = new NormalUser(username);
 
         Location preferencia = new Location("Preferencia", 500);
         Location eastStand = new Location("East Stand", 200);
@@ -98,13 +98,13 @@ public class StatisticsApiTest {
 
     @Test
     @Order(2)
-    public void testEndPointEstadisticasPorID() {
+    public void getStatisticsByIdTest() {
         String url = "http://localhost:" + port + "/statistics/events/1/tickets";
 
         ResponseEntity<EventStatisticsResponse> response = restTemplate.getForEntity(url,
                 EventStatisticsResponse.class);
 
-        EventStatisticsResponse estadisticas = response.getBody();
+        EventStatisticsResponse statisticsResponse = response.getBody();
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getDailyTickets());
     }

@@ -7,7 +7,7 @@ import tacs.models.domain.events.Event;
 import tacs.models.domain.events.TicketGenerator;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.users.User;
+import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -15,14 +15,14 @@ import java.util.*;
 
 public class TicketTest {
 
-    private User testUser;
+    private NormalUser testUser;
     private Event testEvent;
     private Location testLocation;
 
     @BeforeEach
     public void setUp() {
         String username = "Pepe Rodriguez";
-        this.testUser = new User(username);
+        this.testUser = new NormalUser(username);
 
         Location preferencia = new Location("Preferencia", 500);
         Location eastStand = new Location("East Stand", 200);
@@ -46,13 +46,13 @@ public class TicketTest {
     @Test
     public void reserveTicketsTest() {
         this.testUser.reserveTicket(this.testEvent,this.testLocation);
-        Assertions.assertEquals(testUser.getOwnedTickets().size(),1);
+        Assertions.assertEquals(testUser.getTicketsOwned().size(),1);
     }
 
     @Test
-    public void getOwnedTicketsTest() {
+    public void getTicketsOwnedTest() {
         this.testUser.reserveTicket(this.testEvent,this.testLocation);
-        List<Ticket> reservations = this.testUser.getOwnedTickets();
+        List<Ticket> reservations = this.testUser.getTicketsOwned();
         Assertions.assertEquals(reservations.size(),1);
     }
 }
