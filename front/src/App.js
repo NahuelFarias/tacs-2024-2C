@@ -4,7 +4,7 @@ import Menu from './components/Menu';
 import SearchBar from './components/SearchBar';
 import EventCard from './components/EventCard';
 import Footer from './components/Footer';
-import { getUsers } from './services/userService'; // Importa el servicio
+import { getEvents } from './services/eventService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -17,10 +17,9 @@ function App() {
   };
 
   useEffect(() => {
-    getUsers()
+    getEvents()
       .then(data => {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA", data)
-        setEventos(data);  // Actualiza el estado con los eventos recibidos
+        setEventos(data);
       })
       .catch(error => console.error('Error fetching events:', error));
   }, []);
@@ -43,7 +42,7 @@ function App() {
         <div className="row">
            {/* Mapeo de los eventos obtenidos desde el backend */}
            {eventos.map(evento => (
-            <EventCard key={evento.name} title={evento.name} />
+            <EventCard key={evento.id} title={evento.nombre} />
           ))}
         </div>
       </div>
