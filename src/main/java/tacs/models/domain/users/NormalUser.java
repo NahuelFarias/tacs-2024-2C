@@ -29,7 +29,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Basic
-    @JsonProperty("name")
+    @JsonProperty("username")
     public String username;
     @JsonProperty("tickets")
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
