@@ -35,7 +35,7 @@ public class EventService {
     @Transactional
     public void setState(Integer id, Boolean state) {
         Event event = this.getEvent(id);
-        event.setPurchaseAvailability(state);
+        event.updateSale(state);
     }
 
     @Transactional

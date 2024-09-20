@@ -23,8 +23,8 @@ public class Event {
     @Basic
     public String name;
     public LocalDateTime date;
-    @JsonProperty("purchase_available")
-    public boolean purchaseAvailable;
+    @JsonProperty("open_sale")
+    public boolean openSale;
     @Column
     public LocalDateTime creationDate;
     @JsonIgnore
@@ -36,12 +36,12 @@ public class Event {
         this.date = date;
         this.tickets = generator.generate(this);
         this.creationDate = LocalDateTime.now();
-        this.purchaseAvailable = true;
+        this.openSale = true;
     }
 
     @JsonIgnore
     public List<Ticket> getSoldTickets() {
-        return this.tickets.stream().filter(Ticket::isSold).collect(Collectors.toList());
+        return this.tickets.stream().filter(Ticket::wasSold).collect(Collectors.toList());
     }
 
     public long getSoldTicketsAmount() {
@@ -50,7 +50,7 @@ public class Event {
 
     @JsonIgnore
     public List<Ticket> getAvailableTickets() {
-        return this.tickets.stream().filter(t -> !t.isSold()).collect(Collectors.toList());
+        return this.tickets.stream().filter(t -> !t.wasSold()).collect(Collectors.toList());
     }
 
     public long getAvailableTicketsAmount() {
@@ -65,16 +65,16 @@ public class Event {
         return name;
     }
 
-    public void disablePurchase() {
-        this.purchaseAvailable = false;
+    public void closeSale() {
+        this.openSale = false;
     }
 
-    public void setPurchaseAvailability(Boolean state) {
-        this.purchaseAvailable = state;
+    public void updateSale(Boolean state) {
+        this.openSale = state;
     }
 
-    public Ticket reserveTicket(Location location) {
-        if(!this.purchaseAvailable) throw new PurchaseUnavailableException();
+    public Ticket makeReservation(Location location) {
+        if(!this.openSale) throw new PurchaseUnavailableException();
 
         Ticket ticket = this.getAvailableTickets().stream()
             .filter(t -> t.getLocation().equals(location)).findFirst()
@@ -86,7 +86,7 @@ public class Event {
     }
 
     public boolean purchaseAvailable() {
-        return this.purchaseAvailable;
+        return this.openSale;
     }
 
     public LocalDateTime getCreationDate() {

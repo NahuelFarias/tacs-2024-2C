@@ -41,8 +41,8 @@ public class NormalUser {
         this.ticketsOwned = new ArrayList<>();
     }
 
-    public void reserveTicket(Event event, Location location) {
-        Ticket ticket = event.reserveTicket(location);
+    public void bookTicket(Event event, Location location) {
+        Ticket ticket = event.makeReservation(location);
         this.addTicket(ticket);
         ticket.changeOwner(this);
         ticket.setReservationDate(LocalDateTime.now());

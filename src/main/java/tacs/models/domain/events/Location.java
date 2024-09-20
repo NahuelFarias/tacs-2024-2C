@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 
+//TODO: cambiar a @data? para evitar overridear equals y hashcode y sacar boilerplate
 @Entity
 @NoArgsConstructor
 public class Location {

@@ -44,7 +44,7 @@ public class Ticket {
         this.sold = true;
     }
 
-    public boolean isSold() {
+    public boolean wasSold() {
         return this.sold;
     }
 

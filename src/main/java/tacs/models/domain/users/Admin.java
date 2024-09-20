@@ -12,7 +12,7 @@ public class Admin {
     }
 
     public void disableEvent(Event event) {
-        event.disablePurchase();
+        event.closeSale();
     }
 
 }

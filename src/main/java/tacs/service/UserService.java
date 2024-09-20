@@ -40,7 +40,7 @@ public class UserService {
     @Transactional
     public void reserveTicket(Integer id, Event event, Location location) {
         NormalUser user = this.getUsers(id);
-        user.reserveTicket(event, location);
+        user.bookTicket(event, location);
     }
 
 }

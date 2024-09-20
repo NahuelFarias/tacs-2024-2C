@@ -89,7 +89,7 @@ public class StatisticsTest {
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
 
-        this.testUser.reserveTicket(this.testEvent, this.testLocation);
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> soldTickets = new HashMap<>();
 
         soldTickets.put("Tickets", this.testUser.getTicketsOwned());
@@ -106,7 +106,7 @@ public class StatisticsTest {
         this.userStatistics = new UserStatistics();
         this.eventStatistics = new EventStatistics();
         this.ticketStatistics = new TicketStatistics();
-        this.testUser.reserveTicket(this.testEvent, this.testLocation);
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> statisticsTestData = new HashMap<>();
         statisticsTestData.put("Users", this.testUsers);
         statisticsTestData.put("Events", this.testEvents);

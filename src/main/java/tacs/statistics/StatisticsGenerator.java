@@ -11,11 +11,11 @@ public class StatisticsGenerator {
     private List<Statistics> statistics;
 
     @Getter
-    private StatisticsResults results;
+    private StatisticsResults statisticsResults;
 
     public StatisticsGenerator() {
         this.statistics = new ArrayList<>();
-        this.results = new StatisticsResults();
+        this.statisticsResults = new StatisticsResults();
     }
 
     public void addStatistics(Statistics statistics) {
@@ -25,13 +25,13 @@ public class StatisticsGenerator {
     public StatisticsResults generateStatistics(Map<String,List<?>> data){
         for(Statistics statistics : this.statistics) {
             if (data.containsKey(statistics.name())) {
-                results.addStatistics(statistics, statistics.generateStatistics(data.get(statistics.name())));
+                statisticsResults.addStatistics(statistics, statistics.generateStatistics(data.get(statistics.name())));
 
             }
             else{
                 throw new WrongStatisticsException();
             }
         }
-        return this.results;
+        return this.statisticsResults;
     }
 }

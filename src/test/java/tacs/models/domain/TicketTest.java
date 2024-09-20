@@ -45,13 +45,13 @@ public class TicketTest {
 
     @Test
     public void reserveTicketsTest() {
-        this.testUser.reserveTicket(this.testEvent,this.testLocation);
+        this.testUser.bookTicket(this.testEvent,this.testLocation);
         Assertions.assertEquals(testUser.getTicketsOwned().size(),1);
     }
 
     @Test
     public void getTicketsOwnedTest() {
-        this.testUser.reserveTicket(this.testEvent,this.testLocation);
+        this.testUser.bookTicket(this.testEvent,this.testLocation);
         List<Ticket> reservations = this.testUser.getTicketsOwned();
         Assertions.assertEquals(reservations.size(),1);
     }
