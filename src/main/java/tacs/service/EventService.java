@@ -28,11 +28,6 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public Event getEvents() {
-        return eventRepository.findById(1)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
-    }
-
     public Event getEvent(Integer id) {
         return eventRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import tacs.dto.CreateEvent;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.events.Event;
 import tacs.service.EventService;
 
 import java.util.List;
