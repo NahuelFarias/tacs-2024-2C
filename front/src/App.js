@@ -1,55 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Menu from './components/Menu';
-import SearchBar from './components/SearchBar';
-import EventCard from './components/EventCard';
 import Footer from './components/Footer';
-import { getEvents } from './services/eventService';
+import Registration from './components/Registration';
+import Home from './components/Home';
+import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import EventCreation from './components/EventCreation';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [eventos, setEventos] = useState([]);  // Estado para los eventos
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
-  useEffect(() => {
-    getEvents()
-      .then(data => {
-        setEventos(data);
-      })
-      .catch(error => console.error('Error fetching events:', error));
-  }, []);
-
-
+  
   return (
-    <div className="d-flex flex-column min-vh-100">
-      {/* Header */}
-      <Header toggleMenu={toggleMenu} />
+    <div className='d-flex flex-column'>
 
-      {/* Menu */}
+    <Router>
+
+      <Header toggleMenu={toggleMenu} />
       <Menu menuOpen={menuOpen} />
 
-      {/* Search bar */}
-      <SearchBar />
+      <div className="d-flex flex-column min-vh-100">
+        
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/signup' element={<Registration/>}/>
+          <Route path='/createEvent' element={<EventCreation/>}></Route>
+          {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
+        </Routes>
 
-      {/* Eventos */}
-      <div className="events-section container">
-        <h2 className="text-white">Eventos Destacados</h2>
-        <div className="row">
-           {/* Mapeo de los eventos obtenidos desde el backend */}
-           {eventos.map(evento => (
-            <EventCard key={evento.id} title={evento.nombre} />
-          ))}
-        </div>
       </div>
+      <Footer />  
 
-      {/* Footer */}
-      <Footer />
+    </Router> 
     </div>
+
+    
   );
 }
 
