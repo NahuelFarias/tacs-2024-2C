@@ -7,7 +7,7 @@ import './EventDetails.css';
 
 
 const EventDetails = () => {
-  const [event, setEvent] = useState([]);
+  //const [event, setEvent] = useState([]);
   const { eventId } = useParams();
  
   const eventName = "Nombre de Evento";
@@ -15,13 +15,13 @@ const EventDetails = () => {
   const eventDate = "20/12/2024 21:00Hs";
   const eventAdmin = "Gobierno de la Cuidad de Buenos Aires";
   const popular = {
-    id:2,
     zoneLocation : 'popular',
+    zonePrice: '10',
     availableTickets : 15
   }
   const platea = {
-    id: 1,
     zoneLocation : 'platea',
+    zonePrice: '15',
     availableTickets : 8
   }
 
@@ -31,39 +31,38 @@ const EventDetails = () => {
     location: eventLocation,
     date: eventDate,
     admin: eventAdmin,
-    zones: [platea, popular]
+    zones: [popular, platea, platea]
   }
 
   useEffect(() => {
     console.log(eventId);
-    getEvent(1)
+    /*getEvent(1)
       .then(data => {
         setEvent(data);
         console.log(data);
         console.log(event);
       })
-      .catch(error => console.error('Error fetching event detail:', error))
+      .catch(error => console.error('Error fetching event detail:', error))*/
   }, []);
 
   return (
     <div className="d-flex flex-column p-4 align-items-center w-100">
         <div className="event-details">
 
-            <h1>{eventId}</h1>
             <div className="d-flex justify-content-between mt-2 w-100">
-                <h2>{eventMock.name}</h2>
+                <h1>{eventMock.name}</h1>
 
-                <h3>{eventMock.date}</h3>
+                <h2>{eventMock.date}</h2>
             </div>
 
             <img className="w-100" src="/evento.jpg" alt="Foto del evento"></img>
 
 
-            <div className="mt-2">
-                <h2>Asientos disponibles</h2>
-                <div className='d-flex'>
+            <div className="mt-4">
+                <h3>Asientos disponibles</h3>
+                <div className='d-flex row'>
                 {eventMock.zones.map(zone => (
-                    <ZoneCard key={zone.id} zoneLocation={zone.zoneLocation}  availableTickets={zone.availableTickets} /> 
+                    <ZoneCard key={zone.zoneLocation} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={zone.availableTickets} /> 
                     ))}
 
                 </div>
