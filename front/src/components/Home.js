@@ -20,7 +20,7 @@ const Home = () => {
   return (
       <div className="home-page">
         <SearchBar />  
-
+  
         <div className="events-section container">
           <h2 className="text-white">Eventos Destacados</h2>
           <div className="row">

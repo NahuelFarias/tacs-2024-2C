@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Menu from './components/Menu';
 import Footer from './components/Footer';
+import Registration from './components/Registration';
 import Home from './components/Home';
+import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import EventCreation from './components/EventCreation';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +16,7 @@ function App() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
+  
   return (
     <div className='d-flex flex-column'>
 
@@ -23,9 +26,12 @@ function App() {
       <Menu menuOpen={menuOpen} />
 
       <div className="d-flex flex-column min-vh-100">
-
+        
         <Routes>
           <Route path="/" element={<Home/>} />
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/signup' element={<Registration/>}/>
+          <Route path='/createEvent' element={<EventCreation/>}></Route>
           {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
         </Routes>
 
@@ -34,8 +40,6 @@ function App() {
 
     </Router> 
     </div>
-
-
   );
 }
 
