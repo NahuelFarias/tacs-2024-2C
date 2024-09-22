@@ -43,8 +43,8 @@ const Login = () => {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: '#1a1a1a' }}>
-          <div className="p-5 rounded shadow" style={{ backgroundColor: 'white', width: '90%', maxWidth: '500px', height: 'auto' }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ backgroundColor: '#1a1a1a' }}>
+          <div className="p-5 m-5 rounded shadow" style={{ backgroundColor: 'white', width: '90%', maxWidth: '500px', height: 'auto' }}>
             <h2 className="text-center text-dark mb-4">Login</h2>
             <form className="d-flex flex-column justify-content-between" style={{ height: '100%' }}>
               <div className="mb-4">

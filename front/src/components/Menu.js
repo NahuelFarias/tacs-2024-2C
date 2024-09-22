@@ -6,7 +6,7 @@ const Menu = ({ menuOpen }) => {
       <div className="menu bg-dark text-white p-3">
         <ul className="list-unstyled">
           <li><a href="/login" className="text-white">Iniciar Sesión</a></li>
-          <li><a href="/register" className="text-white">Registrarse</a></li>
+          <li><a href="/signup" className="text-white">Registrarse</a></li>
         </ul>
       </div>
     )

@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import EventCreation from './components/EventCreation';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,22 +18,29 @@ function App() {
   };
   
   return (
+    <div className='d-flex flex-column'>
+
     <Router>
-    <div className="d-flex flex-column min-vh-100">
-    
+
       <Header toggleMenu={toggleMenu} />
-
       <Menu menuOpen={menuOpen} />
-      <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/register' element={<Registration/>}/>
-        {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
-      </Routes>
 
-      <Footer />
+      <div className="d-flex flex-column min-vh-100">
+        
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/signup' element={<Registration/>}/>
+          <Route path='/createEvent' element={<EventCreation/>}></Route>
+          {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
+        </Routes>
+
+      </div>
+      <Footer />  
+
+    </Router> 
     </div>
-    </Router>
+
     
   );
 }
