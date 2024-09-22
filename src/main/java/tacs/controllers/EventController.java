@@ -27,6 +27,11 @@ public class EventController {
 
     private final EventService eventService;
 
+    @GetMapping("/search")
+    public Event getEventByName(@RequestParam("name") String name) {
+        return eventService.getEventByName(name);
+    }
+
     @GetMapping("/{id}/tickets")
     @ResponseBody
     public long getTicketsForSale(@PathVariable Integer id) {
