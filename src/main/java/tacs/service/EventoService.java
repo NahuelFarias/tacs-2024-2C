@@ -40,6 +40,15 @@ public class EventoService {
         }
     }
 
+    public Evento getEventByName(String nombre) {
+        Optional<Evento> opcEvento = eventoRepository.findByNombreNormalizado(nombre);
+        if (opcEvento.isPresent()) {
+            return opcEvento.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        }
+    }
+
     public List<Evento> getEvents() {
         return eventoRepository.findAll();
     }
