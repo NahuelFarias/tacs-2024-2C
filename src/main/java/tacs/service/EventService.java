@@ -1,6 +1,8 @@
 package tacs.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,15 @@ public class EventService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
     }
 
+    public Event getEventByName(String name) {
+    Optional<Event> opcEvento = eventRepository.findByNormalizedName(name);
+        if (opcEvento.isPresent()) {
+            return opcEvento.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        }
+    }
+
     @Transactional
     public void setState(Integer id, Boolean state) {
         Event event = this.getEvent(id);
@@ -47,6 +58,10 @@ public class EventService {
     public long getTicketsForSale(Integer id) {
         Event event = this.getEvent(id);
         return event.getAvailableTicketsAmount();
+    }
+
+    public List<Event> getEvents() {
+        return eventRepository.findAll();
     }
 
 }

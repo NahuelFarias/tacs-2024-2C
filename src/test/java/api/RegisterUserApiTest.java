@@ -23,7 +23,7 @@ public class RegisterUserApiTest {
     @Test
     public void registrarUsuarioTest() {
         CreateUser createUser = new CreateUser();
-        createUser.setName("Pepita");
+        createUser.setUsername("Pepita");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
