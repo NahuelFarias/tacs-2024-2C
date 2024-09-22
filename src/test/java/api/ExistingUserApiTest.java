@@ -27,7 +27,7 @@ public class ExistingUserApiTest {
     @BeforeEach
     public void setUp() {
         CreateUser createUser = new CreateUser();
-        createUser.setName("Pepita");
+        createUser.setUsername("Pepita");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
