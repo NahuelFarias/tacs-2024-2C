@@ -1,0 +1,20 @@
+.found-event {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .event-title {
+    margin: 0;
+  }
+  
+  .close {
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
