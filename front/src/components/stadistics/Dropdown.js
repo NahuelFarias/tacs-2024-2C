@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const StatsDropdown = ({onSelection}) => {
-    const [selection, setSelection] = useState("Diario");
+    const [selection, setSelection] = useState("Daily");
 
     const selectionHandler = (event) => {
         const selectedValue = event.target.textContent;
@@ -23,9 +23,9 @@ const StatsDropdown = ({onSelection}) => {
                             {selection}
                         </button>
                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Diario</a></li>
-                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Semanal</a></li>
-                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Anual</a>
+                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Daily</a></li>
+                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Weekly</a></li>
+                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Yearly</a>
                             </li>
                         </ul>
                     </div>

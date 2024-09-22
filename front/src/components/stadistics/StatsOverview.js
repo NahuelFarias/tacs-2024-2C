@@ -7,22 +7,25 @@ import './Bar.css';
 const getStatsData = (loginCount, ticketCount, eventCount) => {
     return [
         ["Tipo Estadistica", "Cantidad", {role: 'style'}],
-        ["Cantidad de Inicios de Sesion", loginCount, "color: #FF4E92; :opacity: 0.8"],
-        ["Cantidad de Tickets Vendidos", ticketCount,"color: #FF4E92; :opacity: 0.8"],
-        ["Cantidad de Eventos", eventCount,"stroke-color: #7B25A2; stroke-opacity: 0.8; stroke-width: 8; fill-color: #FF4E92; fill-opacity: 0.9"]
+        ["Cantidad de Inicios de Sesion", loginCount,
+            "stroke-color: #7B25A2; stroke-opacity: 0.8; stroke-width: 8; fill-color: #FF4E92; fill-opacity: 0.9"],
+        ["Cantidad de Tickets Vendidos", ticketCount,
+            "stroke-color: #7B25A2; stroke-opacity: 0.8; stroke-width: 8; fill-color: #FF4E92; fill-opacity: 0.9"],
+        ["Cantidad de Eventos", eventCount,
+            "stroke-color: #7B25A2; stroke-opacity: 0.8; stroke-width: 8; fill-color: #FF4E92; fill-opacity: 0.9"]
     ];
-}
+}   
 
 const StatsOverview = () => {
-    const [filter, setFilter] = useState("Diario")
+    const [filter, setFilter] = useState("Daily")
     const [stats, setStats] = useState([]);
     const [options, setOptions] = useState([])
 
     useEffect(() => {
         getStats()
             .then(data => {
-                const values = data.find(f => f.rangoTemporal == filter)
-                const result = getStatsData(values.cantidadLogins, values.cantidadTickets, values.cantidadEventos);
+                const values = data.find(f => f.timeRange === filter)
+                const result = getStatsData(values.logins, values.tickets, values.events);
                 setStats(result);
                 setOptions({
                     title: "",

@@ -1,40 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import {BrowserRouter, Route, Routes, useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Header';
+import Menu from './components/Menu';
+import Footer from './components/Footer';
+import Registration from './components/Registration';
+import Home from './components/Home';
+import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Home from "./components/home/Home";
+import EventCreation from './components/EventCreation';
 import StatsOverview from "./components/stadistics/StatsOverview";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Menu from "./components/Menu";
 
 function App() {
-    const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
-
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+  
   return (
-      <BrowserRouter>
-          <div className="d-flex flex-column min-vh-100">
-              {/* Header */}
-              <Header toggleMenu={toggleMenu}/>
+    <div className='d-flex flex-column'>
 
-              {/* Menu */}
-              <Menu menuOpen={menuOpen}/>
+    <Router>
 
-              <Routes>
-                  <Route path="/" element={<Home />}/>
-                  <Route path="/stats" element={<StatsOverview />}/>
-              </Routes>
-          </div>
+      <Header toggleMenu={toggleMenu} />
+      <Menu menuOpen={menuOpen} />
 
-          {/* Footer */}
-          <Footer/>
+      <div className="d-flex flex-column min-vh-100">
+        
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/signup' element={<Registration/>}/>
+          <Route path='/createEvent' element={<EventCreation/>}></Route>
+          <Route path="/stats" element={<StatsOverview />}/>
+          {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
+        </Routes>
 
-      </BrowserRouter>
-);
+      </div>
+      <Footer />  
+
+    </Router> 
+    </div>
+
+    
+  );
 }
 
 export default App;
