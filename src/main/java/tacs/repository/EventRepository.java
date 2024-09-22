@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("SELECT e FROM Evento e WHERE LOWER(e.name) = LOWER(:name)")
+    @Query("SELECT e FROM Event e WHERE LOWER(e.name) = LOWER(:name)")
     Optional<Event> findByNormalizedName(@Param("name") String name);
 }
