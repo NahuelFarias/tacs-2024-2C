@@ -1,5 +1,13 @@
 import axiosClient from './axiosClient';
 
+export const getEvent = (eventId) => {
+  return true/*axiosClient.get(`/events/:${eventId}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error(`Error al obtener el evento con id = ${eventId}, error:`, error)
+    })*/
+}
+
 export const getEvents = () => {
   return axiosClient.get('/events')
     .then(response => response.data)
