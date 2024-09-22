@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tacs.dto.CreateEvent;
+import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
 import tacs.service.EventService;
 
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 
 @RestController
@@ -46,4 +49,8 @@ public class EventController {
         eventService.createReserves(id, userId, location);
     }
 
+    @GetMapping
+    public List<Event> getEvents() {
+        return eventService.getEvents();
+    }
 }

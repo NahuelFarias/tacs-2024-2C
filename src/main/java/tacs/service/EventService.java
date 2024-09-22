@@ -1,6 +1,7 @@
 package tacs.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,10 @@ public class EventService {
     public long getTicketsForSale(Integer id) {
         Event event = this.getEvent(id);
         return event.getAvailableTicketsAmount();
+    }
+
+    public List<Event> getEvents() {
+        return eventRepository.findAll();
     }
 
 }
