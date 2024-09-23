@@ -12,7 +12,7 @@ const EventDetails = () => {
  
   const eventName = "Nombre de Evento";
   const eventLocation = "Grand Rex";
-  const eventDate = "20/12/2024 21:00Hs";
+  const eventDate = "2024-09-23T01:03";
   const eventAdmin = "Gobierno de la Cuidad de Buenos Aires";
   const popular = {
     zoneLocation : 'popular',
@@ -26,13 +26,15 @@ const EventDetails = () => {
   }
 
   const eventMock = {
-    id: 1,
+    id: eventId,
     name: eventName,
     location: eventLocation,
     date: eventDate,
     admin: eventAdmin,
-    zones: [popular, platea, platea]
+    zones: [popular, platea]
   }
+
+  const actualDate = new Date(eventMock.date).toLocaleString().slice(0, -3).concat("hs");
 
   useEffect(() => {
     console.log(eventId);
@@ -47,27 +49,27 @@ const EventDetails = () => {
 
   return (
     <div className="d-flex flex-column p-4 align-items-center w-100">
-        <div className="event-details">
+      <div className="event-details">
 
-            <div className="d-flex justify-content-between mt-2 w-100">
-                <h1>{eventMock.name}</h1>
+        <div className="d-flex justify-content-between mt-2 w-100">
+          <h1>{eventMock.name}</h1>
 
-                <h2>{eventMock.date}</h2>
-            </div>
-
-            <img className="w-100" src="/evento.jpg" alt="Foto del evento"></img>
-
-
-            <div className="mt-4">
-                <h3>Asientos disponibles</h3>
-                <div className='d-flex row'>
-                {eventMock.zones.map(zone => (
-                    <ZoneCard key={zone.zoneLocation} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={zone.availableTickets} /> 
-                    ))}
-
-                </div>
-            </div>
+          <h2>{actualDate}</h2>
         </div>
+
+        <img className="w-100" src="/evento.jpg" alt="Foto del evento"></img>
+
+
+        <div className="mt-4">
+          <h3>Asientos disponibles</h3>
+          <div className='d-flex row'>
+            {eventMock.zones.map(zone => (
+              <ZoneCard key={zone.zoneLocation} eventId={eventMock.id} eventName={eventMock.name} eventDate={eventMock.date} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={zone.availableTickets} />
+            ))}
+
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
