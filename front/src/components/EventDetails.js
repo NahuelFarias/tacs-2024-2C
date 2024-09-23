@@ -7,13 +7,12 @@ import './EventDetails.css';
 
 
 const EventDetails = () => {
-  //const [event, setEvent] = useState([]);
-  const { eventId } = useParams();
- 
+  const { eventId } = useParams(); 
+  console.log("eventId:", eventId);
+
   const eventName = "Nombre de Evento";
-  const eventLocation = "Grand Rex";
   const eventDate = "2024-09-23T01:03";
-  const eventAdmin = "Gobierno de la Cuidad de Buenos Aires";
+  const availableTicketsAmount = 150;
   const popular = {
     zoneLocation : 'popular',
     zonePrice: '10',
@@ -26,33 +25,40 @@ const EventDetails = () => {
   }
 
   const eventMock = {
-    id: eventId,
-    name: eventName,
-    location: eventLocation,
+    availableTicketsAmount: availableTicketsAmount,
     date: eventDate,
-    admin: eventAdmin,
+    id: 0,
+    name: eventName,
+    open_sale: true,
+    soldTicketsAmount: 0,
+    totalSales: 0,
     zones: [popular, platea]
-  }
+  }  
 
-  const actualDate = new Date(eventMock.date).toLocaleString().slice(0, -3).concat("hs");
+  const [event, setEvent] = useState([]);
 
   useEffect(() => {
-    console.log(eventId);
-    /*getEvent(1)
+    getEvent(eventId)
       .then(data => {
-        setEvent(data);
         console.log(data);
-        console.log(event);
+        setEvent(data);
       })
-      .catch(error => console.error('Error fetching event detail:', error))*/
-  }, []);
+      .catch(error => {
+        console.error('Error fetching events:', error);
+        setEvent(eventMock)
+      });
+    }, []);
+    
+  const actualDate = new Date(event.date).toLocaleString().slice(0, -3).concat("hs");
+  console.log("event: ", event);
+ 
 
   return (
-    <div className="d-flex flex-column p-4 align-items-center w-100">
+    <div className="d-flex flex-column p-4 align-items-center w-100" >
       <div className="event-details">
 
         <div className="d-flex justify-content-between mt-2 w-100">
-          <h1>{eventMock.name}</h1>
+          <h1>{event.name}</h1>
 
           <h2>{actualDate}</h2>
         </div>
@@ -61,10 +67,13 @@ const EventDetails = () => {
 
 
         <div className="mt-4">
-          <h3>Asientos disponibles</h3>
+          <div className="d-flex justify-content-between">
+            <h3>Asientos disponibles</h3>
+            {!event.open_sale && <h5>No esta abierta la venta de tickets</h5>}
+          </div>
           <div className='d-flex row'>
             {eventMock.zones.map(zone => (
-              <ZoneCard key={zone.zoneLocation} eventId={eventMock.id} eventName={eventMock.name} eventDate={eventMock.date} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={zone.availableTickets} />
+              <ZoneCard key={zone.zoneLocation} open_sale={event.open_sale} eventId={event.id} eventName={event.name} eventDate={event.date} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={event.availableTicketsAmount} />
             ))}
 
           </div>
