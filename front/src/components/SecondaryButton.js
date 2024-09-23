@@ -1,8 +1,9 @@
 import React from 'react';
 
-const SecondaryButton = ({ onClick, children, type = 'button', className = '' }) => {
+const SecondaryButton = ({ onClick, children, type = 'button', className = '', isDisabled = false}) => {
   return (
     <button
+      disabled={isDisabled}
       type={type}
       onClick={onClick}
       className={`btn ${className}`}
