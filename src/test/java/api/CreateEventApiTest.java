@@ -61,8 +61,7 @@ public class CreateEventApiTest {
     }
 
     @Test
-    public void crearEventoTest() {
-
+    public void createEventTest() {
         CreateGenerator ticketGenerator = new CreateGenerator();
         ticketGenerator.setTicketsMap(this.testTicketsMap);
         ticketGenerator.setLocations(this.testLocations);
@@ -85,7 +84,53 @@ public class CreateEventApiTest {
                 requestEntity,
                 String.class
         );
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+    @Test
+    public void createEventWithInvalidDateTest() {
+        // Crear un JSON hardcodeado con datos inválidos
+        String invalidJson = "{ \"date\": \"invalid-date\", \"name\": \"\", \"ticketGenerator\": { \"ticketsMap\": {}, \"locations\": [] } }";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(invalidJson, headers);
+
+        String url = "http://localhost:" + port + "/events";
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+
+        // Verificar que se devuelva un código de error 400 (Bad Request)
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    public void createEventWithoutTicketGeneratorTest() {
+        CreateEvent createEvent = new CreateEvent();
+        createEvent.setName("River vs Boca");
+        createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<CreateEvent> requestEntity = new HttpEntity<>(createEvent, headers);
+
+        String url = "http://localhost:" + port + "/events";
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+
 }
