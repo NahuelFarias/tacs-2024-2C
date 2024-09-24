@@ -43,6 +43,8 @@ public class NormalUser {
     public NormalUser(String username) {
         this.username = username;
         this.ticketsOwned = new ArrayList<>();
+        //Usuario normal por defecto
+        this.rol = new Rol("ROLE_USER");
     }
 
     public void bookTicket(Event event, Location location) {

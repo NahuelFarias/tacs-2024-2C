@@ -27,7 +27,7 @@ public class UserController {
     
     @PostMapping
     public void createUser(@RequestBody CreateUser createUser) {
-        userService.createUser(createUser.getUsername());
+        userService.createUser(createUser.getUsername(), createUser.getPassword());
     }
 
     @GetMapping 
