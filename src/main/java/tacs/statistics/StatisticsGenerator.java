@@ -23,14 +23,18 @@ public class StatisticsGenerator {
     }
 
     public StatisticsResults generateStatistics(Map<String,List<?>> data){
+        List<String> missingStatistics = new ArrayList<>();
         for(Statistics statistics : this.statistics) {
             if (data.containsKey(statistics.name())) {
                 statisticsResults.addStatistics(statistics, statistics.generateStatistics(data.get(statistics.name())));
 
             }
             else{
-                throw new WrongStatisticsException();
+                missingStatistics.add(statistics.name());
             }
+        }
+        if(!missingStatistics.isEmpty()){
+            throw new WrongStatisticsException("Missing Statistics: " + missingStatistics);
         }
         return this.statisticsResults;
     }

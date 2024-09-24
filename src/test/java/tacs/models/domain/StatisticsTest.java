@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.TicketGenerator;
 import tacs.models.domain.events.Location;
+import tacs.models.domain.events.TicketGenerator;
+import tacs.models.domain.exception.WrongStatisticsException;
 import tacs.models.domain.users.NormalUser;
 import tacs.statistics.*;
 
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
+
+import static junit.framework.Assert.assertTrue;
 
 public class StatisticsTest {
     private NormalUser testUser;
@@ -118,4 +121,34 @@ public class StatisticsTest {
 
         Assertions.assertEquals(this.statisticsResults.getResults().values().stream().mapToInt(Integer::intValue).sum(), 3);
     }
+
+    @Test
+    public void fakeStatisticByMapTest() {
+
+        this.statisticsGenerator = new StatisticsGenerator();
+        this.ticketStatistics = new TicketStatistics();
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
+        Map<String, List<?>> statisticFake = new HashMap<>();
+        statisticFake.put("Tickets locos", this.testUser.getTicketsOwned());
+        this.statisticsGenerator.addStatistics(this.ticketStatistics);
+
+        RuntimeException exception = Assertions.assertThrows(WrongStatisticsException.class,() -> {
+            this.statisticsResults = this.statisticsGenerator.generateStatistics(statisticFake);
+        });
+        String expectedMessage = "Missing Statistics: [Tickets]";
+        String actualMessage = exception.getMessage();
+        System.out.println(actualMessage);
+        assertTrue(actualMessage.contains(expectedMessage));
+    } // Don't match the name with the Method name() in TicketSatistics
+    @Test
+    public void fakeStatisticByGeneratorListTest() {
+
+        this.statisticsGenerator = new StatisticsGenerator();
+        this.ticketStatistics = new TicketStatistics();
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
+        Map<String, List<?>> statisticFake = new HashMap<>();
+        statisticFake.put("Tickets", this.testUser.getTicketsOwned());
+        this.statisticsResults = this.statisticsGenerator.generateStatistics(statisticFake);
+        assertTrue(this.statisticsResults.getResults().isEmpty());
+    } // Don't exist TicketStatistics in the generator
 }

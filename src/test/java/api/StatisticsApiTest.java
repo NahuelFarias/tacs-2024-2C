@@ -94,6 +94,9 @@ public class StatisticsApiTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, statistics.get(0).getEvents());
+        System.out.println(statistics);
+
+
     }
 
     @Test
@@ -104,8 +107,8 @@ public class StatisticsApiTest {
         ResponseEntity<EventStatisticsResponse> response = restTemplate.getForEntity(url,
                 EventStatisticsResponse.class);
 
-        EventStatisticsResponse statisticsResponse = response.getBody();
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getDailyTickets());
     }
+
 }
