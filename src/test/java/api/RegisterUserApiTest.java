@@ -24,6 +24,7 @@ public class RegisterUserApiTest {
     public void registrarUsuarioTest() {
         CreateUser createUser = new CreateUser();
         createUser.setUsername("Pepita");
+        createUser.setPassword("password123test");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
