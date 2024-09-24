@@ -18,6 +18,19 @@ export const getEvents = () => {
     });
 };
 
+export const getEventByName = (eventName) => {
+  return axiosClient.get('/events/search', {
+      params: {
+        name: eventName
+      }
+    })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error al obtener eventos:', error);
+      throw error;
+    });
+};
+
 export const formToCreateEventRequest = (eventName, date, locations) => {
   const createEventRequest = {
     name: eventName,
