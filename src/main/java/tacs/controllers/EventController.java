@@ -11,8 +11,6 @@ import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
 import tacs.service.EventService;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
