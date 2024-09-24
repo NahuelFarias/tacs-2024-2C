@@ -1,15 +1,15 @@
 package tacs.service;
 
 import org.springframework.stereotype.Service;
-import tacs.dto.StatisticsResponse;
 import tacs.dto.EventStatisticsResponse;
+import tacs.dto.StatisticsResponse;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
+import tacs.models.domain.statistics.*;
 import tacs.models.domain.users.NormalUser;
 import tacs.repository.EventRepository;
 import tacs.repository.TicketRepository;
 import tacs.repository.UserRepository;
-import tacs.statistics.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

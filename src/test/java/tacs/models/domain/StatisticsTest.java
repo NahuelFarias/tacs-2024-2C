@@ -7,8 +7,8 @@ import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
 import tacs.models.domain.events.TicketGenerator;
 import tacs.models.domain.exception.WrongStatisticsException;
+import tacs.models.domain.statistics.*;
 import tacs.models.domain.users.NormalUser;
-import tacs.statistics.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

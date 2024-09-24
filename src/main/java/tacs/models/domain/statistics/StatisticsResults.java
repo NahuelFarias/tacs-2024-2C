@@ -1,4 +1,4 @@
-package tacs.statistics;
+package tacs.models.domain.statistics;
 
 import lombok.Getter;
 
