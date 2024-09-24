@@ -116,7 +116,6 @@ public class EventReservationApiTest {
     public void reserveTicketTest() {
         Integer userId = 1;
         String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=" + userId;
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -128,5 +127,43 @@ public class EventReservationApiTest {
                 String.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    @Disabled
+    public void reserveTicketWithoutUserIdTest() {
+        String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Location> requestEntity = new HttpEntity<>(this.testLocation, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    @Disabled
+    public void reserveTicketWithInvalidLocation() {
+        Integer userId = 1;
+        Location locationInvalid = new Location("Invalid location",0);
+        String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=" + userId;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Location> requestEntity = new HttpEntity<>(locationInvalid, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 }

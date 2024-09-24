@@ -108,4 +108,22 @@ public class ExistingEventApiTest {
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+    @Test
+    @Order(3)
+    public void bookTicketTest() {
+        Integer userId = 1;
+        String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=" + userId;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Location> requestEntity = new HttpEntity<>(this.testLocation, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 }
