@@ -30,15 +30,21 @@ public class NormalUser {
     @Basic
     @JsonProperty("username")
     public String username;
+    @Basic
+    public String password;
     @JsonProperty("tickets")
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     public List<Ticket> ticketsOwned;
     @Column
     public LocalDateTime lastLogin;
+    @OneToOne(cascade = CascadeType.ALL)
+    public Rol rol;
 
     public NormalUser(String username) {
         this.username = username;
         this.ticketsOwned = new ArrayList<>();
+        //Usuario normal por defecto
+        this.rol = new Rol("ROLE_USER");
     }
 
     public void bookTicket(Event event, Location location) {
@@ -69,5 +75,33 @@ public class NormalUser {
 
     public LocalDateTime getLastLogin() {
         return lastLogin;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

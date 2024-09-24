@@ -3,6 +3,7 @@ package tacs.service;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,8 +20,11 @@ import tacs.repository.UserRepository;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void createUser(String name) {
-        userRepository.save(new NormalUser(name));
+    public void createUser(String name, String password) {
+        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+        NormalUser newUser = new NormalUser(name);
+        newUser.setPassword(encodedPassword);
+        userRepository.save(newUser);
     }
 
     public List<NormalUser> getAllUsers() {

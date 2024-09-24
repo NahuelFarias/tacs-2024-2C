@@ -28,6 +28,7 @@ public class ExistingUserApiTest {
     public void setUp() {
         CreateUser createUser = new CreateUser();
         createUser.setUsername("Pepita");
+        createUser.setPassword("password123test");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -58,13 +59,13 @@ public class ExistingUserApiTest {
         List<NormalUser> users = response.getBody();
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(1, users.size());
+        Assertions.assertEquals(3, users.size());
     }
 
     @Test
     @Order(2)
     public void getUserDataTest(){
-        String url = "http://localhost:" + port + "/users/1";
+        String url = "http://localhost:" + port + "/users/3";
 
         ResponseEntity<NormalUser> response = restTemplate.getForEntity(url, NormalUser.class);
 

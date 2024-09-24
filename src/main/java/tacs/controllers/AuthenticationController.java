@@ -3,14 +3,20 @@ package tacs.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tacs.dto.JWT;
+import tacs.dto.LoginRequest;
+import tacs.service.AutenticationService;
+import tacs.service.EventService;
 
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
 public class AuthenticationController {
+
+    private final AutenticationService authService;
+
     @PostMapping("")
     @ResponseBody
-    public JWT authenticate() {
-        return new JWT("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXhhbXBsZS1qd3QifQ.JYF_kuzaikLAIQbRCNe_wA-B7yZZKYp0jOwBUazOFKM");
+    public JWT authenticate(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 }

@@ -10,6 +10,8 @@ import EventDetails from './components/EventDetails';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import EventCreation from './components/EventCreation';
+import StatsOverview from "./components/stadistics/StatsOverview";
+import Reservations from "./components/Reservations";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,6 +35,8 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<Registration/>}/>
           <Route path='/createEvent' element={<EventCreation/>}></Route>
+          <Route path="/stats" element={<StatsOverview />}/>
+          <Route path="/reservations" element={<Reservations />}/>
           <Route path='/eventDetails/:eventId' element={<EventDetails/>}></Route>
           {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
         </Routes>

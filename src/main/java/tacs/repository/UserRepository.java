@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<NormalUser, Integer> {
     List<NormalUser> findAllByLastLoginBetween(LocalDateTime startDate, LocalDateTime endDate);
+    NormalUser findByUsername(String username);
 }
