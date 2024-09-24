@@ -18,7 +18,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StatisticsService {
@@ -91,7 +90,7 @@ public class StatisticsService {
 
         // Esto, por ahora propongo simularlo asi, dado que deberia generarse una consulta (dialecto SQL de hibernate)
         // en el repo, y no vamos a utilizar una BBDD de tipo relacional
-        tickets = tickets.stream().filter(t -> t.getEvent().getId().equals(id)).collect(Collectors.toList());
+        tickets = tickets.stream().filter(t -> t.getEvent().getId().equals(id)).toList();
         TicketStatistics ticketStatistics = new TicketStatistics();
         statisticsGenerator.addStatistics(ticketStatistics);
 
