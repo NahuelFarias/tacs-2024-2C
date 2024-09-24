@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PrimaryButton = ({ onClick, children, type = 'button', className = '', isDisabled = false}) => {
+const SecondaryButton = ({ onClick, children, type = 'button', className = '', isDisabled = false}) => {
   return (
     <button
       disabled={isDisabled}
@@ -8,8 +8,8 @@ const PrimaryButton = ({ onClick, children, type = 'button', className = '', isD
       onClick={onClick}
       className={`btn ${className}`}
       style={{
-        backgroundColor: '#ff4f92',
-        color: 'white',
+        backgroundColor: '#bfc9ca',
+        color: 'black',
         width: '100%',
         border: 'none',
         borderRadius: '0.25rem',
@@ -17,12 +17,12 @@ const PrimaryButton = ({ onClick, children, type = 'button', className = '', isD
         cursor: 'pointer',
         transition: 'background-color 0.3s',
       }}
-      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#e03f7e')}
-      onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#ff4f92')}
+      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#aab7b8')}
+      onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#bfc9ca')}
     >
       {children}
     </button>
   );
 };
 
-export default PrimaryButton;
+export default SecondaryButton;
