@@ -1,4 +1,5 @@
 import axiosClient from './axiosClient';
+import CryptoJS from 'crypto-js';
 
 export const tryAuthenticate = (username, password) => {
   
@@ -10,15 +11,36 @@ export const tryAuthenticate = (username, password) => {
           localStorage.setItem("id",response.data.id);
           localStorage.setItem("rol",response.data.rol)
           localStorage.setItem("loggedIn", "true")
-          return true
+          return { success: true }
         }
       })
       .catch(error => {
         console.log("error fetching JWT:", error);
         if (error.response && error.response.status === 401) {
-          window.alert(`Authentication error: ${error.response.data.errorCause}`);
-          return false
+          return { success: false, message: `Authentication error: ${error.response.data.errorCause}` };
         }
-        throw error;
+        else if (error.response && error.response.status === 403) {
+           return { success: false, message: 'Credenciales incorrectas. Por favor, inténtalo de nuevo.' };
+        }
+
+        return { success: false, message: `Authentication error: ${error.response.data.errorCause}` };
       });
   };
+
+export const getSalt = (username) => {
+    return axiosClient.get(`/login/salt`,{params: {username}})
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error al obtener sal del usuario:', error);
+            throw error;
+        });
+}
+
+export const hashPassword = (password, salt) => {
+    const key128Bits = CryptoJS.PBKDF2(password, CryptoJS.enc.Base64.parse(salt), {
+        keySize: 256 / 32,
+        iterations: 65536,
+        hasher: CryptoJS.algo.SHA1
+    });
+    return salt + ":" + CryptoJS.enc.Base64.stringify(key128Bits);
+};

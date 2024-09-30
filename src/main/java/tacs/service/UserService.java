@@ -1,5 +1,7 @@
 package tacs.service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tacs.config.CustomPBKDF2PasswordEncoder;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;
@@ -21,9 +24,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void createUser(String name, String password) {
-        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+        String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
         NormalUser newUser = new NormalUser(name);
-        newUser.setPassword(encodedPassword);
+        newUser.setHashedPassword(encodedPassword);
         userRepository.save(newUser);
     }
 
@@ -46,5 +49,4 @@ public class UserService {
         NormalUser user = this.getUsers(id);
         user.bookTicket(event, location);
     }
-
 }

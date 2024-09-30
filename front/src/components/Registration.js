@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PrimaryButton from './PrimaryButton';
 import { tryCreateUser } from '../services/userService';
+import './Registration.css'
 
 const Registration = () => {
     const [ username, setUsername ] = useState('');
@@ -47,8 +48,8 @@ const Registration = () => {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center" style={{ backgroundColor: '#1a1a1a' }}>
-          <div className="p-5 m-5 rounded shadow" style={{ backgroundColor: 'white', width: '90%', maxWidth: '500px', height: 'auto' }}>
+        <div className="registration-background d-flex justify-content-center align-items-center" style={{ backgroundColor: '#1a1a1a' }}>
+          <div className="registration-box p-5 m-5 rounded shadow">
             <h2 className="text-center text-dark mb-4">Sign Up</h2>
             <form className="d-flex flex-column justify-content-between" style={{ height: '100%' }}>
               <div className="mb-4">

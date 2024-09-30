@@ -31,7 +31,9 @@ public class NormalUser {
     @JsonProperty("username")
     public String username;
     @Basic
-    public String password;
+    public String hashedPassword;
+    @Basic
+    public String salt;
     @JsonProperty("tickets")
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     public List<Ticket> ticketsOwned;
@@ -85,8 +87,8 @@ public class NormalUser {
         return rol;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
     public String getUsername() {
@@ -97,8 +99,16 @@ public class NormalUser {
         this.rol = rol;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPassword(String password) {
+        this.hashedPassword = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public void setUsername(String username) {

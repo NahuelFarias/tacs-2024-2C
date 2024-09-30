@@ -19,4 +19,11 @@ public class AuthenticationController {
     public JWT authenticate(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
+
+    @GetMapping("/salt")
+    @ResponseBody
+    public String getSalt(@RequestParam String username) {
+        return authService.getSalt(username);
+    }
+
 }
