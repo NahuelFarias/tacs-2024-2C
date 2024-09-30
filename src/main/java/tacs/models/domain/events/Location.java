@@ -1,12 +1,12 @@
 package tacs.models.domain.events;
 
-import java.util.Objects;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 //TODO: cambiar a @data? para evitar overridear equals y hashcode y sacar boilerplate
 @Entity
@@ -20,9 +20,18 @@ public class Location {
     public String name;
     public double price;
 
-    public Location(String name, double price) {
+    @JsonIgnore
+    public long quantityTickets;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    public List<Ticket> tickets = new ArrayList<>();
+
+    public Location(String name, double price,long quantityTickets) {
         this.name = name;
         this.price = price;
+        this.quantityTickets = quantityTickets;
+        this.tickets = new ArrayList<>();
     }
 
     public String getName() {
@@ -31,6 +40,14 @@ public class Location {
 
     public double getPrice() {
         return price;
+    }
+
+    public List<Ticket> getTickets() {
+        return this.tickets;
+    }
+
+    public double getQuantityTickets() {
+        return quantityTickets;
     }
 
     // Sobrescribir equals() para comparar objetos basados en los valores de sus atributos
@@ -50,5 +67,14 @@ public class Location {
     @Override
     public int hashCode() {
         return Objects.hash(name, price);
+    }
+
+    //TODO: Chequeo si tenemos tickets para vender
+    public Ticket makeReservation(Event event) {
+        Ticket ticket = new Ticket(event, this);
+        this.tickets.add(ticket);
+        this.quantityTickets--;
+        return ticket;
+
     }
 }
