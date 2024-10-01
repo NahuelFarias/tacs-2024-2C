@@ -29,8 +29,13 @@ export const tryAuthenticate = (username, password) => {
 
 export const getSalt = (username) => {
     return axiosClient.get(`/login/salt`,{params: {username}})
-        .then(response => response.data)
+        .then(response => {
+            return {success: true, salt: response.data}
+        })
         .catch(error => {
+            if (error.response && error.response.status === 403) {
+                return { success: false, message: 'Credenciales incorrectas. Por favor, inténtalo de nuevo.' };
+            }
             console.error('Error al obtener sal del usuario:', error);
             throw error;
         });

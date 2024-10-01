@@ -24,7 +24,10 @@ public class AutenticationService {
 
         NormalUser normalUser = this.userRepository.findByUsername(loginRequest.getUsername());
 
-        if (normalUser == null || !passwordEncoder.matches(loginRequest.getPassword(), normalUser.getHashedPassword())) {
+        if (normalUser == null) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+        else if (!passwordEncoder.matches(loginRequest.getPassword(), normalUser.getHashedPassword())){
             throw new BadCredentialsException("Invalid username or password");
         }
 
@@ -37,6 +40,11 @@ public class AutenticationService {
 
     public String getSalt(String username) {
         NormalUser normalUser = this.userRepository.findByUsername(username);
+
+        if (normalUser == null) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+
         String[] parts = normalUser.getHashedPassword().split(":");
         return parts[0];
     }

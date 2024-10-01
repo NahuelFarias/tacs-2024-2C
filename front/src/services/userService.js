@@ -15,6 +15,7 @@ export const tryCreateUser = (username, password) => {
     .then(response => {
       if (response.status === 201) {
         window.alert("account created successfully")
+          return true
       }
     })
     .catch(error => {
@@ -23,4 +24,5 @@ export const tryCreateUser = (username, password) => {
       }
       throw error;
     });
+  return false
 }
