@@ -1,19 +1,18 @@
 package tacs.service;
 
-import java.util.List;
-
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;
+import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.NormalUser;
 import tacs.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

@@ -1,17 +1,14 @@
 package tacs.models.domain.events;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import tacs.models.domain.exception.SoldOutTicketsException;
+import lombok.NoArgsConstructor;
 import tacs.models.domain.exception.PurchaseUnavailableException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
@@ -27,21 +24,29 @@ public class Event {
     public boolean openSale;
     @Column
     public LocalDateTime creationDate;
-    @JsonIgnore
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    public List<Ticket> tickets;
 
-    public Event(String name, LocalDateTime date, TicketGenerator generator) {
+/*    @JsonIgnore
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    public List<Ticket> tickets;*/
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Location> locations;
+
+    public Event(String name, LocalDateTime date, List<Location> locations) {
         this.name = name;
         this.date = date;
-        this.tickets = generator.generate(this);
+        this.locations = locations;
         this.creationDate = LocalDateTime.now();
         this.openSale = true;
     }
 
     @JsonIgnore
     public List<Ticket> getSoldTickets() {
-        return this.tickets.stream().filter(Ticket::wasSold).collect(Collectors.toList());
+        return this.locations.stream().flatMap(location -> location.getTickets().stream())
+                .collect(Collectors.toList());
+
+        //return this.tickets.stream().filter(Ticket::wasSold).collect(Collectors.toList());
     }
 
     public long getSoldTicketsAmount() {
@@ -49,14 +54,18 @@ public class Event {
     }
 
     @JsonIgnore
-    public List<Ticket> getAvailableTickets() {
-        return this.tickets.stream().filter(t -> !t.wasSold()).collect(Collectors.toList());
+    public long getAvailableTickets() {
+        return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets)  // Mapear cada producto a su precio
+                .sum();
+       // return this.tickets.stream().filter(t -> !t.wasSold()).collect(Collectors.toList());
     }
 
+/*
     public long getAvailableTicketsAmount() {
         return this.getAvailableTickets().size();
     }
-
+*/
+    //TODO: No se usa :c
     public double getTotalSales() {
         return this.getSoldTickets().stream().mapToDouble(Ticket::searchPrice).sum();
     }
@@ -76,13 +85,16 @@ public class Event {
     public Ticket makeReservation(Location location) {
         if(!this.openSale) throw new PurchaseUnavailableException();
 
-        Ticket ticket = this.getAvailableTickets().stream()
+        return location.makeReservation(this);
+
+/*        Ticket ticket = this.getAvailableTickets().stream()
             .filter(t -> t.getLocation().equals(location)).findFirst()
             .orElseThrow(SoldOutTicketsException::new);
 
-        ticket.sell();
 
-        return ticket;
+
+        ticket.sell();
+*/
     }
 
     public boolean purchaseAvailable() {
@@ -91,6 +103,13 @@ public class Event {
 
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public Location locationByName(String nameLocation){
+        return this.locations.stream()
+                .filter(l -> l.getName().equals(nameLocation))
+                .findFirst()
+                .orElse(null);
     }
 
     public Integer getId() {

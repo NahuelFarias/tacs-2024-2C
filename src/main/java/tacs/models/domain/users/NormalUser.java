@@ -4,22 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;
+import tacs.models.domain.events.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Optional;
-
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 @NoArgsConstructor

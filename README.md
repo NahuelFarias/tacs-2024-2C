@@ -16,4 +16,16 @@ docker run -d -p 8080:8080 tp-tacs
 ```
 Se puede interactuar con la app a través un swagger en http://localhost:8080/swagger-ui/index.html.
 
+Para ejecutar al front, se debe ejecutar en la carpeta correspondiente (/front), el siguiente comando:
+
+```
+npm install
+```
+
+Y luego, ejecutarlo con:
+
+```
+npm start
+```
+
 Documentatción sobre nuestras decisiones de diseño: https://docs.google.com/document/d/1kYmrD5qZtwdmolbWqFbfbLGvZTbov2YZIHsyASKnbuw/edit?usp=sharing

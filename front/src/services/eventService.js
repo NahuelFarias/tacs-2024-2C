@@ -35,10 +35,7 @@ export const formToCreateEventRequest = (eventName, date, locations) => {
   const createEventRequest = {
     name: eventName,
     date: date,
-    ticketGenerator: {
-      locations: locations.map((location) => ({name: location.name, price: parseInt(location.price)})),
-      ticketsMap: locations.reduce((dict, location) => {dict[location.name] = parseInt(location.tickets); return dict}, {})
-    }
+    locations: locations.map((location) => ({name: location.name, price: parseInt(location.price), quantity: locations.parseInt(location.tickets)}))
   }
 
   console.log(createEventRequest)
