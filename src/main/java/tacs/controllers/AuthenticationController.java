@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import tacs.dto.JWT;
 import tacs.dto.LoginRequest;
 import tacs.service.AutenticationService;
-import tacs.service.EventService;
 
 @RestController
 @RequestMapping("/login")

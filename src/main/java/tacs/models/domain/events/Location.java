@@ -21,8 +21,7 @@ public class Location {
     public String name;
     public double price;
 
-    @Basic
-    public int quantityTickets;
+    public long quantityTickets;
 
     @JsonIgnore
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)

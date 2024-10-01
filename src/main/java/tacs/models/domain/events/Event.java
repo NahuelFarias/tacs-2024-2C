@@ -24,7 +24,6 @@ public class Event {
     public boolean openSale;
     @Column
     public LocalDateTime creationDate;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
     public List<Location> locations;
