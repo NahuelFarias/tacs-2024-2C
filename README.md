@@ -1,31 +1,41 @@
 # tacs-2024-2C
 
-### Cómo ejecutar este proyecto
-Prerrequisito: instalar **docker**.
+Documentatción sobre nuestras decisiones de diseño: https://docs.google.com/document/d/1kYmrD5qZtwdmolbWqFbfbLGvZTbov2YZIHsyASKnbuw/edit?usp=sharing
+
+## Cómo ejecutar este proyecto
+Prerrequisito para la ejecución: instalar **docker**.
+
+### 1. Buildear el backend.
 
 En la raiz del repositorio, buildear la imagen con:
 ```
-docker build -t tp-tacs .
+docker build -t tacs-backend .
 ```
 
-Esto genererará una imagen local con el nombre `tp-tacs`.
+Esto genererará una imagen local con el nombre `tacs-backend`.
 
-Ejecutar el container con:
+En caso de que solo se quiera probar el backend, se puede ejecutar:
 ```
-docker run -d -p 8080:8080 tp-tacs
+docker run -d -p 8080:8080 tacs-backend
 ```
 Se puede interactuar con la app a través un swagger en http://localhost:8080/swagger-ui/index.html.
 
-Para ejecutar al front, se debe ejecutar en la carpeta correspondiente (/front), el siguiente comando:
+### 2. Buildear el frontend.
+
+En la carpeta /front/, buildear la imagen con
 
 ```
-npm install
+docker build -t tacs-frontend .
 ```
 
-Y luego, ejecutarlo con:
+En caso de que solo se quiera probar el frontend, se puede ejecutar con:
 
 ```
-npm start
+docker run -d -p 3000:3000 tacs-frontend
 ```
 
-Documentatción sobre nuestras decisiones de diseño: https://docs.google.com/document/d/1kYmrD5qZtwdmolbWqFbfbLGvZTbov2YZIHsyASKnbuw/edit?usp=sharing
+### 3. Ejecutar el proyecto.
+Ejecutar el proyecto con
+```
+docker compose up --detach
+```
