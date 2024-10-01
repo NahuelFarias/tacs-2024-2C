@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import PrimaryButton from './PrimaryButton';
 import { formToCreateEventRequest, tryCreateEvent } from '../services/eventService';
+import './EventCreation.css'
+import {useNavigate} from "react-router-dom";
 
 const EventCreation = () => {
     const [eventName, setEventName] = useState('');
     const [dateTime, setDateTime] = useState();
+    const [created, setCreated] = useState('');
     const [locations, setLocations] = useState([{ name: '', price: '', tickets: '' }]);
     const [error, setError] = useState('');
+
+    const navigate = useNavigate()
 
     const minDateTime = new Date().toISOString().slice(0, 16);
 
@@ -46,96 +51,122 @@ const EventCreation = () => {
       return true
     }
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
       if (eventIsValid()) {
-        const createEventRequest = formToCreateEventRequest(eventName, dateTime, locations)
-        tryCreateEvent(createEventRequest)
+          const createEventRequest = formToCreateEventRequest(eventName, dateTime, locations)
+          const result = await tryCreateEvent(createEventRequest)
+          if (result.success) {
+              setCreated("Evento Creado!")
+          }
       }
 
     };
-  
+
+    const redirectToHome = () => {
+        navigate('/');
+    };
+
+
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ backgroundColor: '#1a1a1a' }}>
-        <div className="p-5 m-5 rounded shadow" style={{ backgroundColor: 'white', width: '90%', maxWidth: '500px', height: 'auto' }}>
-          <h2 className="text-center text-dark mb-4">Create Event</h2>
+      <div className="creation-background d-flex justify-content-center align-items-center">
+        <div className="creation-box p-5 m-5 rounded shadow" style={{ backgroundColor: 'white', width: '90%', maxWidth: '500px', height: 'auto' }}>
+          <h2 className="text-center text-dark mb-5">Crear Nuevo Evento</h2>
           <form className="d-flex flex-column justify-content-between" style={{ height: '100%' }} onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <input
-                type="text"
-                id="name"
-                value={eventName}
-                onChange={handleNameChange}
-                placeholder="Event name"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="datetime-local"
-                id="datetime"
-                value={dateTime}
-                onChange={handleDateTimeChange}
-                className="form-control"
-                min={minDateTime}
-              />
-            </div>
-  
-            <div className="mb-4">
-              {locations.length > 0  && <h4 className="text-center text-dark mb-4">Locations</h4>}
-              {locations.map((location, index) => (
-                <div key={index} className="mb-3 p-2 border rounded">
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <input
+              <div className="mb-4">
+                  <p className="text-dark input-label">
+                      Nombre del evento
+                  </p>
+                  <input
                       type="text"
-                      placeholder="Location name"
-                      value={location.name}
-                      onChange={(e) => handleLocationChange(index, 'name', e.target.value)}
-                      className="form-control me-2"
-                      style={{ flex: 1 }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => removeLocation(index)}
-                    >
-                      X
-                    </button>
+                      id="name"
+                      value={eventName}
+                      onChange={handleNameChange}
+                      placeholder=""
+                      className="form-control"
+                  />
+              </div>
+              <div className="mb-5">
+                  <p className="text-dark input-label">
+                      Fecha del evento
+                  </p>
+                  <input
+                      type="datetime-local"
+                      id="datetime"
+                      value={dateTime}
+                      onChange={handleDateTimeChange}
+                      className="form-control"
+                      min={minDateTime}
+                  />
+              </div>
+
+              <div className="mb-4">
+                  {locations.length > 0 && <h4 className="text-center text-dark mb-4">Ubicaciones</h4>}
+              {locations.map((location, index) => (
+                  <div key={index} className="mb-3 p-2 border rounded">
+                      <p className="text-dark input-label mt-1">
+                          Nombre de la ubicación
+                      </p>
+                      <div className="d-flex justify-content-between align-items-center mb-2">
+                          <input
+                              type="text"
+                              placeholder=""
+                              value={location.name}
+                              onChange={(e) => handleLocationChange(index, 'name', e.target.value)}
+                              className="form-control me-2"
+                              style={{flex: 1}}
+                          />
+                          <button
+                              type="button"
+                              className="btn btn-danger btn-sm"
+                              onClick={() => removeLocation(index)}
+                          >
+                              X
+                          </button>
+                      </div>
+                      <div className="row mt-4">
+                          <div className="col-6">
+                              <p className="text-dark input-label">
+                                  Precio localidad
+                              </p>
+                              <input
+                                  type="number"
+                                  placeholder=""
+                                  value={location.price}
+                                  onChange={(e) => handleLocationChange(index, 'price', e.target.value)}
+                                  className="form-control mb-2"
+                              />
+                          </div>
+                          <div className="col-6">
+                              <p className="text-dark input-label">
+                              Cantidad tickets
+                              </p>
+                              <input
+                                  type="number"
+                                  placeholder=""
+                                  value={location.tickets}
+                                  onChange={(e) => handleLocationChange(index, 'tickets', e.target.value)}
+                                  className="form-control mb-2"
+                              />
+                          </div>
+                      </div>
                   </div>
-                  <div className="row">
-                    <div className="col-6">
-                      <input
-                        type="number"
-                        placeholder="Price"
-                        value={location.price}
-                        onChange={(e) => handleLocationChange(index, 'price', e.target.value)}
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="col-6">
-                      <input
-                        type="number"
-                        placeholder="Tickets available"
-                        value={location.tickets}
-                        onChange={(e) => handleLocationChange(index, 'tickets', e.target.value)}
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-                </div>
               ))}
-  
-              <div className="d-flex justify-content-center mt-3">
-                <button type="button" className="btn btn-secondary" onClick={addLocation}>Add Location</button>
+
+                  <div className="d-flex justify-content-center mt-3">
+                      {!created && <button type="button" className="btn btn-secondary" onClick={addLocation}>Agregar otra ubicación</button>}
               </div>
             </div>
-  
-            {error && <h3 className="text-danger text-center" style={{ fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</h3>}
-            <PrimaryButton type="submit">Create Event</PrimaryButton>
+              {error && <h3 className="text-danger text-center" style={{ fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</h3>}
+              {!created && <PrimaryButton type="submit">Crear evento</PrimaryButton>}
+              {created && <div className="alert alert-success mt-4">{created}</div>}
+              {created && <p className="text-center text-dark mt-3">
+                  Volver a la <span className="home-link" onClick={redirectToHome}>Página Principal</span>
+              </p>}
           </form>
         </div>
       </div>
     );
-  };
+};
 
 export default EventCreation;

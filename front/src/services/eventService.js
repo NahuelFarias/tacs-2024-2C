@@ -35,7 +35,7 @@ export const formToCreateEventRequest = (eventName, date, locations) => {
   const createEventRequest = {
     name: eventName,
     date: date,
-    locations: locations.map((location) => ({name: location.name, price: parseInt(location.price), quantity: locations.parseInt(location.tickets)}))
+    locations: locations.map((location) => ({name: location.name, price: parseInt(location.price), quantity: parseInt(location.tickets)}))
   }
 
   console.log(createEventRequest)
@@ -48,7 +48,7 @@ export const tryCreateEvent = (createEvent) => {
     .then(response => {
       if (response.status === 200) {
         console.log(`event "${createEvent.name}" created successfully`)
-        return true
+        return { success: true }
       }
     })
     .catch(error => {

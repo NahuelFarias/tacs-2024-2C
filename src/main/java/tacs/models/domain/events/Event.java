@@ -27,6 +27,7 @@ public class Event {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
     public List<Location> locations;
 
     public Event(String name, LocalDateTime date, List<Location> locations) {
