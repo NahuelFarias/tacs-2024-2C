@@ -34,7 +34,7 @@ const ReservationModal = ({closeModal, data}) => {
 
     const makeReservation = () => {
         console.log(data.eventId, data.zoneLocation)
-        tryCreateReservation(data.eventId, data.zoneLocation);
+        tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation);
     }
 
     
@@ -77,8 +77,8 @@ const ReservationModal = ({closeModal, data}) => {
                     </div>
                     </div>
         
-                    <PrimaryButton type="button" onClick={()=> makeReservation()}>Create Event</PrimaryButton>
-                    <SecondaryButton className='mt-2' type="button" onClick={() => closeModal(false)}>Cancel</SecondaryButton>
+                    <PrimaryButton type="button" onClick={()=> makeReservation()}>Realizar reserva</PrimaryButton>
+                    <SecondaryButton className='mt-2' type="button" onClick={() => closeModal(false)}>Cancelar</SecondaryButton>
                 </form>
             </div>
         </div>

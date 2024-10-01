@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 
 export const getReservations = (userId) => {
-    return axiosClient.get('/users/' + localStorage.getItem("id") + '/reserves')
+    return axiosClient.get(`/users/${userId}/reserves`)
         .then(response => response.data)
         .catch(error => {
             console.error('Error al obtener eventos:', error);
@@ -10,12 +10,15 @@ export const getReservations = (userId) => {
 };
 
 
-export const tryCreateReservation = (eventId, zoneLocation) => {
-/*    console.log(`trying to make a reservation of ${createReservation.amount} tickets`);*/
-    return axiosClient.post(`/events/${eventId}/reservation`, { name: zoneLocation })
+export const tryCreateReservation = (eventId, userId, zoneLocation) => {
+    console.log(`trying to make a reservation of ${zoneLocation}`);
+    return axiosClient.post(`/events/${eventId}/reserves`, 
+      { name: zoneLocation },
+      { params: { user_id: userId } } 
+    )
       .then(response => {
         if (response.status === 200) {
-/*          console.log(`"${createReservation.name}" ticket reserved successfully`)*/
+          console.log(`Ticket reserved successfully`)
           return true
         }
       })
