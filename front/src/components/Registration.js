@@ -37,7 +37,7 @@ const Registration = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log(`${username} - ${password}`)
+        //console.log(`${username} - ${password}`)
 
         const credentialsAreValid = checkCredentials()
 

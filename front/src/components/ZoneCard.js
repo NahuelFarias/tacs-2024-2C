@@ -18,7 +18,7 @@ const ZoneCard = ({eventId, eventName, eventDate, open_sale, zoneLocation, zoneP
 
   function loggear () {
     serReservationModal(true);
-    console.log(`esta Loggeado bien, ${eventId}, ${eventDate}, ${zoneLocation}, ${zonePrice}, ${availableTickets}`)
+    //console.log(`esta Loggeado bien, ${eventId}, ${eventDate}, ${zoneLocation}, ${zonePrice}, ${availableTickets}`)
   }
 
   return (

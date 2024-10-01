@@ -11,19 +11,19 @@ export const getReservations = (userId) => {
 
 
 export const tryCreateReservation = (eventId, userId, zoneLocation) => {
-    console.log(`trying to make a reservation of ${zoneLocation}`);
+    //console.log(`trying to make a reservation of ${zoneLocation}`);
     return axiosClient.post(`/events/${eventId}/reserves`, 
       { name: zoneLocation },
       { params: { user_id: userId } } 
     )
       .then(response => {
         if (response.status === 200) {
-          console.log(`Ticket reserved successfully`)
+          //console.log(`Ticket reserved successfully`)
           return true
         }
       })
       .catch(error => {
-        console.log("error reserving tickets: ", error);
+        //console.log("error reserving tickets: ", error);
         window.alert(`Error reserving tickets: ${error.response.data.errorCause}`);
         throw error;
       });

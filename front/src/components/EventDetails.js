@@ -14,7 +14,7 @@ const EventDetails = () => {
   useEffect(() => {
     getEvent(eventId)
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setEvent(data);
       })
       .catch(error => {
@@ -23,7 +23,7 @@ const EventDetails = () => {
     }, []);
     
   const actualDate = new Date(event.date).toLocaleString().slice(0, -3).concat("hs");
-  console.log("event: ", event);
+  // console.log("event: ", event);
  
 
   return (
