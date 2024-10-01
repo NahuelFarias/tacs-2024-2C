@@ -1,11 +1,14 @@
 import React from 'react';
+import  { useNavigate } from 'react-router-dom';
 import './FoundEvent.css'; // Opcional: estilos para el componente
 
-const FoundEvent = ({ title, onClose }) => {
+const FoundEvent = ({ eventId, title, onClose }) => {
+    const navigate = useNavigate();
 
     const handleDetailsClick = () => {
         // Aquí puedes implementar la lógica para navegar a la página de detalles.
         // console.log(`Navegando a los detalles del evento: ${title}`);
+        navigate(`/eventDetails/${eventId}`);
       };
 
     
