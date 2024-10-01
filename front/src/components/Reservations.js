@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EventCard from '../components/EventCard';
 import { getReservations } from '../services/reservationService';
+import TicketCard from "./TicketCard";
 
 const Reservations = () => {
     const [reservations, setReservations] = useState([]);
@@ -8,6 +9,7 @@ const Reservations = () => {
     useEffect(() => {
         getReservations(localStorage.getItem("id")).then(data => {
                 setReservations(data);
+                console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching events:', error);
@@ -21,7 +23,9 @@ const Reservations = () => {
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row">
                     {reservations?.map(res => (
-                        <EventCard key={res.event.id} eventId={res.event.id} title={res.event.name} />
+
+                        <TicketCard key={res.id} reservationDate={res.reservationDate} title={res.event.name} locationName={res.location.name} price={res.location.price}/>
+
                     ))}
                 </div>
             </div>
