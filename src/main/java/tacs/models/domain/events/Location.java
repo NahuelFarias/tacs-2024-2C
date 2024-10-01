@@ -21,14 +21,14 @@ public class Location {
     public String name;
     public double price;
 
-    @Column
-    public long quantityTickets;
+    @Basic
+    public int quantityTickets;
 
     @JsonIgnore
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     public List<Ticket> tickets = new ArrayList<>();
 
-    public Location(String name, double price,long quantityTickets) {
+    public Location(String name, double price, int quantityTickets) {
         this.name = name;
         this.price = price;
         this.quantityTickets = quantityTickets;
@@ -45,6 +45,10 @@ public class Location {
 
     public List<Ticket> getTickets() {
         return this.tickets;
+    }
+
+    public void setQuantityTickets(int quantityTickets) {
+        this.quantityTickets = quantityTickets;
     }
 
     public double getQuantityTickets() {

@@ -43,9 +43,6 @@ const Header = ({toggleMenu}) => {
     return (
         <header className="bg-dark text-white p-3 d-flex justify-content-between align-items-center">
             <div className="logo">
-                <button className="btn btn-outline-light col-auto" onClick={toggleMenu}>
-                    <i className="fa fa-bars"></i>
-                </button>
                 <div className="col-1"></div>
 
                 <div className="logo" ref={logoRef}>
@@ -63,6 +60,10 @@ const Header = ({toggleMenu}) => {
                     {showStatsButton && <button className="btn col-auto btn-outline-light" onClick={redirectToStats}>
                         <i className="fa-solid fa-chart-simple"></i> Ir a Estadisticas
                     </button>}
+
+                    <button className="btn btn-outline-light col-auto" onClick={toggleMenu}>
+                        <i className="fa fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </header>

@@ -78,7 +78,7 @@ public class DataInitializer {
 
 
         List<Event> testEvents = new ArrayList<>(Arrays.asList(eventoTest,eventoTest2,eventoTest3,eventoTest4));
-        this.eventRepository.saveAll(testEvents);
+        this.eventRepository.saveAllAndFlush(testEvents);
 
         String encodedPassword2 = new CustomPBKDF2PasswordEncoder().encode("contrasenia123");
         NormalUser usuarioTest= new NormalUser("otrousuario");

@@ -18,10 +18,10 @@ const Reservations = () => {
     return (
         <div className="home-page">
             <div className="events-section container mt-3">
-                <h2 className="text-white">Mis Reservas</h2>
+                <h2 className="text-white">Mis reservas</h2>
                 <div className="row">
                     {reservations?.map(res => (
-                        <EventCard key={res.id} title={res.event.name} />
+                        <EventCard key={res.event.id} eventId={res.event.id} title={res.event.name} />
                     ))}
                 </div>
             </div>

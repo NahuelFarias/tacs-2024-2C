@@ -15,7 +15,7 @@ export const tryAuthenticate = (username, password) => {
         }
       })
       .catch(error => {
-        console.log("error fetching JWT:", error);
+        //console.log("error fetching JWT:", error);
         if (error.response && error.response.status === 401) {
           return { success: false, message: `Authentication error: ${error.response.data.errorCause}` };
         }

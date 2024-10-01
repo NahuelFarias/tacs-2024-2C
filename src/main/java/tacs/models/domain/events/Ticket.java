@@ -40,14 +40,6 @@ public class Ticket {
         this.owner = newOwner;
     }
 
-/*    public void sell() {
-        this.sold = true;
-    }
-
-    public boolean wasSold() {
-        return this.sold;
-    }*/
-
     public Event getEvent() {
         return event;
     }

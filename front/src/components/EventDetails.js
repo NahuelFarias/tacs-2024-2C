@@ -7,50 +7,23 @@ import './EventDetails.css';
 
 
 const EventDetails = () => {
-  const { eventId } = useParams(); 
-  console.log("eventId:", eventId);
-
-  const eventName = "Nombre de Evento";
-  const eventDate = "2024-09-23T01:03";
-  const availableTicketsAmount = 150;
-  const popular = {
-    zoneLocation : 'popular',
-    zonePrice: '10',
-    availableTickets : 15
-  }
-  const platea = {
-    zoneLocation : 'platea',
-    zonePrice: '15',
-    availableTickets : 8
-  }
-
-  const eventMock = {
-    availableTicketsAmount: availableTicketsAmount,
-    date: eventDate,
-    id: 0,
-    name: eventName,
-    open_sale: true,
-    soldTicketsAmount: 0,
-    totalSales: 0,
-    zones: [popular, platea]
-  }  
+  const { eventId } = useParams();
 
   const [event, setEvent] = useState([]);
 
   useEffect(() => {
     getEvent(eventId)
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setEvent(data);
       })
       .catch(error => {
         console.error('Error fetching events:', error);
-        setEvent(eventMock)
       });
     }, []);
     
   const actualDate = new Date(event.date).toLocaleString().slice(0, -3).concat("hs");
-  console.log("event: ", event);
+  // console.log("event: ", event);
  
 
   return (
@@ -69,13 +42,20 @@ const EventDetails = () => {
         <div className="mt-4">
           <div className="d-flex justify-content-between">
             <h3>Asientos disponibles</h3>
-            {!event.open_sale && <h5>No esta abierta la venta de tickets</h5>}
+        {!event.open_sale && <h5>No esta abierta la venta de tickets</h5>}
           </div>
           <div className='d-flex row'>
-            {eventMock.zones.map(zone => (
-              <ZoneCard key={zone.zoneLocation} open_sale={event.open_sale} eventId={event.id} eventName={event.name} eventDate={event.date} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={event.availableTicketsAmount} />
-            ))}
-
+            {event.locations && event.locations.map(zone => (
+                <ZoneCard
+                    key={zone.name}
+                    eventId={event.id}
+                    eventName={event.name}
+                    eventDate={event.date}
+                    open_sale={event.open_sale}
+                    zoneLocation={zone.name}
+                    zonePrice={zone.price}
+                    availableTickets={zone.quantityTickets || 0} // Asegúrate de que availableTickets esté en tu JSON o define un valor por defecto
+                />  ))}
           </div>
         </div>
       </div>
