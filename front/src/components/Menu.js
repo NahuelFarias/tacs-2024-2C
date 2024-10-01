@@ -40,7 +40,7 @@ const Menu = ({ menuOpen }) => {
   return (
     menuOpen && (
       <div className="menu bg-dark text-white p-3">
-          <ul className="list-unstyled">
+          <ul className="list-unstyled text-end">
               <li><a href="/" className="text-white">Inicio</a></li>
               {!showReservationsButton && <li><a href="/login" className="text-white">Iniciar sesión</a></li>}
               {!showReservationsButton && <li><a href="/signup" className="text-white">Registrarse</a></li>}
