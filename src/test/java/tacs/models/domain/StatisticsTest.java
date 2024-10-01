@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
-import tacs.models.domain.events.TicketGenerator;
 import tacs.models.domain.exception.WrongStatisticsException;
 import tacs.models.domain.statistics.*;
 import tacs.models.domain.users.NormalUser;
@@ -34,22 +33,15 @@ public class StatisticsTest {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
         this.testUser.setLastLogin(LocalDateTime.now());
-        Location preferencia = new Location("Preferencia", 500);
-        Location eastStand = new Location("East Stand", 200);
-        Location tribunaNorte = new Location("Tribuna Norte", 400);
-        Location gradaSur = new Location("Grada Sur", 100);
+
+        Location preferencia = new Location("Preferencia",500,12);
+        Location eastStand = new Location("East Stand", 200, 20);
+        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
+        Location gradaSur = new Location("Grada Sur", 100, 100);
 
         List<Location> locations = new ArrayList<>(Arrays.asList(preferencia, eastStand, tribunaNorte, gradaSur));
-        Map<String, Integer> mapaTickets = Map.of(
-                "Preferencia", 1,
-                "East Stand", 11,
-                "Tribuna Norte", 50,
-                "Grada Sur", 23
-        );
 
-        TicketGenerator generator = new TicketGenerator(locations, mapaTickets);
-
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), generator);
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), locations);
         this.testLocation = preferencia;
 
 
@@ -92,7 +84,7 @@ public class StatisticsTest {
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
 
-        this.testUser.bookTicket(this.testEvent, this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> soldTickets = new HashMap<>();
 
         soldTickets.put("Tickets", this.testUser.getTicketsOwned());
@@ -109,7 +101,7 @@ public class StatisticsTest {
         this.userStatistics = new UserStatistics();
         this.eventStatistics = new EventStatistics();
         this.ticketStatistics = new TicketStatistics();
-        this.testUser.bookTicket(this.testEvent, this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> statisticsTestData = new HashMap<>();
         statisticsTestData.put("Users", this.testUsers);
         statisticsTestData.put("Events", this.testEvents);
@@ -127,7 +119,7 @@ public class StatisticsTest {
 
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
-        this.testUser.bookTicket(this.testEvent, this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> statisticFake = new HashMap<>();
         statisticFake.put("Tickets locos", this.testUser.getTicketsOwned());
         this.statisticsGenerator.addStatistics(this.ticketStatistics);
@@ -140,12 +132,13 @@ public class StatisticsTest {
         System.out.println(actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
     } // Don't match the name with the Method name() in TicketSatistics
+
     @Test
     public void fakeStatisticByGeneratorListTest() {
 
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
-        this.testUser.bookTicket(this.testEvent, this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent, this.testLocation);
         Map<String, List<?>> statisticFake = new HashMap<>();
         statisticFake.put("Tickets", this.testUser.getTicketsOwned());
         this.statisticsResults = this.statisticsGenerator.generateStatistics(statisticFake);

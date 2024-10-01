@@ -25,10 +25,6 @@ public class Event {
     @Column
     public LocalDateTime creationDate;
 
-/*    @JsonIgnore
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    public List<Ticket> tickets;*/
-
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     public List<Location> locations;
@@ -45,8 +41,6 @@ public class Event {
     public List<Ticket> getSoldTickets() {
         return this.locations.stream().flatMap(location -> location.getTickets().stream())
                 .collect(Collectors.toList());
-
-        //return this.tickets.stream().filter(Ticket::wasSold).collect(Collectors.toList());
     }
 
     public long getSoldTicketsAmount() {
@@ -55,17 +49,9 @@ public class Event {
 
     @JsonIgnore
     public long getAvailableTickets() {
-        return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets)  // Mapear cada producto a su precio
-                .sum();
-       // return this.tickets.stream().filter(t -> !t.wasSold()).collect(Collectors.toList());
+        return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets).sum();
     }
 
-/*
-    public long getAvailableTicketsAmount() {
-        return this.getAvailableTickets().size();
-    }
-*/
-    //TODO: No se usa :c
     public double getTotalSales() {
         return this.getSoldTickets().stream().mapToDouble(Ticket::searchPrice).sum();
     }
@@ -86,15 +72,6 @@ public class Event {
         if(!this.openSale) throw new PurchaseUnavailableException();
 
         return location.makeReservation(this);
-
-/*        Ticket ticket = this.getAvailableTickets().stream()
-            .filter(t -> t.getLocation().equals(location)).findFirst()
-            .orElseThrow(SoldOutTicketsException::new);
-
-
-
-        ticket.sell();
-*/
     }
 
     public boolean purchaseAvailable() {

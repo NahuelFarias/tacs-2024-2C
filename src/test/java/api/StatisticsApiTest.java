@@ -10,7 +10,6 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import tacs.App;
 import tacs.dto.CreateEvent;
-import tacs.dto.CreateGenerator;
 import tacs.dto.StatisticsResponse;
 import tacs.dto.EventStatisticsResponse;
 import tacs.models.domain.events.Event;
@@ -41,10 +40,11 @@ public class StatisticsApiTest {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia", 500);
-        Location eastStand = new Location("East Stand", 200);
-        Location tribunaNorte = new Location("Tribuna Norte", 400);
-        Location gradaSur = new Location("Grada Sur", 100);
+        Location preferencia = new Location("Preferencia",500,12);
+        Location eastStand = new Location("East Stand", 200, 20);
+        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
+        Location gradaSur = new Location("Grada Sur", 100, 100);
+
 
         List<Location> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
         Map<String, Integer> ticketsMap = Map.of(
@@ -56,14 +56,10 @@ public class StatisticsApiTest {
 
         this.testLocation = preferencia;
 
-        CreateGenerator generadorTickets = new CreateGenerator();
-        generadorTickets.setTicketsMap(ticketsMap);
-        generadorTickets.setLocations(locations);
-
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        createEvent.setTicketGenerator(generadorTickets);
+        createEvent.setLocations(locations);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -3,6 +3,7 @@ package tacs.models.domain.events;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import tacs.models.domain.exception.SoldOutTicketsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Location {
     public String name;
     public double price;
 
-    @JsonIgnore
+    @Column
     public long quantityTickets;
 
     @JsonIgnore
@@ -69,12 +70,14 @@ public class Location {
         return Objects.hash(name, price);
     }
 
-    //TODO: Chequeo si tenemos tickets para vender
+
     public Ticket makeReservation(Event event) {
+        if (this.quantityTickets <= 0)
+            throw new SoldOutTicketsException();
+
         Ticket ticket = new Ticket(event, this);
         this.tickets.add(ticket);
         this.quantityTickets--;
         return ticket;
-
     }
 }

@@ -22,7 +22,6 @@ public class EventService {
     private final UserService userService;
 
     public void createEvent(String name, LocalDateTime date, List<Location> locations) {
-        //TicketGenerator generator = new TicketGenerator(createGenerator.getLocations(), createGenerator.getTicketsMap());
         Event event = new Event(name, date, locations);
         eventRepository.save(event);
     }

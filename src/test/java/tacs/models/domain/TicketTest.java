@@ -16,7 +16,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -34,29 +33,20 @@ public class TicketTest {
         this.testUser = new NormalUser(username);
         this.testFakeUser = new NormalUser("Pedro Pascal");
 
-        Location preferencia = new Location("Preferencia", 500);
-        Location eastStand = new Location("East Stand", 200);
-        Location tribunaNorte = new Location("Tribuna Norte", 400);
-        Location gradaSur = new Location("Grada Sur", 100);
-
+        Location preferencia = new Location("Preferencia",500,1);
+        Location eastStand = new Location("East Stand", 200, 0);
+        Location tribunaNorte = new Location("Tribuna Norte", 400, 0);
+        Location gradaSur = new Location("Grada Sur", 100, 0);
 
         List<Location> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
-        Map<String, Integer> mapaTickets = Map.of(
-                "Preferencia", 1,
-                "East Stand", 11,
-                "Tribuna Norte", 50,
-                "Grada Sur", 23
-        );
 
-        this.ticketGenerator = new TicketGenerator(locations, mapaTickets);
-
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),ticketGenerator);
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),locations);
         this.testLocation = preferencia;
     }
 
     @Test
     public void reserveTicketsTest() {
-        this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent,this.testLocation);
         Assertions.assertEquals(testUser.getTicketsOwned().size(),1);
     }
 
@@ -64,7 +54,7 @@ public class TicketTest {
     public void reserveTicketOnClosedSaleTest() {
         this.testEvent.closeSale();
         RuntimeException exception = Assertions.assertThrows(PurchaseUnavailableException.class,() -> {
-            this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
+            this.testUser.bookTicket(this.testEvent,this.testLocation);
         });
         String expectedMessage = "Error code: Purchase Unavailable";
         String actualMessage = exception.getMessage();
@@ -73,9 +63,9 @@ public class TicketTest {
 
     @Test
     public void reserveTicketOnOutSaleTest() {
-        this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent,this.testLocation);
         RuntimeException exception = Assertions.assertThrows(SoldOutTicketsException.class,() -> {
-            this.testFakeUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
+            this.testFakeUser.bookTicket(this.testEvent,this.testLocation);
         });
         String expectedMessage = "Error code: Sold out tickets";
         String actualMessage = exception.getMessage();
@@ -84,7 +74,7 @@ public class TicketTest {
 
     @Test
     public void getTicketsOwnedTest() {
-        this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
+        this.testUser.bookTicket(this.testEvent,this.testLocation);
         List<Ticket> reservations = this.testUser.getTicketsOwned();
         Assertions.assertEquals(reservations.size(),1);
     }
