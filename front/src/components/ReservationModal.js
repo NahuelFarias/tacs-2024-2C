@@ -1,21 +1,20 @@
 import {React, useState, useEffect, useRef} from 'react';
 import PrimaryButton from './PrimaryButton';
 import SecondaryButton from './SecondaryButton';
-import reservationService, { tryCreateReservation } from '../services/reservationService'
+import { tryCreateReservation } from '../services/reservationService'
 import './ReservationModal.css'
 
 const ReservationModal = ({closeModal, data}) => {
-    const [totalPrice, setTotalprice] = useState(data.zonePrice);
-    const [reservation, setReservation] = useState({ eventId: data.eventId, zone: data.zoneLocation, amount: 1});
+/*    const [totalPrice, setTotalprice] = useState(data.zonePrice);*/
+    const reservation = {  };
     
     const actualDate = new Date(data.eventDate).toLocaleString().slice(0, -3).concat("hs");
 
-    const [tickets, setTickets] = useState(1);
+/*    const [tickets, setTickets] = useState(1);
     const handleTickets = (e) => {
         setTotalprice(e.target.value*data.zonePrice);
         setTickets(e.target.value);
-        reservation.amount = (e.target.value);
-    }
+    }*/
     
     let reservationModalRef = useRef();
 
@@ -34,8 +33,8 @@ const ReservationModal = ({closeModal, data}) => {
     });
 
     const makeReservation = () => {
-        console.log(reservation)
-        tryCreateReservation(reservation);
+        console.log(data.eventId, data.zoneLocation)
+        tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation);
     }
 
     
@@ -56,15 +55,15 @@ const ReservationModal = ({closeModal, data}) => {
                                 <h3>{data.zonePrice}$</h3>
                             </div >
                             <div className="d-flex justify-content-between align-items-center mb-2 text-dark">
-                                <h4>Cantidad:</h4>
+{/*                                <h4>Cantidad:</h4>
                                 <input
                                     type="number"
                                     placeholder="Tickets available"
                                     max={data.availableTickets}
-                                    value={tickets}
+                                 value={tickets}
                                     onChange={handleTickets}
                                     className="form-control justify-content-end w-50"
-                                    />
+                                    />*/}
                             </div>
                             <h5 className='text-dark'>Tickets disponibles: {data.availableTickets}</h5>
                         </div>
@@ -73,13 +72,13 @@ const ReservationModal = ({closeModal, data}) => {
                             <h2>Total:</h2>
                         </div>
                         <div className="col-6 d-flex justify-content-end">
-                            <h2>{totalPrice}$</h2>
+                            <h2>{data.zonePrice}$</h2>
                         </div>
                     </div>
                     </div>
         
-                    <PrimaryButton type="button" onClick={()=> makeReservation()}>Create Event</PrimaryButton>
-                    <SecondaryButton className='mt-2' type="button" onClick={() => closeModal(false)}>Cancel</SecondaryButton>
+                    <PrimaryButton type="button" onClick={()=> makeReservation()}>Realizar reserva</PrimaryButton>
+                    <SecondaryButton className='mt-2' type="button" onClick={() => closeModal(false)}>Cancelar</SecondaryButton>
                 </form>
             </div>
         </div>

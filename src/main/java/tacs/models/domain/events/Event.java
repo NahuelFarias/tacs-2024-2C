@@ -29,7 +29,6 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     public List<Ticket> tickets;*/
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     public List<Location> locations;
 

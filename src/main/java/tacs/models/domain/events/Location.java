@@ -20,7 +20,6 @@ public class Location {
     public String name;
     public double price;
 
-    @JsonIgnore
     public long quantityTickets;
 
     @JsonIgnore

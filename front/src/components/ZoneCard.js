@@ -3,7 +3,7 @@ import './EventCard.css';
 import PrimaryButton from './PrimaryButton';
 import ReservationModal from './ReservationModal';
 
-const ZoneCard = ({eventId, eventName, eventDate, zoneLocation, zonePrice, availableTickets, open_sale }) => {
+const ZoneCard = ({eventId, eventName, eventDate, open_sale, zoneLocation, zonePrice, availableTickets }) => {
   const [openReservationModal, serReservationModal] = useState(false);
 
   const infoReserva = {
@@ -13,12 +13,12 @@ const ZoneCard = ({eventId, eventName, eventDate, zoneLocation, zonePrice, avail
     zoneLocation: zoneLocation,
     zonePrice: zonePrice,
     availableTickets: availableTickets,
-    open_sale: open_sale,
+    openSale: open_sale,
   }
 
   function loggear () {
     serReservationModal(true);
-    console.log(`esta Loggeado bien, ${eventId}, ${eventDate}, ${zoneLocation}, ${zonePrice}, ${availableTickets}`)
+    //console.log(`esta Loggeado bien, ${eventId}, ${eventDate}, ${zoneLocation}, ${zonePrice}, ${availableTickets}`)
   }
 
   return (
@@ -30,7 +30,7 @@ const ZoneCard = ({eventId, eventName, eventDate, zoneLocation, zonePrice, avail
             <h6 className='available-tickets'>{availableTickets} tickets disponibles</h6>
           </div>
           <div className='d-flex position-relative'>
-            <PrimaryButton isDisabled={!open_sale} onClick={() => loggear()}>Reservar</PrimaryButton>
+           <PrimaryButton isDisabled={!open_sale} onClick={() => loggear()}>Reservar</PrimaryButton>
           </div>
         </div>
       </div>
