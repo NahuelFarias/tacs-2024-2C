@@ -10,12 +10,12 @@ export const getReservations = (userId) => {
 };
 
 
-export const tryCreateReservation = (createReservation) => {
-    console.log(`trying to make a reservation of ${createReservation.amount} tickets`);
-    return axiosClient.post('/reservation', createReservation)
+export const tryCreateReservation = (eventId, zoneLocation) => {
+/*    console.log(`trying to make a reservation of ${createReservation.amount} tickets`);*/
+    return axiosClient.post(`/events/${eventId}/reservation`, { name: zoneLocation })
       .then(response => {
         if (response.status === 200) {
-          console.log(`"${createReservation.name}" ticket reserved successfully`)
+/*          console.log(`"${createReservation.name}" ticket reserved successfully`)*/
           return true
         }
       })

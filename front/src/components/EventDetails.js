@@ -69,13 +69,23 @@ const EventDetails = () => {
         <div className="mt-4">
           <div className="d-flex justify-content-between">
             <h3>Asientos disponibles</h3>
-            {!event.open_sale && <h5>No esta abierta la venta de tickets</h5>}
+        {!event.open_sale && <h5>No esta abierta la venta de tickets</h5>}
           </div>
           <div className='d-flex row'>
-            {eventMock.zones.map(zone => (
+{/*            {eventMock.zones.map(zone => (
               <ZoneCard key={zone.zoneLocation} open_sale={event.open_sale} eventId={event.id} eventName={event.name} eventDate={event.date} zoneLocation={zone.zoneLocation} zonePrice={zone.zonePrice} availableTickets={event.availableTicketsAmount} />
-            ))}
-
+            ))}*/}
+            {event.locations && event.locations.map(zone => (
+                <ZoneCard
+                    key={zone.name}
+                    eventId={event.id}
+                    eventName={event.name}
+                    eventDate={event.date}
+                    open_sale={event.open_sale}
+                    zoneLocation={zone.name}
+                    zonePrice={zone.price}
+                    availableTickets={zone.quantityTickets || 0} // Asegúrate de que availableTickets esté en tu JSON o define un valor por defecto
+                />  ))}
           </div>
         </div>
       </div>
