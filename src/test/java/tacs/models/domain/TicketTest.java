@@ -56,7 +56,7 @@ public class TicketTest {
 
     @Test
     public void reserveTicketsTest() {
-        this.testUser.bookTicket(this.testEvent,this.testLocation);
+        this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
         Assertions.assertEquals(testUser.getTicketsOwned().size(),1);
     }
 
@@ -64,7 +64,7 @@ public class TicketTest {
     public void reserveTicketOnClosedSaleTest() {
         this.testEvent.closeSale();
         RuntimeException exception = Assertions.assertThrows(PurchaseUnavailableException.class,() -> {
-            this.testUser.bookTicket(this.testEvent,this.testLocation);
+            this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
         });
         String expectedMessage = "Error code: Purchase Unavailable";
         String actualMessage = exception.getMessage();
@@ -73,9 +73,9 @@ public class TicketTest {
 
     @Test
     public void reserveTicketOnOutSaleTest() {
-        this.testUser.bookTicket(this.testEvent,this.testLocation);
+        this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
         RuntimeException exception = Assertions.assertThrows(SoldOutTicketsException.class,() -> {
-            this.testFakeUser.bookTicket(this.testEvent,this.testLocation);
+            this.testFakeUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
         });
         String expectedMessage = "Error code: Sold out tickets";
         String actualMessage = exception.getMessage();
@@ -84,7 +84,7 @@ public class TicketTest {
 
     @Test
     public void getTicketsOwnedTest() {
-        this.testUser.bookTicket(this.testEvent,this.testLocation);
+        this.testUser.bookTicket(this.testEvent,this.testLocation, quantityTickets);
         List<Ticket> reservations = this.testUser.getTicketsOwned();
         Assertions.assertEquals(reservations.size(),1);
     }

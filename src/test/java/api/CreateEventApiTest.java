@@ -9,7 +9,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import tacs.App;
 import tacs.dto.CreateEvent;
-import tacs.dto.CreateGenerator;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;

@@ -23,6 +23,15 @@ public class TicketGenerator {
                 .collect(Collectors.toList());
     }
 
+/*
+    public List<Ticket> generate(Event event) {
+        return this.ticketsMap.entrySet().stream()
+                .flatMap(entry -> IntStream.range(0, entry.getValue())
+                        .mapToObj(i -> new Ticket(event, searchLocation(entry.getKey()))))
+                .collect(Collectors.toList());
+    }
+*/
+
     private Location searchLocation(String locationName) {
         return this.locations.stream().filter(u -> u.getName().equals(locationName)).
                 toList().get(0);
