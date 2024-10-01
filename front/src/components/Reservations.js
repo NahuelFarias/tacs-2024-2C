@@ -20,7 +20,7 @@ const Reservations = () => {
     return (
         <div className="home-page">
             <div className="events-section container mt-3">
-                <h2 className="text-white">Mis reservas</h2>
+                <h2 className="text-white">My reservations</h2>
                 <div className="row">
                     {reservations?.map(res => (
 
