@@ -1,0 +1,17 @@
+.myTicket{
+    border: '2px dashed #e7c509'; 
+    border-radius: '15px';
+    background-color: #e7c509;   
+    color: '#ffd700';           
+    width: '100%';
+    box-shadow: 0 0 .625rem 0 rgba(246, 244, 244, 0.9);
+}
+
+/* .myTicket-title{
+    font-family: 'monospace'; 
+    font-size: '1.5rem';
+} */
+
+
+
+

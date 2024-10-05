@@ -1,26 +1,42 @@
 
 import {React} from "react";
+import { Card, Button } from "react-bootstrap";
+import './TicketCard.css'
+import {useNavigate} from "react-router-dom";
 
-const TicketCard = ({ ticketId, reservationDate, title, locationName, price }) => {
+const TicketCard = ({ ticketId, reservationDate, title, locationName, price, eventId}) => {
+
+    const navigate = useNavigate();  // Hook para redirigir
+
+    const handleViewEvent = () => {
+        navigate(`/eventDetails/${eventId}`);  // Redirigir a la página del evento con el ID
+    };
     // Supongamos que reservationDate está en formato 'YYYY-MM-DD HH:mm:ss'
     const [date, timeMiliseconds] = reservationDate.split('T'); // Separa la fecha y la hora
     const [time] = timeMiliseconds.split('.');
     return (
-        <div className="col-md-4 mb-4">
-            <div className="card text-white" style={{ backgroundColor: '#343a40' }}>
-                <div className="card-body">
-                    <h5 className="card-title mb-4">Reservation</h5>
+        <Card className="my-3 myTicket">
+            <Card.Body>
+                <Card.Title className="card-title" >
+                    Reservation for "{title}"
+                </Card.Title>
+                <hr />
+                <Card.Text className="myTicket-text">
+                    <strong>Date:</strong> {date}
+                </Card.Text>
+                <Card.Text>
+                    <strong>Time:</strong> {time}
+                </Card.Text>
+                <Card.Text>
+                    <strong>Price:</strong> ${price}
+                </Card.Text>
+                <Card.Text>
+                    <strong>Location:</strong> {locationName}
+                </Card.Text>
+                <Button variant="dark" className="w-100" onClick={handleViewEvent}>View Event</Button>
+            </Card.Body>
+        </Card>
 
-                    <ul className="list-group mt-4">
-                        <li className="list-group-item bg-dark text-white border-0">Event: {title}</li>
-                        <li className="list-group-item bg-dark text-white border-0">Location: {locationName}</li>
-                        <li className="list-group-item bg-dark text-white border-0">Reservation Date: {date}</li>
-                        <li className="list-group-item bg-dark text-white border-0">Time: {time}</li>
-                        <li className="list-group-item bg-dark text-white border-0">Price: ${price}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     );
 };
 
