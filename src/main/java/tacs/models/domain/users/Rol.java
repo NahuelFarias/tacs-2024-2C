@@ -1,15 +1,15 @@
 package tacs.models.domain.users;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.NoArgsConstructor;
 
-@Entity
+@Document
 @NoArgsConstructor
 public class Rol {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Column
+    private String id;
     private String nombre;
 
     public Rol(String nombre) {

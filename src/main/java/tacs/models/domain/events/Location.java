@@ -1,37 +1,30 @@
 package tacs.models.domain.events;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.exception.SoldOutTicketsException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-//TODO: cambiar a @data? para evitar overridear equals y hashcode y sacar boilerplate
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "locations")
 @NoArgsConstructor
 public class Location {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Basic
+    private String id;
+
     public String name;
     public double price;
-
     public long quantityTickets;
+    public long quantityTicketsSold;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    public List<Ticket> tickets = new ArrayList<>();
-
-    public Location(String name, double price, int quantityTickets) {
+    public Location(String name, double price, long quantityTickets) {
         this.name = name;
         this.price = price;
         this.quantityTickets = quantityTickets;
-        this.tickets = new ArrayList<>();
+        this.quantityTicketsSold = 0;
     }
 
     public String getName() {
@@ -42,8 +35,8 @@ public class Location {
         return price;
     }
 
-    public List<Ticket> getTickets() {
-        return this.tickets;
+    public long getQuantityTicketsSold() {
+        return this.quantityTicketsSold;
     }
 
     public void setQuantityTickets(int quantityTickets) {
@@ -54,15 +47,30 @@ public class Location {
         return quantityTickets;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    //TODO: Chequeo si tenemos tickets para vender
+    public Ticket makeReservation(Event event) {
+        Ticket ticket = new Ticket(event.getId(), this.getId());
+        this.quantityTicketsSold++;
+        this.quantityTickets--;
+        return ticket;
+    }
+
     // Sobrescribir equals() para comparar objetos basados en los valores de sus atributos
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true; // Verifica si ambos objetos tienen la misma referencia
-        if (o == null || getClass() != o.getClass()) return false; // Verifica si el objeto comparado es null o de diferente clase
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Location location = (Location) o; // Realiza un casting del objeto comparado a la clase Location
-
-        // Compara todos los atributos de la clase para determinar si son iguales
+        Location location = (Location) o;
+        
         return Objects.equals(name, location.name) &&
                 Objects.equals(price, location.price);
     }
@@ -72,6 +80,7 @@ public class Location {
     public int hashCode() {
         return Objects.hash(name, price);
     }
+<<<<<<< HEAD
 
 
     public Ticket makeReservation(Event event) {
@@ -83,4 +92,6 @@ public class Location {
         this.quantityTickets--;
         return ticket;
     }
+=======
+>>>>>>> Add: models of domain
 }
