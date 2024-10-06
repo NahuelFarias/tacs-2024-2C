@@ -25,7 +25,6 @@ const Reservations = () => {
                 <div className="row tickets">
                     {reservations?.map(res => (
                         <TicketCard key={res.id} reservationDate={res.reservationDate} title={res.event.name} locationName={res.location.name} price={res.location.price} eventId={res.event.id}/>
-
                     ))}
                 </div>
             </div>
