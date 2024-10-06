@@ -4,24 +4,26 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import tacs.config.CustomPBKDF2PasswordEncoder;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
+import tacs.repository.TicketRepository;
 import tacs.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final TicketRepository ticketsRepository;
 
     public void createUser(String name, String password) {
         String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
@@ -34,19 +36,21 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public NormalUser getUsers(Integer id) {
+    public NormalUser getUser(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public List<Ticket> getReservations(Integer id) {
-        NormalUser user = this.getUsers(id);
-        return user.getTicketsOwned();
+    public List<Ticket> getReservations(String id) {
+        return ticketsRepository.findAllByUserId(id);
     }
 
-    @Transactional
-    public void reserveTicket(Integer id, Event event, Location location) {
-        NormalUser user = this.getUsers(id);
-        user.bookTicket(event, location);
+    //TODO: Meter una cola para mantener consistente las reservas
+    public void reserveTicket(String id, Ticket ticket) {
+        NormalUser user = this.getUser(id);
+        user.bookTicket(ticket);
+        ticketsRepository.save(ticket);
+        user.addTicket(ticket.getId());
+        userRepository.save(user);
     }
 }

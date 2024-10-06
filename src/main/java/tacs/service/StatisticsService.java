@@ -84,13 +84,13 @@ public class StatisticsService {
 
 
     public Integer getTicketStatisticsById(LocalDateTime startDate, LocalDateTime endDate,
-                                           String timeRange, int id) {
+                                           String timeRange, String id) {
         StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
         List<Ticket> tickets = this.ticketsRepository.findAllByReservationDateBetween(startDate, endDate);
 
         // Esto, por ahora propongo simularlo asi, dado que deberia generarse una consulta (dialecto SQL de hibernate)
         // en el repo, y no vamos a utilizar una BBDD de tipo relacional
-        tickets = tickets.stream().filter(t -> t.getEvent().getId().equals(id)).toList();
+        tickets = tickets.stream().filter(t -> t.getEvent().equals(id)).toList();
         TicketStatistics ticketStatistics = new TicketStatistics();
         statisticsGenerator.addStatistics(ticketStatistics);
 
