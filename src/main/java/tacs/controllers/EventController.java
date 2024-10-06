@@ -24,23 +24,23 @@ public class EventController {
 
     @GetMapping("/{id}/tickets")
     @ResponseBody
-    public long getTicketsForSale(@PathVariable Integer id) {
+    public long getTicketsForSale(@PathVariable String id) {
         return eventService.getTicketsForSale(id);
     }
 
     @PutMapping("/{id}/sales")
     @ResponseBody
-    public void setStatusSales(@PathVariable Integer id, @RequestParam Boolean state) {
+    public void setStatusSales(@PathVariable String id, @RequestParam Boolean state) {
         eventService.setState(id, state);
     }
 
     @PostMapping
     public void createEvent(@RequestBody CreateEvent event) {
-        eventService.createEvent(event.getName(), event.getDate(), event.getLocations());
+        eventService.createEvent(event);
     }
 
     @PostMapping("/{id}/reserves")
-    public void createReserves(@PathVariable Integer id, @RequestParam("user_id") Integer userId, @RequestBody CreateReservation nameLocation) {
+    public void createReserves(@PathVariable String id, @RequestParam("user_id") String userId, @RequestBody CreateReservation nameLocation) {
         eventService.createReserves(id, userId, nameLocation);
     }
 
@@ -50,7 +50,7 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}")
-    public Event getEvent(@PathVariable Integer eventId) {
+    public Event getEvent(@PathVariable String eventId) {
         return eventService.getEvent(eventId);
     }
 }

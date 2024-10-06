@@ -1,3 +1,3 @@
 package tacs.dto;
-public record JWT(String token, Integer id, String rol){
+public record JWT(String token, String id, String rol){
 }
