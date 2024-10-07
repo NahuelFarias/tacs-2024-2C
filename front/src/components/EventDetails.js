@@ -51,7 +51,7 @@ const EventDetails = () => {
           <h2>{actualDate}</h2>
         </div>
 
-        <img className="w-100" src="/evento.jpg" alt="Foto del evento"></img>
+        <img className="w-100" src={event.image_url} alt="Foto del evento"></img>
 
         <div className="mt-4">
           <div className="d-flex justify-content-between">
