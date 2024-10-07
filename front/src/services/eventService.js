@@ -57,3 +57,13 @@ export const tryCreateEvent = (createEvent) => {
       throw error;
     });
 };
+
+export const closeEvent = (eventId) => {
+  return axiosClient.patch(`/events/${eventId}/close`)
+  .then(response => {
+    if (response.status === 200) {
+      return true
+    }
+  })
+  .catch(error => { throw error })
+}
