@@ -28,10 +28,10 @@ public class EventController {
         return eventService.getTicketsForSale(id);
     }
 
-    @PutMapping("/{id}/sales")
+    @PatchMapping("/{id}/close")
     @ResponseBody
-    public void setStatusSales(@PathVariable Integer id, @RequestParam Boolean state) {
-        eventService.setState(id, state);
+    public void setStatusSales(@PathVariable Integer id) {
+        eventService.setState(id, false);
     }
 
     @PostMapping

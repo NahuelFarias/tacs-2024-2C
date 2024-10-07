@@ -94,7 +94,7 @@ public class ExistingEventApiTest {
         headers.set("Content-Type", "application/json");
 
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PATCH, entity, String.class);
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
