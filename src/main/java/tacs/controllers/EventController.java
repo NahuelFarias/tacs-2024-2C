@@ -36,7 +36,7 @@ public class EventController {
 
     @PostMapping
     public void createEvent(@RequestBody CreateEvent event) {
-        eventService.createEvent(event.getName(), event.getDate(), event.getLocations());
+        eventService.createEvent(event.getName(), event.getDate(), event.getLocations(), event.getImageUrl());
     }
 
     @PostMapping("/{id}/reserves")
