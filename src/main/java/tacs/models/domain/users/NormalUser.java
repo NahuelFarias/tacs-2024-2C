@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.events.Ticket;
 
 import java.time.LocalDateTime;
@@ -39,9 +38,7 @@ public class NormalUser {
         //Usuario normal por defecto
         this.rol = new Rol("ROLE_USER");
     }
-
-    public void bookTicket(Event event, Location location) {
-        Ticket ticket = event.makeReservation(location);
+    public void bookTicket(Ticket ticket) {
         this.addTicket(ticket);
         ticket.changeOwner(this);
         ticket.setReservationDate(LocalDateTime.now());

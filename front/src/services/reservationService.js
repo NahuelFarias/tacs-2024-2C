@@ -10,10 +10,10 @@ export const getReservations = (userId) => {
 };
 
 
-export const tryCreateReservation = (eventId, userId, zoneLocation) => {
+export const tryCreateReservation = (eventId, userId, zoneLocation, tickets) => {
     //console.log(`trying to make a reservation of ${zoneLocation}`);
     return axiosClient.post(`/events/${eventId}/reserves`, 
-      { name: zoneLocation },
+      { name: zoneLocation, quantityTickets: tickets},
       { params: { user_id: userId } } 
     )
       .then(response => {
