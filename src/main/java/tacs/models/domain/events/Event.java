@@ -25,16 +25,20 @@ public class Event {
     @Column
     public LocalDateTime creationDate;
 
+    @JsonProperty("image_url")
+    public String imageUrl;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
     public List<Location> locations;
 
-    public Event(String name, LocalDateTime date, List<Location> locations) {
+    public Event(String name, LocalDateTime date, List<Location> locations, String imageUrl) {
         this.name = name;
         this.date = date;
         this.locations = locations;
         this.creationDate = LocalDateTime.now();
         this.openSale = true;
+        this.imageUrl = imageUrl;
     }
 
     @JsonIgnore

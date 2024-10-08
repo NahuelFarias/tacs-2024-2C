@@ -40,4 +40,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-./front/package-lock.json
+front/package-lock.json

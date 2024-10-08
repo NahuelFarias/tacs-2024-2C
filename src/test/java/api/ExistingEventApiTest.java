@@ -55,6 +55,7 @@ public class ExistingEventApiTest {
         crearEvento.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         crearEvento.setName("River vs Boca");
         crearEvento.setLocations(ubicaciones);
+        crearEvento.setImageUrl("https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -94,7 +95,7 @@ public class ExistingEventApiTest {
         headers.set("Content-Type", "application/json");
 
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PATCH, entity, String.class);
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }

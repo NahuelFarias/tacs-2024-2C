@@ -25,7 +25,7 @@ const Home = () => {
           <h2 className="text-white">Eventos Destacados</h2>
           <div className="row">
             {events?.map(event => (
-              <EventCard key={event.id} eventId={event.id} title={event.name} />
+              <EventCard key={event.id} eventId={event.id} title={event.name} imageUrl={event.image_url} />
             ))}
           </div>
         </div>

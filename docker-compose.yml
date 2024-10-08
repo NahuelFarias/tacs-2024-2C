@@ -1,0 +1,10 @@
+name: tp-tacs
+services:
+  tacs-frontend:
+    ports:
+      - "3000:3000"
+    image: tacs-frontend
+  tacs-backend:
+    ports:
+      - "8080:8080"
+    image: tacs-backend

@@ -64,6 +64,9 @@ public class EventReservationApiTest {
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
         createEvent.setLocations(ubicaciones);
+        createEvent.setImageUrl("https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg");
+
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
