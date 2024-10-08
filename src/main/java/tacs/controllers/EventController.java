@@ -28,15 +28,15 @@ public class EventController {
         return eventService.getTicketsForSale(id);
     }
 
-    @PutMapping("/{id}/sales")
+    @PatchMapping("/{id}/close")
     @ResponseBody
-    public void setStatusSales(@PathVariable Integer id, @RequestParam Boolean state) {
-        eventService.setState(id, state);
+    public void setStatusSales(@PathVariable Integer id) {
+        eventService.setState(id, false);
     }
 
     @PostMapping
     public void createEvent(@RequestBody CreateEvent event) {
-        eventService.createEvent(event.getName(), event.getDate(), event.getLocations());
+        eventService.createEvent(event.getName(), event.getDate(), event.getLocations(), event.getImageUrl());
     }
 
     @PostMapping("/{id}/reserves")

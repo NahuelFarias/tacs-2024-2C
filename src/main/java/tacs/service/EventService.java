@@ -22,8 +22,8 @@ public class EventService {
     private final EventRepository eventRepository;
     private final UserService userService;
 
-    public void createEvent(String name, LocalDateTime date, List<Location> locations) {
-        Event event = new Event(name, date, locations);
+    public void createEvent(String name, LocalDateTime date, List<Location> locations, String imageUrl) {
+        Event event = new Event(name, date, locations, imageUrl);
         eventRepository.save(event);
     }
 

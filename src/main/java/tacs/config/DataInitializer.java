@@ -65,15 +65,17 @@ public class DataInitializer {
 
         List<Location> testLocations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
 
-        Event eventoTest = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),testLocations);
+        String someImage = "https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg";
 
-        Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay(),testLocations);
+        Event eventoTest = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),testLocations, someImage);
+
+        Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay(),testLocations, someImage);
         eventoTest2.creationDate = LocalDate.of(2024, Month.FEBRUARY, 9).atStartOfDay();
 
-        Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay(),testLocations);
+        Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay(),testLocations, someImage);
         eventoTest3.creationDate = LocalDate.of(2024, Month.SEPTEMBER, 2).atTime(0,1);
 
-        Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),testLocations);
+        Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),testLocations, someImage);
         eventoTest4.creationDate = LocalDate.of(2024, Month.AUGUST, 24).atTime(11,0);
 
 
