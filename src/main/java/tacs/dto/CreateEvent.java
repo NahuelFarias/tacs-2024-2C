@@ -11,5 +11,6 @@ public class CreateEvent {
     private String name;
     private LocalDateTime date;
     private List<LocationDTO> locations;
+    private String imageUrl;
 }
 

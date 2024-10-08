@@ -1,0 +1,9 @@
+.not-allowed-background {
+    background-image: url("../../../public/not-allowed-background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}

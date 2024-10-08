@@ -40,7 +40,7 @@ public class TicketTest {
 
         List<Location> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
 
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), "");
         testEvent.setLocations(locations);
         this.testLocation = preferencia;
     }

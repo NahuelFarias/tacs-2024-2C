@@ -38,7 +38,7 @@ public class EventService {
     }
 
     public void createEvent(CreateEvent eventDTO) {
-        Event event = new Event(eventDTO.getName(), eventDTO.getDate());
+        Event event = new Event(eventDTO.getName(), eventDTO.getDate(), eventDTO.getImageUrl());
         List<Location> locations = this.convertToLocations(eventDTO.getLocations());
         event.setLocations(locations);
         eventRepository.save(event);
@@ -67,8 +67,8 @@ public class EventService {
     public void createReserves(String id, String userId, CreateReservation createReservation) {
         Event event = this.getEvent(id);
         String locationName = createReservation.getName();
-        Ticket ticket = event.makeReservation(locationName);
-        userService.reserveTicket(userId, ticket);
+        List<Ticket> tickets = event.makeReservation(locationName, createReservation.getQuantityTickets());
+        userService.reserveTickets(userId, tickets);
         eventRepository.save(event);
     }
 

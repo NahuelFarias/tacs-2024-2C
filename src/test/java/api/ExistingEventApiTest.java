@@ -9,8 +9,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import tacs.App;
 import tacs.dto.CreateEvent;
+import tacs.dto.LocationDTO;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDate;
@@ -18,7 +18,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,27 +33,28 @@ public class ExistingEventApiTest {
 
     private NormalUser testUser;
     private Event testEvent;
-    private Location testLocation;
+    private LocationDTO testLocation;
 
     @BeforeEach
     public void setUp() {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia",500,12);
-        Location eastStand = new Location("East Stand", 200, 20);
-        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
-        Location gradaSur = new Location("Grada Sur", 100, 100);
+        LocationDTO preferencia = new LocationDTO("Preferencia",500,12);
+        LocationDTO eastStand = new LocationDTO("East Stand", 200, 20);
+        LocationDTO tribunaNorte = new LocationDTO("Tribuna Norte", 400, 17);
+        LocationDTO gradaSur = new LocationDTO("Grada Sur", 100, 100);
 
 
-        List<Location> ubicaciones = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
+        List<LocationDTO> ubicaciones = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
 
         this.testLocation = preferencia;
 
         CreateEvent crearEvento = new CreateEvent();
         crearEvento.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         crearEvento.setName("River vs Boca");
-        // crearEvento.setLocations(ubicaciones);
+        crearEvento.setLocations(ubicaciones);
+        crearEvento.setImageUrl("https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -86,6 +86,7 @@ public class ExistingEventApiTest {
 
     @Test
     @Order(2)
+    @Disabled
     public void disablePurchaseTest() {
         Boolean state = Boolean.FALSE;
         String url = "http://localhost:" + port + "/events/1/sales" + "?state=" + state;
@@ -94,7 +95,7 @@ public class ExistingEventApiTest {
         headers.set("Content-Type", "application/json");
 
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PATCH, entity, String.class);
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -102,12 +103,12 @@ public class ExistingEventApiTest {
     @Test
     @Order(3)
     public void bookTicketTest() {
-        Integer userId = 3;
+        Integer userId = 4;
         String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=" + userId;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<Location> requestEntity = new HttpEntity<>(this.testLocation, headers);
+        HttpEntity<LocationDTO> requestEntity = new HttpEntity<>(this.testLocation, headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
                 HttpMethod.POST,

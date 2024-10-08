@@ -31,10 +31,11 @@ export const getEventByName = (eventName) => {
     });
 };
 
-export const formToCreateEventRequest = (eventName, date, locations) => {
+export const formToCreateEventRequest = (eventName, date, locations, imageUrl) => {
   const createEventRequest = {
     name: eventName,
     date: date,
+    imageUrl: imageUrl,
     locations: locations.map((location) => ({name: location.name, price: parseInt(location.price), quantityTickets: parseInt(location.tickets, 10)}))
   }
 
@@ -57,3 +58,13 @@ export const tryCreateEvent = (createEvent) => {
       throw error;
     });
 };
+
+export const closeEvent = (eventId) => {
+  return axiosClient.patch(`/events/${eventId}/close`)
+  .then(response => {
+    if (response.status === 200) {
+      return true
+    }
+  })
+  .catch(error => { throw error })
+}

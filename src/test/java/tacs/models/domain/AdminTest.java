@@ -24,14 +24,16 @@ public class AdminTest {
         String username = "Pepa Admin";
         this.testAdmin = new Admin(username);
 
-        Location preferencia = new Location("Preferencia",500,12);
+        Location preferencia = new Location("Preferencia", 500, 12);
         Location eastStand = new Location("East Stand", 200, 20);
         Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
         Location gradaSur = new Location("Grada Sur", 100, 100);
 
-        List<Location> ubicaciones = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
+        List<Location> ubicaciones = new ArrayList<>(Arrays.asList(preferencia, eastStand, tribunaNorte, gradaSur));
 
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
+        String someImage = "https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg";
+
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), someImage);
         testEvent.setLocations(ubicaciones);
         this.testLocation = preferencia;
     }

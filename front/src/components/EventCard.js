@@ -3,7 +3,7 @@ import  { useNavigate } from 'react-router-dom';
 import './EventCard.css';
 
 
-const EventCard = ({ eventId, title }) => {
+const EventCard = ({ eventId, title, imageUrl }) => {
   const navigate = useNavigate();
 
   const redirectToDetails = () => {
@@ -30,7 +30,7 @@ const EventCard = ({ eventId, title }) => {
     <div className="card bg-secondary text-white">
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
-        <img src="/evento.jpg" alt="Icono" className="evento" />
+        <img src={imageUrl} alt="Icono" className="evento" />
       </div>
     </div>
   </div>

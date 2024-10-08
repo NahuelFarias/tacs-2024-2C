@@ -3,6 +3,7 @@ import { Chart } from "react-google-charts";
 import {getStats} from "../../services/statsService";
 import StatsDropdown from "./Dropdown";
 import './Bar.css';
+import './StatsOverview.css'
 
 const getStatsData = (loginCount, ticketCount, eventCount) => {
     return [
@@ -20,6 +21,19 @@ const StatsOverview = () => {
     const [filter, setFilter] = useState("Daily")
     const [stats, setStats] = useState([]);
     const [options, setOptions] = useState([])
+
+    const [showStats, setShowStats] = useState(false);
+
+    useEffect(() => {
+        const checkAdmin = () => {
+            const isAdmin = localStorage.getItem('rol') == 'ADMIN';
+            setShowStats(isAdmin);
+        };
+
+        checkAdmin();
+        const interval = setInterval(checkAdmin, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         getStats()
@@ -72,31 +86,40 @@ const StatsOverview = () => {
             .catch(error => console.error('Error fetching events:', error));
     }, [filter]);
 
-    return (
-        <div className="stats-overview container mt-4">
-
-            <StatsDropdown onSelection={setFilter}/>
-
-            <div className="stats-chart">
-                <Chart
-                    chartType="ColumnChart"
-                    width="100%"
-                    height="400px"
-                    data={stats}
-                    options={options}
-                    backgroundColor="#6C757D"
-                />
-            </div>
-
-            <div className="container mb-4">
-                <h4 className="text-white mt-4 mb-2"> Aclaración:
-                </h4>
-                <p1 className="text-white">Los datos aqui mostrados corresponden a la plataforma a nivel global,
-                    para consultar datos especificos de un evento particular, dirigase a la seccion del mismo utilizando
-                    el buscador de Eventos, y seleccione la vista avanzada de estadisticas para el mismo.
-                </p1>
-            </div>
-        </div>
+    return (showStats ?
+            (
+                <div className="stats-overview container mt-4">
+                    <div>
+                        <StatsDropdown onSelection={setFilter}/>
+                        <div className="stats-chart">
+                            <Chart
+                                chartType="ColumnChart"
+                                width="100%"
+                                height="400px"
+                                data={stats}
+                                options={options}
+                                backgroundColor="#6C757D"
+                            />
+                        </div>
+                        <div className="container mb-4">
+                            <h4 className="text-white mt-4 mb-2"> Aclaración:
+                            </h4>
+                            <p1 className="text-white">Los datos aqui mostrados corresponden a la plataforma a nivel
+                                global,
+                                para consultar datos especificos de un evento particular, dirigase a la seccion del
+                                mismo
+                                utilizando
+                                el buscador de Eventos, y seleccione la vista avanzada de estadisticas para el
+                                mismo.
+                            </p1>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="not-allowed-background">
+                    <h2 className="text-white mb-4 mt-2 p-5">Tu usuario no dispone de permisos para acceder</h2>
+                </div>
+            )
     );
 };
 

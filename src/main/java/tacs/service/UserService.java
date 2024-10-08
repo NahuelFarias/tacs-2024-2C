@@ -1,22 +1,17 @@
 package tacs.service;
 
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import tacs.config.CustomPBKDF2PasswordEncoder;
-import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
 import tacs.repository.TicketRepository;
 import tacs.repository.UserRepository;
+import tacs.security.CustomPBKDF2PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +46,10 @@ public class UserService {
         ticketsRepository.save(ticket);
         user.addTicket(ticket.getId());
         userRepository.save(user);
+    }
+
+    //TODO: Meter una cola para mantener consistente las reservas
+    public void reserveTickets(String id, List<Ticket> tickets) {
+        tickets.forEach(ticket -> this.reserveTicket(id, ticket));
     }
 }

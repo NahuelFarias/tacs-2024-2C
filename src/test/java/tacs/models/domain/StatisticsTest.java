@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
+import tacs.models.domain.events.Ticket;
 import tacs.models.domain.exception.WrongStatisticsException;
 import tacs.models.domain.statistics.*;
 import tacs.models.domain.users.NormalUser;
@@ -41,7 +42,7 @@ public class StatisticsTest {
 
         List<Location> locations = new ArrayList<>(Arrays.asList(preferencia, eastStand, tribunaNorte, gradaSur));
 
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), "");
         testEvent.setLocations(locations);
         this.testLocation = preferencia;
 
@@ -85,7 +86,8 @@ public class StatisticsTest {
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
 
-        // this.testUser.bookTicket(this.testEvent, this.testLocation);
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
+        this.testUser.bookTicket(ticket);
         Map<String, List<?>> soldTickets = new HashMap<>();
 
         soldTickets.put("Tickets", this.testUser.getTicketsOwned());
@@ -102,7 +104,10 @@ public class StatisticsTest {
         this.userStatistics = new UserStatistics();
         this.eventStatistics = new EventStatistics();
         this.ticketStatistics = new TicketStatistics();
-        // this.testUser.bookTicket(this.testEvent, this.testLocation);
+
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
+        this.testUser.bookTicket(ticket);
+
         Map<String, List<?>> statisticsTestData = new HashMap<>();
         statisticsTestData.put("Users", this.testUsers);
         statisticsTestData.put("Events", this.testEvents);
@@ -120,7 +125,10 @@ public class StatisticsTest {
 
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
-        // this.testUser.bookTicket(this.testEvent, this.testLocation);
+
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
+        this.testUser.bookTicket(ticket);
+
         Map<String, List<?>> statisticFake = new HashMap<>();
         statisticFake.put("Tickets locos", this.testUser.getTicketsOwned());
         this.statisticsGenerator.addStatistics(this.ticketStatistics);
@@ -139,7 +147,10 @@ public class StatisticsTest {
 
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
-        // this.testUser.bookTicket(this.testEvent, this.testLocation);
+
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
+        this.testUser.bookTicket(ticket);
+
         Map<String, List<?>> statisticFake = new HashMap<>();
         statisticFake.put("Tickets", this.testUser.getTicketsOwned());
         this.statisticsResults = this.statisticsGenerator.generateStatistics(statisticFake);

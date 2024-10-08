@@ -1,17 +1,27 @@
 .myTicket{
-    border: '2px dashed #e7c509'; 
     border-radius: '15px';
-    background-color: #e7c509;   
+    /* background-color: #e7c509;    */
     color: '#ffd700';           
     width: '100%';
-    box-shadow: 0 0 .625rem 0 rgba(246, 244, 244, 0.9);
+    box-shadow: 0 0 .625rem 0 rgba(253, 252, 252, 0.9);
+}
+
+.card-title {
+    text-align: center;
+}
+
+.table{
+    box-shadow: 0 0 .625rem 0 rgba(0, 0, 0, 0.9); 
+    border-radius: '15px';
+
+}
+
+.item_table{
+    text-align: center;
 }
 
 /* .myTicket-title{
     font-family: 'monospace'; 
     font-size: '1.5rem';
 } */
-
-
-
-
+ 

@@ -8,14 +8,25 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.util.UriComponentsBuilder;
 import tacs.App;
 import tacs.dto.CreateEvent;
 import tacs.dto.StatisticsResponse;
 import tacs.dto.EventStatisticsResponse;
+import tacs.dto.JWT;
+import tacs.dto.LocationDTO;
+import tacs.dto.LoginRequest;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
+import tacs.security.CustomPBKDF2PasswordEncoder;
 
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -33,33 +44,26 @@ public class StatisticsApiTest {
 
     private NormalUser testUser;
     private Event testEvent;
-    private Location testLocation;
+    private LocationDTO testLocation;
+    private JWT jwt;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia",500,12);
-        Location eastStand = new Location("East Stand", 200, 20);
-        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
-        Location gradaSur = new Location("Grada Sur", 100, 100);
+        LocationDTO preferencia = new LocationDTO("Preferencia", 500.0, 12);
+        LocationDTO eastStand = new LocationDTO("East Stand", 200.0, 20);
+        LocationDTO tribunaNorte = new LocationDTO("Tribuna Norte", 400.0, 17);
+        LocationDTO gradaSur = new LocationDTO("Grada Sur", 100.0, 100);
 
-
-        List<Location> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
-        Map<String, Integer> ticketsMap = Map.of(
-                "Preferencia", 1,
-                "East Stand", 11,
-                "Tribuna Norte", 50,
-                "Grada Sur", 23
-        );
-
+        List<LocationDTO> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
         this.testLocation = preferencia;
 
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        // createEvent.setLocations(locations);
+        createEvent.setLocations(locations);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -74,37 +78,114 @@ public class StatisticsApiTest {
                 requestEntity,
                 String.class
         );
+
+        this.loginWithAdmin();
     }
 
     @Test
     @Order(1)
     public void generateEventTest() {
         String url = "http://localhost:" + port + "/statistics/use";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " +  this.jwt.token());
+
+        HttpEntity<?> eventEntity = new HttpEntity<>(headers);
+
         ResponseEntity<List<StatisticsResponse>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
-                null,
+                eventEntity,
                 new ParameterizedTypeReference<List<StatisticsResponse>>() {}
         );
         List<StatisticsResponse> statistics = response.getBody();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, statistics.get(0).getEvents());
+        assertEquals(5, statistics.get(0).getEvents());
         System.out.println(statistics);
-
-
     }
 
     @Test
     @Order(2)
     public void getStatisticsByIdTest() {
-        String url = "http://localhost:" + port + "/statistics/events/1/tickets";
+        String url = "http://localhost:" + port + "/statistics/events/5/tickets";
 
-        ResponseEntity<EventStatisticsResponse> response = restTemplate.getForEntity(url,
-                EventStatisticsResponse.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " +  this.jwt.token());
+
+        HttpEntity<?> eventEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<EventStatisticsResponse> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                eventEntity,
+                EventStatisticsResponse.class
+        );
+
+        EventStatisticsResponse statistics = response.getBody();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getDailyTickets());
     }
 
+
+    private void loginWithAdmin() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String saltUrl = "http://localhost:" + port + "/login/salt";
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(saltUrl)
+                .queryParam("username", "admin");
+
+        HttpHeaders saltHeaders = new HttpHeaders();
+        saltHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer ");
+
+        HttpEntity<?> entity = new HttpEntity<>(saltHeaders);
+        ResponseEntity<String> saltResponse = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        String salt = saltResponse.getBody();
+
+        CustomPBKDF2PasswordEncoder encoder = new CustomPBKDF2PasswordEncoder();
+        String password =  this.hashPassword("admin123123",salt);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("admin");
+        loginRequest.setPassword(password);
+
+        HttpHeaders loginHeaders = new HttpHeaders();
+        loginHeaders.setContentType(MediaType.APPLICATION_JSON);
+        loginHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer ");
+
+        HttpEntity<LoginRequest> loginEntity = new HttpEntity<>(loginRequest, loginHeaders);
+
+        ResponseEntity<JWT> loginResponse = restTemplate.exchange(
+                "http://localhost:" + port + "/login",
+                HttpMethod.POST,
+                loginEntity,
+                JWT.class
+        );
+
+        this.jwt = loginResponse.getBody();
+    }
+
+
+    private String hashPassword(String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] saltBytes = Base64.getDecoder().decode(salt);
+
+        int iterations = 65536;
+        int keyLength = 256;
+
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, iterations, keyLength);
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = factory.generateSecret(spec).getEncoded();
+
+        String hashBase64 = Base64.getEncoder().encodeToString(hash);
+
+        return salt + ":" + hashBase64;
+    }
 }

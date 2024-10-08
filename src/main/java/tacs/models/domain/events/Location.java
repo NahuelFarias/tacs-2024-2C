@@ -3,7 +3,10 @@ package tacs.models.domain.events;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.exception.SoldOutTicketsException;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,10 +20,11 @@ public class Location {
 
     public String name;
     public double price;
-    public long quantityTickets;
-    public long quantityTicketsSold;
+    public int quantityTickets;
+    private int quantityTicketsSold;
 
-    public Location(String name, double price, long quantityTickets) {
+
+    public Location(String name, double price, int quantityTickets) {
         this.name = name;
         this.price = price;
         this.quantityTickets = quantityTickets;
@@ -35,16 +39,19 @@ public class Location {
         return price;
     }
 
-    public long getQuantityTicketsSold() {
-        return this.quantityTicketsSold;
-    }
-
     public void setQuantityTickets(int quantityTickets) {
         this.quantityTickets = quantityTickets;
     }
+    
+    public void setQuantityTicketsSold(int quantityTicketsSold) {
+        this.quantityTicketsSold = quantityTicketsSold;
+    }
 
-    public double getQuantityTickets() {
+    public int getQuantityTickets() {
         return quantityTickets;
+    }
+    public int getQuantityTicketsSold() {
+        return quantityTicketsSold;
     }
 
     public String getId() {
@@ -81,4 +88,15 @@ public class Location {
     public int hashCode() {
         return Objects.hash(name, price);
     }
+
+    public List<Ticket> makeReservation(Event event, Integer quantityTickets) {
+        List<Ticket> tickets = IntStream.range(0, quantityTickets)
+                .mapToObj(i -> new Ticket(event.getId(), this.getId()))  // Crear una nueva instancia de Ticket
+                .collect(Collectors.toList());
+        this.setQuantityTicketsSold(this.getQuantityTicketsSold()+quantityTickets);
+        this.setQuantityTickets(this.getQuantityTickets()-quantityTickets);
+        return tickets;
+    }
+
+
 }

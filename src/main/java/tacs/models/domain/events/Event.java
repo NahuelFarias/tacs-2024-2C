@@ -24,12 +24,17 @@ public class Event {
     public boolean openSale;
     public LocalDateTime creationDate;
     public List<Location> locations;
+    @JsonProperty("image_url")
+    public String imageUrl;
 
-    public Event(String name, LocalDateTime date) {
+
+
+    public Event(String name, LocalDateTime date, String imageUrl) {
         this.name = name;
         this.date = date;
         this.creationDate = LocalDateTime.now();
         this.openSale = true;
+        this.imageUrl = imageUrl;
     }
 
     @JsonIgnore
@@ -58,11 +63,11 @@ public class Event {
         this.openSale = state;
     }
 
-    public Ticket makeReservation(String locationName) {
+    public List<Ticket> makeReservation(String locationName, Integer quantityTickets) {
         if(!this.openSale) throw new PurchaseUnavailableException();
         Location location = this.locationByName(locationName);
-        Ticket newTicket = location.makeReservation(this);
-        return newTicket;
+        List<Ticket> newTickets = location.makeReservation(this, quantityTickets);
+        return newTickets;
     }
 
     public boolean purchaseAvailable() {

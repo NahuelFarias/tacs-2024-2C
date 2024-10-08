@@ -2,13 +2,19 @@ import axiosClient from "./axiosClient";
 import { getEvent } from "./eventService";
 import Promise from 'bluebird';
 
+//TODO: Ojo que puede romper
 export const getReservations = (userId) => {
     return axiosClient.get(`/users/${userId}/reserves`)
         .then(response => {
-          // Mapeamos las reservas a un array de IDs de eventos
           const eventIds = response.data.map(reservation => reservation.event);
-          // Usamos Promise.map para obtener los eventos
-          return Promise.map(eventIds, eventId => getEvent(eventId));
+
+          return Promise.map(eventIds, eventId => getEvent(eventId))
+                .then(events => {
+                    return events.map((event, index) => ({
+                        event,
+                        reservation: response.data[index]
+                    }));
+                });
         })
         .catch(error => {
             console.error('Error al obtener eventos:', error);
@@ -17,10 +23,10 @@ export const getReservations = (userId) => {
 };
 
 
-export const tryCreateReservation = (eventId, userId, zoneLocation) => {
+export const tryCreateReservation = (eventId, userId, zoneLocation, tickets) => {
     //console.log(`trying to make a reservation of ${zoneLocation}`);
     return axiosClient.post(`/events/${eventId}/reserves`, 
-      { name: zoneLocation },
+      { name: zoneLocation, quantityTickets: tickets},
       { params: { user_id: userId } } 
     )
       .then(response => {

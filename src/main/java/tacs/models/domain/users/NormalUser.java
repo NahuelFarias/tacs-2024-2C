@@ -31,9 +31,9 @@ public class NormalUser {
         //Usuario normal por defecto
         this.rol = new Rol("ROLE_USER");
     }
-
     public void bookTicket(Ticket ticket) {
-        ticket.changeOwner(this.id);
+        this.addTicket(ticket.getId());
+        ticket.changeOwner(this.getId());
         ticket.setReservationDate(LocalDateTime.now());
     }
 
