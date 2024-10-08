@@ -14,10 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")  // Aquí añades el dominio permitido
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PATCH", "DELETE")
                         .allowedHeaders("*")
-                        .allowCredentials(true);  // Si necesitas soportar cookies o credenciales
+                        .allowCredentials(true);
             }
         };
     }

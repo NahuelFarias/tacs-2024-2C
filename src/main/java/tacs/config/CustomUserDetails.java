@@ -19,12 +19,12 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //Suponemos, que el rol asociado a un usuario es UNICO
-        return List.of(new SimpleGrantedAuthority(normalUser.getRol().getNombre()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + normalUser.getRol().getNombre()));
     }
 
     @Override
     public String getPassword() {
-        return normalUser.getPassword();
+        return normalUser.getHashedPassword();
     }
 
     @Override

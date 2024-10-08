@@ -25,27 +25,26 @@ public class Event {
     @Column
     public LocalDateTime creationDate;
 
-/*    @JsonIgnore
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    public List<Ticket> tickets;*/
+    @JsonProperty("image_url")
+    public String imageUrl;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
     public List<Location> locations;
 
-    public Event(String name, LocalDateTime date, List<Location> locations) {
+    public Event(String name, LocalDateTime date, List<Location> locations, String imageUrl) {
         this.name = name;
         this.date = date;
         this.locations = locations;
         this.creationDate = LocalDateTime.now();
         this.openSale = true;
+        this.imageUrl = imageUrl;
     }
 
     @JsonIgnore
     public List<Ticket> getSoldTickets() {
         return this.locations.stream().flatMap(location -> location.getTickets().stream())
                 .collect(Collectors.toList());
-
-        //return this.tickets.stream().filter(Ticket::wasSold).collect(Collectors.toList());
     }
 
     public long getSoldTicketsAmount() {
@@ -54,17 +53,9 @@ public class Event {
 
     @JsonIgnore
     public long getAvailableTickets() {
-        return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets)  // Mapear cada producto a su precio
-                .sum();
-       // return this.tickets.stream().filter(t -> !t.wasSold()).collect(Collectors.toList());
+        return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets).sum();
     }
 
-/*
-    public long getAvailableTicketsAmount() {
-        return this.getAvailableTickets().size();
-    }
-*/
-    //TODO: No se usa :c
     public double getTotalSales() {
         return this.getSoldTickets().stream().mapToDouble(Ticket::searchPrice).sum();
     }
@@ -81,19 +72,12 @@ public class Event {
         this.openSale = state;
     }
 
-    public Ticket makeReservation(Location location) {
+    public List<Ticket> makeReservation(String locationName, Integer quantityTickets) {
         if(!this.openSale) throw new PurchaseUnavailableException();
+        Location location = this.locationByName(locationName);
 
-        return location.makeReservation(this);
-
-/*        Ticket ticket = this.getAvailableTickets().stream()
-            .filter(t -> t.getLocation().equals(location)).findFirst()
-            .orElseThrow(SoldOutTicketsException::new);
-
-
-
-        ticket.sell();
-*/
+        List<Ticket> newTickets = location.makeReservation(this, quantityTickets);
+        return newTickets;
     }
 
     public boolean purchaseAvailable() {

@@ -1,16 +1,13 @@
 package tacs.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.NormalUser;
 import tacs.repository.UserRepository;
+import tacs.security.CustomPBKDF2PasswordEncoder;
 
 import java.util.List;
 
@@ -20,9 +17,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void createUser(String name, String password) {
-        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+        String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
         NormalUser newUser = new NormalUser(name);
-        newUser.setPassword(encodedPassword);
+        newUser.setHashedPassword(encodedPassword);
         userRepository.save(newUser);
     }
 
@@ -40,10 +37,15 @@ public class UserService {
         return user.getTicketsOwned();
     }
 
-    @Transactional
-    public void reserveTicket(Integer id, Event event, Location location) {
-        NormalUser user = this.getUsers(id);
-        user.bookTicket(event, location);
+
+    public void reserveTicket(NormalUser user, Ticket ticket){
+        user.bookTicket(ticket);
+        userRepository.save(user);
     }
 
+    //TODO: Meter una cola para mantener consistente las reservas
+    public void reserveTickets(Integer id, List<Ticket> tickets) {
+        NormalUser user = this.getUsers(id);
+        tickets.forEach(ticket -> this.reserveTicket(user, ticket));
+    }
 }

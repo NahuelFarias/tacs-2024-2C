@@ -1,23 +1,20 @@
-package tacs.config;
+package tacs.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import tacs.config.CustomUserDetails;
 import tacs.models.domain.users.NormalUser;
 import tacs.repository.UserRepository;
 
 
 @Service
+@RequiredArgsConstructor
 public class InMemoryUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    public InMemoryUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -25,6 +22,7 @@ public class InMemoryUserDetailsService implements UserDetailsService {
         if (normalUser == null) {
             throw new UsernameNotFoundException("User not found");
         }
+        //System.out.println("User found: " + normalUser.getUsername() + ", Role: " + normalUser.getRol().getNombre());
         return new CustomUserDetails(normalUser);
     }
 }
