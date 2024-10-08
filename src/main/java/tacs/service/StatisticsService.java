@@ -103,7 +103,7 @@ public class StatisticsService {
         return results.get(ticketStatistics);
     }
 
-    public EventStatisticsResponse getStatisticsById(int id) {
+    public EventStatisticsResponse getStatisticsById(String id) {
         EventStatisticsResponse response = new EventStatisticsResponse();
         LocalDateTime now = LocalDateTime.now();
 

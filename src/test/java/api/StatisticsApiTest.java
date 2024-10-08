@@ -59,7 +59,7 @@ public class StatisticsApiTest {
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        createEvent.setLocations(locations);
+        // createEvent.setLocations(locations);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

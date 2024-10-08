@@ -57,6 +57,7 @@ public class Location {
 
     //TODO: Chequeo si tenemos tickets para vender
     public Ticket makeReservation(Event event) {
+        if (this.quantityTickets <= 0) throw new SoldOutTicketsException();
         Ticket ticket = new Ticket(event.getId(), this.getId());
         this.quantityTicketsSold++;
         this.quantityTickets--;
@@ -80,18 +81,4 @@ public class Location {
     public int hashCode() {
         return Objects.hash(name, price);
     }
-<<<<<<< HEAD
-
-
-    public Ticket makeReservation(Event event) {
-        if (this.quantityTickets <= 0)
-            throw new SoldOutTicketsException();
-
-        Ticket ticket = new Ticket(event, this);
-        this.tickets.add(ticket);
-        this.quantityTickets--;
-        return ticket;
-    }
-=======
->>>>>>> Add: models of domain
 }

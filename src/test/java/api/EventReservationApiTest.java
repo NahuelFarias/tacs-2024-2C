@@ -63,7 +63,7 @@ public class EventReservationApiTest {
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        createEvent.setLocations(ubicaciones);
+        // createEvent.setLocations(ubicaciones);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -31,7 +31,8 @@ public class AdminTest {
 
         List<Location> ubicaciones = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
 
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),ubicaciones);
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
+        testEvent.setLocations(ubicaciones);
         this.testLocation = preferencia;
     }
 

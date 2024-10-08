@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import jakarta.transaction.Transactional;
 import tacs.config.CustomPBKDF2PasswordEncoder;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;

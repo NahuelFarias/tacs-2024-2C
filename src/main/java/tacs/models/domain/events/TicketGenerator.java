@@ -16,12 +16,12 @@ public class TicketGenerator {
         this.ticketsMap = ticketsMap;
     }
 
-    public List<Ticket> generate(Event event) {
-        return this.ticketsMap.entrySet().stream()
-                .flatMap(entry -> IntStream.range(0, entry.getValue())
-                        .mapToObj(i -> new Ticket(event, searchLocation(entry.getKey()))))
-                .collect(Collectors.toList());
-    }
+    // public List<Ticket> generate(Event event) {
+    //     return this.ticketsMap.entrySet().stream()
+    //             .flatMap(entry -> IntStream.range(0, entry.getValue())
+    //                     .mapToObj(i -> new Ticket(event, searchLocation(entry.getKey()))))
+    //             .collect(Collectors.toList());
+    // }
 
 /*
     public List<Ticket> generate(Event event) {

@@ -57,7 +57,7 @@ public class CreateEventApiTest {
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        createEvent.setLocations(this.testLocations);
+        // createEvent.setLocations(this.testLocations);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

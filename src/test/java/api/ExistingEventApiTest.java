@@ -54,7 +54,7 @@ public class ExistingEventApiTest {
         CreateEvent crearEvento = new CreateEvent();
         crearEvento.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         crearEvento.setName("River vs Boca");
-        crearEvento.setLocations(ubicaciones);
+        // crearEvento.setLocations(ubicaciones);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

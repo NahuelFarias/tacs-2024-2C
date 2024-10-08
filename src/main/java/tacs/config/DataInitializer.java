@@ -1,7 +1,6 @@
 package tacs.config;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tacs.models.domain.events.Event;
@@ -56,7 +55,6 @@ public class DataInitializer {
         userRepository.save(admin);
     }
 
-    @Transactional
     protected void generate_initial_data() {
         Location preferencia = new Location("Preferencia",500,12);
         Location eastStand = new Location("East Stand", 200, 20);
@@ -65,20 +63,24 @@ public class DataInitializer {
 
         List<Location> testLocations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
 
-        Event eventoTest = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),testLocations);
+        Event eventoTest = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
+        eventoTest.setLocations(testLocations);
 
-        Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay(),testLocations);
+        Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay());
+        eventoTest2.setLocations(testLocations);
         eventoTest2.creationDate = LocalDate.of(2024, Month.FEBRUARY, 9).atStartOfDay();
 
-        Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay(),testLocations);
+        Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay());
+        eventoTest3.setLocations(testLocations);
         eventoTest3.creationDate = LocalDate.of(2024, Month.SEPTEMBER, 2).atTime(0,1);
 
-        Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),testLocations);
+        Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay());
+        eventoTest4.setLocations(testLocations);
         eventoTest4.creationDate = LocalDate.of(2024, Month.AUGUST, 24).atTime(11,0);
 
 
         List<Event> testEvents = new ArrayList<>(Arrays.asList(eventoTest,eventoTest2,eventoTest3,eventoTest4));
-        this.eventRepository.saveAllAndFlush(testEvents);
+        this.eventRepository.saveAll(testEvents);
 
         String encodedPassword2 = new CustomPBKDF2PasswordEncoder().encode("contrasenia123");
         NormalUser usuarioTest= new NormalUser("otrousuario");
@@ -86,12 +88,12 @@ public class DataInitializer {
 
         usuarioTest.setLastLogin(LocalDateTime.now());
 
-        usuarioTest.bookTicket(eventoTest,preferencia);
-        usuarioTest.bookTicket(eventoTest,eastStand);
-        usuarioTest.bookTicket(eventoTest,eastStand);
-        usuarioTest.bookTicket(eventoTest2,eastStand);
+        // usuarioTest.bookTicket(eventoTest,preferencia);
+        // usuarioTest.bookTicket(eventoTest,eastStand);
+        // usuarioTest.bookTicket(eventoTest,eastStand);
+        // usuarioTest.bookTicket(eventoTest2,eastStand);
 
-        this.userRepository.saveAndFlush(usuarioTest);
-        this.ticketRepository.saveAllAndFlush(usuarioTest.getTicketsOwned());
+        // this.userRepository.saveAndFlush(usuarioTest);
+        // this.ticketRepository.saveAllAndFlush(usuarioTest.getTicketsOwned());
     }
 }
