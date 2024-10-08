@@ -31,10 +31,11 @@ export const getEventByName = (eventName) => {
     });
 };
 
-export const formToCreateEventRequest = (eventName, date, locations) => {
+export const formToCreateEventRequest = (eventName, date, locations, imageUrl) => {
   const createEventRequest = {
     name: eventName,
     date: date,
+    imageUrl: imageUrl,
     locations: locations.map((location) => ({name: location.name, price: parseInt(location.price), quantityTickets: parseInt(location.tickets, 10)}))
   }
 

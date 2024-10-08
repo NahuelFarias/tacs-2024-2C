@@ -10,6 +10,7 @@ const EventCreation = () => {
     const [created, setCreated] = useState('');
     const [locations, setLocations] = useState([{ name: '', price: '', tickets: '' }]);
     const [error, setError] = useState('');
+    const [imageUrl, setImageUrl] = useState('')
 
     const navigate = useNavigate()
 
@@ -35,26 +36,35 @@ const EventCreation = () => {
 
     const eventIsValid = () => {
       if (eventName.length < 5) {
-        setError("event name is not valid")
+        setError("el nombre del evento no es valido")
         return false
       }
+
+      if (imageUrl.length < 5) {
+        setError("la url de imagen no es valida")
+      }
+
       const invalidLocationIndexes = locations.map((location, index) =>
       [location.name.length < 4 || location.price === '' || location.tickets === '', index])
       .filter((validity) => validity[0])
       .map((validity) => validity[1] + 1)
 
       if (invalidLocationIndexes.length > 0) {
-        setError(`location(s) ${invalidLocationIndexes.join(", ")} are not valid`)
+        setError(`la/s ubicacion/es ${invalidLocationIndexes.join(", ")} no son validas`)
         return false
       }
       setError("")
       return true
     }
+
+    const handleImageUrlChange = (e) => {
+        setImageUrl(e.target.value)
+    }
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       if (eventIsValid()) {
-          const createEventRequest = formToCreateEventRequest(eventName, dateTime, locations)
+          const createEventRequest = formToCreateEventRequest(eventName, dateTime, locations, imageUrl)
           const result = await tryCreateEvent(createEventRequest)
           if (result.success) {
               setCreated("Evento Creado!")
@@ -86,6 +96,21 @@ const EventCreation = () => {
                       className="form-control"
                   />
               </div>
+
+              <div className="mb-4">
+                  <p className="text-dark input-label">
+                      Imagen del evento
+                  </p>
+                  <input
+                      type="url"
+                      id="image"
+                      value={imageUrl}
+                      onChange={handleImageUrlChange}
+                      placeholder=""
+                      className="form-control"
+                  />
+              </div>
+
               <div className="mb-5">
                   <p className="text-dark input-label">
                       Fecha del evento
