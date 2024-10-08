@@ -12,11 +12,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        byte[] key = new byte[32]; // 256 bits
-        new SecureRandom().nextBytes(key);
-        String encodedKey = Base64.getEncoder().encodeToString(key);
-        System.out.println(encodedKey);
-
         SpringApplication.run(App.class, args);
     }
 }
