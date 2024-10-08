@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import { motion } from 'framer-motion';
+import Cookies from "js-cookie";
 
 const Menu = ({ menuOpen }) => {
     const [showStatsButton, setShowStatsButton] = useState(false);
@@ -8,7 +9,7 @@ const Menu = ({ menuOpen }) => {
 
     useEffect(() => {
         const checkAdmin = () => {
-            const isAdmin = localStorage.getItem('rol') == 'ROLE_ADMIN';
+            const isAdmin = localStorage.getItem('rol') === 'ADMIN';
             setShowStatsButton(isAdmin);
         };
 
@@ -33,7 +34,10 @@ const Menu = ({ menuOpen }) => {
         localStorage.removeItem("username");
         localStorage.removeItem("token");
         localStorage.removeItem("id");
-        localStorage.removeItem("rol")
+        localStorage.removeItem('rol')
+
+        Cookies.remove('Token');
+
         localStorage.removeItem("loggedIn")
     }
 

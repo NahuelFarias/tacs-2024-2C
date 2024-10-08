@@ -30,6 +30,7 @@ public class NormalUser {
     @Column
     public LocalDateTime lastLogin;
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rol_id")
     public Rol rol;
 
     public NormalUser(String username) {

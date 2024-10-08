@@ -1,6 +1,7 @@
 package tacs.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tacs.dto.CreateEvent;
 import tacs.dto.CreateReservation;
@@ -30,6 +31,7 @@ public class EventController {
 
     @PatchMapping("/{id}/close")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void setStatusSales(@PathVariable Integer id) {
         eventService.setState(id, false);
     }

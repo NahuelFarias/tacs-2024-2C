@@ -1,4 +1,4 @@
-package tacs.config;
+package tacs.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.crypto.SecretKeyFactory;

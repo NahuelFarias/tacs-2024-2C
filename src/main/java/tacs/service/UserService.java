@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tacs.config.CustomPBKDF2PasswordEncoder;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.NormalUser;
 import tacs.repository.UserRepository;
+import tacs.security.CustomPBKDF2PasswordEncoder;
 
 import java.util.List;
 
