@@ -68,10 +68,12 @@ public class Event {
         this.openSale = state;
     }
 
-    public Ticket makeReservation(Location location) {
+    public List<Ticket> makeReservation(String locationName, Integer quantityTickets) {
         if(!this.openSale) throw new PurchaseUnavailableException();
+        Location location = this.locationByName(locationName);
 
-        return location.makeReservation(this);
+        List<Ticket> newTickets = location.makeReservation(this, quantityTickets);
+        return newTickets;
     }
 
     public boolean purchaseAvailable() {

@@ -11,12 +11,24 @@ const ReservationModal = ({ closeModal, data }) => {
     const reservationModalRef = useRef();
     const actualDate = new Date(data.eventDate).toLocaleString().slice(0, -3).concat("hs");
 
+
+    const [totalPrice, setTotalprice] = useState(data.zonePrice);
+    const [reservation, setReservation] = useState({ eventId: data.eventId, zone: data.zoneLocation, amount: 1});
+
+    const [tickets, setTickets] = useState(1);
+    const handleTickets = (e) => {
+        setTotalprice(e.target.value*data.zonePrice);
+        setTickets(e.target.value);
+        reservation.amount = (e.target.value);
+    }
     useEffect(() => {
         const closeReservationModal = (e) => {
             if (!reservationModalRef.current.contains(e.target)) {
                 closeModal(false);
             }
         };
+
+
 
         document.addEventListener("mousedown", closeReservationModal);
 
@@ -26,17 +38,17 @@ const ReservationModal = ({ closeModal, data }) => {
     }, [closeModal]);
 
     const makeReservation = () => {
-        setIsLoading(true); // Activa la pantalla de carga
-        tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation)
+        setIsLoading(true);
+        tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation, tickets)
             .then(() => {
                 setTimeout(() => {
-                    setIsLoading(false); // Desactiva la pantalla de carga
-                    navigate('/reservations'); // Redirige después de un delay
+                    setIsLoading(false);
+                    navigate('/reservations');
                 }, 2000); // 2 segundos de delay
             })
             .catch((error) => {
                 console.error("Error al realizar la reserva:", error);
-                setIsLoading(false); // En caso de error, desactiva la carga
+                setIsLoading(false);
             });
     }
 
@@ -63,6 +75,17 @@ const ReservationModal = ({ closeModal, data }) => {
                                     <h3>{data.zoneLocation}</h3>
                                     <h3>{data.zonePrice}$</h3>
                                 </div>
+                                <div className="d-flex justify-content-between align-items-center mb-2 text-dark">
+                                    <h4>Cantidad:</h4>
+                                    <input
+                                        type="number"
+                                        placeholder="Tickets available"
+                                        max={data.availableTickets}
+                                        value={tickets}
+                                        onChange={handleTickets}
+                                        className="form-control justify-content-end w-50"
+                                    />
+                                </div>
                                 <h5 className='text-dark'>Tickets disponibles: {data.availableTickets}</h5>
                             </div>
                             <div className="row d-flex justify-content-between text-dark">
@@ -70,7 +93,7 @@ const ReservationModal = ({ closeModal, data }) => {
                                     <h2>Total:</h2>
                                 </div>
                                 <div className="col-6 d-flex justify-content-end">
-                                    <h2>{data.zonePrice}$</h2>
+                                    <h2>{totalPrice}$</h2>
                                 </div>
                             </div>
                         </div>

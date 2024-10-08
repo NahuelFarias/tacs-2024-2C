@@ -57,7 +57,7 @@ public class DataInitializer {
     }
 
     @Transactional
-    protected void generate_initial_data() {
+    public void generate_initial_data() {
         Location preferencia = new Location("Preferencia",500,12);
         Location eastStand = new Location("East Stand", 200, 20);
         Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
@@ -86,10 +86,10 @@ public class DataInitializer {
 
         usuarioTest.setLastLogin(LocalDateTime.now());
 
-        usuarioTest.bookTicket(eventoTest,preferencia);
+/*        usuarioTest.bookTicket(eventoTest,preferencia);
         usuarioTest.bookTicket(eventoTest,eastStand);
         usuarioTest.bookTicket(eventoTest,eastStand);
-        usuarioTest.bookTicket(eventoTest2,eastStand);
+        usuarioTest.bookTicket(eventoTest2,eastStand);*/
 
         this.userRepository.saveAndFlush(usuarioTest);
         this.ticketRepository.saveAllAndFlush(usuarioTest.getTicketsOwned());

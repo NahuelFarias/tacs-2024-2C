@@ -3,11 +3,12 @@ package tacs.models.domain.events;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import tacs.models.domain.exception.SoldOutTicketsException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 //TODO: cambiar a @data? para evitar overridear equals y hashcode y sacar boilerplate
 @Entity
@@ -23,10 +24,12 @@ public class Location {
 
     @Basic
     public int quantityTickets;
+    private int quantityTicketsSold;
 
     @JsonIgnore
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     public List<Ticket> tickets = new ArrayList<>();
+
 
     public Location(String name, double price, int quantityTickets) {
         this.name = name;
@@ -46,13 +49,18 @@ public class Location {
     public List<Ticket> getTickets() {
         return this.tickets;
     }
-
+    public void setQuantityTicketsSold(int quantityTicketsSold) {
+        this.quantityTicketsSold = quantityTicketsSold;
+    }
     public void setQuantityTickets(int quantityTickets) {
         this.quantityTickets = quantityTickets;
     }
 
-    public double getQuantityTickets() {
+    public int getQuantityTickets() {
         return quantityTickets;
+    }
+    public int getQuantityTicketsSold() {
+        return quantityTicketsSold;
     }
 
     // Sobrescribir equals() para comparar objetos basados en los valores de sus atributos
@@ -75,13 +83,14 @@ public class Location {
     }
 
 
-    public Ticket makeReservation(Event event) {
-        if (this.quantityTickets <= 0)
-            throw new SoldOutTicketsException();
-
-        Ticket ticket = new Ticket(event, this);
-        this.tickets.add(ticket);
-        this.quantityTickets--;
-        return ticket;
+    public List<Ticket> makeReservation(Event event, Integer quantityTickets) {
+        List<Ticket> tickets = IntStream.range(0, quantityTickets)
+                .mapToObj(i -> new Ticket(event, this))  // Crear una nueva instancia de Ticket
+                .collect(Collectors.toList());
+        this.setQuantityTicketsSold(this.getQuantityTicketsSold()+quantityTickets);
+        this.setQuantityTickets(this.getQuantityTickets()-quantityTickets);
+        return tickets;
     }
+
+
 }

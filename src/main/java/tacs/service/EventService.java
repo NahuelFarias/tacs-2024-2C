@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import tacs.dto.CreateReservation;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
+import tacs.models.domain.events.Ticket;
 import tacs.repository.EventRepository;
 
 import java.time.LocalDateTime;
@@ -49,8 +50,10 @@ public class EventService {
     @Transactional
     public void createReserves(Integer id, Integer userId, CreateReservation createReservation) {
         Event event = this.getEvent(id);
-        Location location1 = event.locationByName(createReservation.getName());
-        userService.reserveTicket(userId, event, location1);
+        String locationName = createReservation.getName();
+        List<Ticket> tickets = event.makeReservation(locationName,createReservation.getQuantityTickets());
+        userService.reserveTickets(userId, tickets);
+        eventRepository.save(event);
     }
 
     public long getTicketsForSale(Integer id) {
