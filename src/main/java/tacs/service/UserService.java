@@ -1,17 +1,14 @@
 package tacs.service;
 
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import tacs.config.CustomPBKDF2PasswordEncoder;
+import tacs.security.CustomPBKDF2PasswordEncoder;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
 import tacs.models.domain.events.Location;

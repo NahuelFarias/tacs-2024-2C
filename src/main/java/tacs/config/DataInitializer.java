@@ -11,6 +11,7 @@ import tacs.models.domain.users.Rol;
 import tacs.repository.EventRepository;
 import tacs.repository.TicketRepository;
 import tacs.repository.UserRepository;
+import tacs.security.CustomPBKDF2PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,11 +47,11 @@ public class DataInitializer {
 
         NormalUser user = new NormalUser("user");
         user.setHashedPassword(encodedPassword1);
-        user.setRol(new Rol("ROLE_USER"));
+        user.setRol(new Rol("USER"));
 
         NormalUser admin = new NormalUser("admin");
         admin.setHashedPassword(encodedPassword2);
-        admin.setRol(new Rol("ROLE_ADMIN"));
+        admin.setRol(new Rol("ADMIN"));
 
         userRepository.save(user);
         userRepository.save(admin);
@@ -64,16 +65,35 @@ public class DataInitializer {
         Location gradaSur = new Location("Grada Sur", 100, 100);
 
         List<Location> testLocations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
-
         Event eventoTest = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(),testLocations);
 
-        Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay(),testLocations);
+
+        Location preferencia2 = new Location("Preferencia",500,13);
+        Location eastStand2 = new Location("East Stand", 200, 53);
+        Location tribunaNorte2 = new Location("Tribuna Norte", 400, 22);
+        Location gradaSur2 = new Location("Grada Sur", 100, 100);
+
+        List<Location> testLocations2 = new ArrayList<>(Arrays.asList(preferencia2,eastStand2,tribunaNorte2,gradaSur2));
+        Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay(),testLocations2);
         eventoTest2.creationDate = LocalDate.of(2024, Month.FEBRUARY, 9).atStartOfDay();
 
-        Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay(),testLocations);
+
+        Location preferencia3 = new Location("Preferencia",500,45);
+        Location eastStand3 = new Location("East Stand", 200, 76);
+        Location tribunaNorte3 = new Location("Zona Super Random", 400, 23);
+
+        List<Location> testLocations3 = new ArrayList<>(Arrays.asList(preferencia3,eastStand3,tribunaNorte3));
+        Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay(),testLocations3);
         eventoTest3.creationDate = LocalDate.of(2024, Month.SEPTEMBER, 2).atTime(0,1);
 
-        Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),testLocations);
+
+        Location preferencia4 = new Location("Preferencia",500,2342);
+        Location eastStand4 = new Location("East Stand", 200, 3546);
+        Location tribunaNorte4 = new Location("Tribuna Norte", 400, 3435);
+        Location gradaSur4 = new Location("Grada Sur", 100, 5555);
+
+        List<Location> testLocations4 = new ArrayList<>(Arrays.asList(preferencia4,eastStand4,tribunaNorte4,gradaSur4));
+        Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),testLocations4);
         eventoTest4.creationDate = LocalDate.of(2024, Month.AUGUST, 24).atTime(11,0);
 
 

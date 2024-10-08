@@ -60,13 +60,11 @@ const EventCreation = () => {
               setCreated("Evento Creado!")
           }
       }
-
     };
 
     const redirectToHome = () => {
         navigate('/');
     };
-
 
     return (
       <div className="creation-background d-flex justify-content-center align-items-center">

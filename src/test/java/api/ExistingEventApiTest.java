@@ -102,7 +102,7 @@ public class ExistingEventApiTest {
     @Test
     @Order(3)
     public void bookTicketTest() {
-        Integer userId = 3;
+        Integer userId = 4;
         String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=" + userId;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

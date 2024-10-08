@@ -8,7 +8,7 @@ const Menu = ({ menuOpen }) => {
 
     useEffect(() => {
         const checkAdmin = () => {
-            const isAdmin = localStorage.getItem('rol') == 'ROLE_ADMIN';
+            const isAdmin = localStorage.getItem('rol') === 'ADMIN';
             setShowStatsButton(isAdmin);
         };
 
