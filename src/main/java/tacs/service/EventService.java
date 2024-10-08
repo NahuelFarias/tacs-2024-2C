@@ -1,20 +1,19 @@
 package tacs.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import tacs.dto.CreateGenerator;
+import tacs.dto.CreateReservation;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.TicketGenerator;
 import tacs.models.domain.events.Location;
+import tacs.models.domain.events.Ticket;
 import tacs.repository.EventRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +22,8 @@ public class EventService {
     private final EventRepository eventRepository;
     private final UserService userService;
 
-    public void createEvent(String name, LocalDateTime date, CreateGenerator createGenerator) {
-        TicketGenerator generator = new TicketGenerator(createGenerator.getLocations(), createGenerator.getTicketsMap());
-        Event event = new Event(name, date, generator);
+    public void createEvent(String name, LocalDateTime date, List<Location> locations, String imageUrl) {
+        Event event = new Event(name, date, locations, imageUrl);
         eventRepository.save(event);
     }
 
@@ -50,14 +48,17 @@ public class EventService {
     }
 
     @Transactional
-    public void createReserves(Integer id, Integer userId, Location location) {
+    public void createReserves(Integer id, Integer userId, CreateReservation createReservation) {
         Event event = this.getEvent(id);
-        userService.reserveTicket(userId, event, location);
+        String locationName = createReservation.getName();
+        List<Ticket> tickets = event.makeReservation(locationName,createReservation.getQuantityTickets());
+        userService.reserveTickets(userId, tickets);
+        eventRepository.save(event);
     }
 
     public long getTicketsForSale(Integer id) {
         Event event = this.getEvent(id);
-        return event.getAvailableTicketsAmount();
+        return event.getAvailableTickets();
     }
 
     public List<Event> getEvents() {

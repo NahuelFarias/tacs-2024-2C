@@ -15,10 +15,10 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Basic
-    private boolean sold;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
+/*    @Basic
+    private boolean sold;*/
+    @ManyToOne
+    @JoinColumn(name = "location_id",nullable = false)
     private Location location;
     @ManyToOne
     @JoinColumn(name = "event_id")
@@ -33,19 +33,11 @@ public class Ticket {
     public Ticket(Event event, Location location) {
         this.event = event;
         this.location = location;
-        this.sold = false;
+/*        this.sold = false;*/
     }
 
     public void changeOwner(NormalUser newOwner) {
         this.owner = newOwner;
-    }
-
-    public void sell() {
-        this.sold = true;
-    }
-
-    public boolean wasSold() {
-        return this.sold;
     }
 
     public Event getEvent() {

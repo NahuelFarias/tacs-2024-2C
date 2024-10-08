@@ -1,12 +1,14 @@
 package tacs.models.domain.events;
 
-import java.util.Objects;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 //TODO: cambiar a @data? para evitar overridear equals y hashcode y sacar boilerplate
 @Entity
@@ -20,9 +22,20 @@ public class Location {
     public String name;
     public double price;
 
-    public Location(String name, double price) {
+    @Basic
+    public int quantityTickets;
+    private int quantityTicketsSold;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    public List<Ticket> tickets = new ArrayList<>();
+
+
+    public Location(String name, double price, int quantityTickets) {
         this.name = name;
         this.price = price;
+        this.quantityTickets = quantityTickets;
+        this.tickets = new ArrayList<>();
     }
 
     public String getName() {
@@ -31,6 +44,23 @@ public class Location {
 
     public double getPrice() {
         return price;
+    }
+
+    public List<Ticket> getTickets() {
+        return this.tickets;
+    }
+    public void setQuantityTicketsSold(int quantityTicketsSold) {
+        this.quantityTicketsSold = quantityTicketsSold;
+    }
+    public void setQuantityTickets(int quantityTickets) {
+        this.quantityTickets = quantityTickets;
+    }
+
+    public int getQuantityTickets() {
+        return quantityTickets;
+    }
+    public int getQuantityTicketsSold() {
+        return quantityTicketsSold;
     }
 
     // Sobrescribir equals() para comparar objetos basados en los valores de sus atributos
@@ -51,4 +81,16 @@ public class Location {
     public int hashCode() {
         return Objects.hash(name, price);
     }
+
+
+    public List<Ticket> makeReservation(Event event, Integer quantityTickets) {
+        List<Ticket> tickets = IntStream.range(0, quantityTickets)
+                .mapToObj(i -> new Ticket(event, this))  // Crear una nueva instancia de Ticket
+                .collect(Collectors.toList());
+        this.setQuantityTicketsSold(this.getQuantityTicketsSold()+quantityTickets);
+        this.setQuantityTickets(this.getQuantityTickets()-quantityTickets);
+        return tickets;
+    }
+
+
 }

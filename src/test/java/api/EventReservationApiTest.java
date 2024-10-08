@@ -11,7 +11,6 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import tacs.App;
 import tacs.dto.CreateEvent;
-import tacs.dto.CreateGenerator;
 import tacs.dto.CreateUser;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
@@ -53,29 +52,21 @@ public class EventReservationApiTest {
         String username = "Pepe Rodriguez";
         this.testUSer = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia", 500);
-        Location eastStand = new Location("East Stand", 200);
-        Location tribunaNorte = new Location("Tribuna Norte", 400);
-        Location gradaSur = new Location("Grada Sur", 100);
+        Location preferencia = new Location("Preferencia",500,12);
+        Location eastStand = new Location("East Stand", 200, 20);
+        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
+        Location gradaSur = new Location("Grada Sur", 100, 100);
 
         List<Location> ubicaciones = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
-        Map<String, Integer> mapaTickets = Map.of(
-                "Preferencia", 1,
-                "East Stand", 11,
-                "Tribuna Norte", 50,
-                "Grada Sur", 23
-        );
-
         this.testLocation = preferencia;
-
-        CreateGenerator generadorTickets = new CreateGenerator();
-        generadorTickets.setTicketsMap(mapaTickets);
-        generadorTickets.setLocations(ubicaciones);
 
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        createEvent.setTicketGenerator(generadorTickets);
+        createEvent.setLocations(ubicaciones);
+        createEvent.setImageUrl("https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg");
+
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -151,7 +142,7 @@ public class EventReservationApiTest {
     @Disabled
     public void reserveTicketWithInvalidLocation() {
         Integer userId = 1;
-        Location locationInvalid = new Location("Invalid location",0);
+        Location locationInvalid = new Location("Invalid location",0,0);
         String url = "http://localhost:" + port + "/events/1/reserves" + "?user_id=" + userId;
 
         HttpHeaders headers = new HttpHeaders();

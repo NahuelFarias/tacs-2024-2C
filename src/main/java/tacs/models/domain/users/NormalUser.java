@@ -5,21 +5,11 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
-import tacs.models.domain.events.Location;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Optional;
-
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 @NoArgsConstructor
@@ -31,13 +21,16 @@ public class NormalUser {
     @JsonProperty("username")
     public String username;
     @Basic
-    public String password;
+    public String hashedPassword;
+    @Basic
+    public String salt;
     @JsonProperty("tickets")
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     public List<Ticket> ticketsOwned;
     @Column
     public LocalDateTime lastLogin;
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rol_id")
     public Rol rol;
 
     public NormalUser(String username) {
@@ -46,9 +39,7 @@ public class NormalUser {
         //Usuario normal por defecto
         this.rol = new Rol("ROLE_USER");
     }
-
-    public void bookTicket(Event event, Location location) {
-        Ticket ticket = event.makeReservation(location);
+    public void bookTicket(Ticket ticket) {
         this.addTicket(ticket);
         ticket.changeOwner(this);
         ticket.setReservationDate(LocalDateTime.now());
@@ -85,8 +76,8 @@ public class NormalUser {
         return rol;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
     public String getUsername() {
@@ -97,8 +88,16 @@ public class NormalUser {
         this.rol = rol;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPassword(String password) {
+        this.hashedPassword = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public void setUsername(String username) {

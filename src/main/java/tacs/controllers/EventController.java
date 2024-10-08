@@ -1,21 +1,12 @@
 package tacs.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import tacs.dto.CreateEvent;
+import tacs.dto.CreateReservation;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.service.EventService;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -38,20 +29,21 @@ public class EventController {
         return eventService.getTicketsForSale(id);
     }
 
-    @PutMapping("/{id}/sales")
+    @PatchMapping("/{id}/close")
     @ResponseBody
-    public void setStatusSales(@PathVariable Integer id, @RequestParam Boolean state) {
-        eventService.setState(id, state);
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public void setStatusSales(@PathVariable Integer id) {
+        eventService.setState(id, false);
     }
 
     @PostMapping
     public void createEvent(@RequestBody CreateEvent event) {
-        eventService.createEvent(event.getName(), event.getDate(), event.getTicketGenerator());
+        eventService.createEvent(event.getName(), event.getDate(), event.getLocations(), event.getImageUrl());
     }
 
     @PostMapping("/{id}/reserves")
-    public void createReserves(@PathVariable Integer id, @RequestParam("user_id") Integer userId, @RequestBody Location location) {
-        eventService.createReserves(id, userId, location);
+    public void createReserves(@PathVariable Integer id, @RequestParam("user_id") Integer userId, @RequestBody CreateReservation nameLocation) {
+        eventService.createReserves(id, userId, nameLocation);
     }
 
     @GetMapping

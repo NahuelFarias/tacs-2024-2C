@@ -59,13 +59,13 @@ public class ExistingUserApiTest {
         List<NormalUser> users = response.getBody();
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(3, users.size());
+        Assertions.assertEquals(4, users.size());
     }
 
     @Test
     @Order(2)
     public void getUserDataTest(){
-        String url = "http://localhost:" + port + "/users/3";
+        String url = "http://localhost:" + port + "/users/4";
 
         ResponseEntity<NormalUser> response = restTemplate.getForEntity(url, NormalUser.class);
 

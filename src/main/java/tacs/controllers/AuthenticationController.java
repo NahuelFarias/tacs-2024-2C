@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import tacs.dto.JWT;
 import tacs.dto.LoginRequest;
 import tacs.service.AutenticationService;
-import tacs.service.EventService;
 
 @RestController
 @RequestMapping("/login")
@@ -19,4 +18,11 @@ public class AuthenticationController {
     public JWT authenticate(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
+
+    @GetMapping("/salt")
+    @ResponseBody
+    public String getSalt(@RequestParam String username) {
+        return authService.getSalt(username);
+    }
+
 }

@@ -44,7 +44,7 @@ const SearchBar = () => {
       </div>
 
       {error && <ErrorMessage message={error} onClose={handleCloseError}/>}
-      {foundEvent && <FoundEvent title={foundEvent.name} onClose={handleCloseEvent} />}
+      {foundEvent && <FoundEvent eventId={foundEvent.id} title={foundEvent.name} onClose={handleCloseEvent} />}
     </div>
   );
 };

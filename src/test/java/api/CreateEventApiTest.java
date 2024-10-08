@@ -9,7 +9,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import tacs.App;
 import tacs.dto.CreateEvent;
-import tacs.dto.CreateGenerator;
 import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
@@ -44,32 +43,21 @@ public class CreateEventApiTest {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia", 500);
-        Location eastStand = new Location("East Stand", 200);
-        Location tribunaNorte = new Location("Tribuna Norte", 400);
-        Location gradaSur = new Location("Grada Sur", 100);
+        Location preferencia = new Location("Preferencia",500,12);
+        Location eastStand = new Location("East Stand", 200, 20);
+        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
+        Location gradaSur = new Location("Grada Sur", 100, 100);
 
         this.testLocations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
-        this.testTicketsMap = Map.of(
-                "Preferencia", 1,
-                "East Stand", 11,
-                "Tribuna Norte", 50,
-                "Grada Sur", 23
-        );
-
         this.testLocation = preferencia;
     }
 
     @Test
     public void createEventTest() {
-        CreateGenerator ticketGenerator = new CreateGenerator();
-        ticketGenerator.setTicketsMap(this.testTicketsMap);
-        ticketGenerator.setLocations(this.testLocations);
-
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
         createEvent.setName("River vs Boca");
-        createEvent.setTicketGenerator(ticketGenerator);
+        createEvent.setLocations(this.testLocations);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -108,29 +96,4 @@ public class CreateEventApiTest {
         // Verificar que se devuelva un código de error 400 (Bad Request)
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
-
-    @Test
-    public void createEventWithoutTicketGeneratorTest() {
-        CreateEvent createEvent = new CreateEvent();
-        createEvent.setName("River vs Boca");
-        createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<CreateEvent> requestEntity = new HttpEntity<>(createEvent, headers);
-
-        String url = "http://localhost:" + port + "/events";
-
-        ResponseEntity<String> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                requestEntity,
-                String.class
-        );
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-
 }

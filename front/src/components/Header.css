@@ -18,3 +18,24 @@
     right: 20px;
     top: 20px;
 }
+
+.side-container {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.username-container {
+    margin-top: 10px;
+}
+
+.username-text {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    position: absolute;
+    right: 250px;
+    top: 20px;
+    font-size: 1.5em;
+}
+
