@@ -28,8 +28,6 @@ const ReservationModal = ({ closeModal, data }) => {
             }
         };
 
-
-
         document.addEventListener("mousedown", closeReservationModal);
 
         return () => {
@@ -38,18 +36,25 @@ const ReservationModal = ({ closeModal, data }) => {
     }, [closeModal]);
 
     const makeReservation = () => {
-        setIsLoading(true);
-        tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation, tickets)
-            .then(() => {
-                setTimeout(() => {
+        const loginStatus = localStorage.getItem('loggedIn') === "true";
+
+        if (loginStatus) {
+            setIsLoading(true);
+            tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation, tickets)
+                .then(() => {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                        navigate('/reservations');
+                    }, 2000); // 2 segundos de delay
+                })
+                .catch((error) => {
+                    console.error("Error al realizar la reserva:", error);
                     setIsLoading(false);
-                    navigate('/reservations');
-                }, 2000); // 2 segundos de delay
-            })
-            .catch((error) => {
-                console.error("Error al realizar la reserva:", error);
-                setIsLoading(false);
-            });
+                });
+        }
+        else {
+            navigate("/login", { state: { message: 'Para reservar, debes iniciar sesion.' } })
+        }
     }
 
     return (
@@ -97,7 +102,6 @@ const ReservationModal = ({ closeModal, data }) => {
                                 </div>
                             </div>
                         </div>
-
                         <PrimaryButton type="button" onClick={makeReservation}>Realizar reserva</PrimaryButton>
                         <SecondaryButton className='mt-2' type="button" onClick={() => closeModal(false)}>Cancelar</SecondaryButton>
                     </form>
