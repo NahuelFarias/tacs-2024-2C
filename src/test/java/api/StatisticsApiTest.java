@@ -76,45 +76,7 @@ public class StatisticsApiTest {
                 String.class
         );
 
-        String saltUrl = "http://localhost:" + port + "/login/salt";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(saltUrl)
-                .queryParam("username", "admin");
-
-        HttpHeaders saltHeaders = new HttpHeaders();
-        saltHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer ");
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> saltResponse = restTemplate.exchange(
-                builder.toUriString(),
-                HttpMethod.GET,
-                entity,
-                String.class
-        );
-
-        String salt = saltResponse.getBody();
-
-        String loginUrl = "http://localhost:" + port + "/login";
-        CustomPBKDF2PasswordEncoder encoder = new CustomPBKDF2PasswordEncoder();
-        String password =  this.hashPassword("admin123123",salt);
-
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("admin");
-        loginRequest.setPassword(password);
-
-        HttpHeaders loginHeaders = new HttpHeaders();
-        loginHeaders.setContentType(MediaType.APPLICATION_JSON);
-        loginHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer ");
-
-        HttpEntity<LoginRequest> loginEntity = new HttpEntity<>(loginRequest, loginHeaders);
-
-        ResponseEntity<JWT> loginResponse = restTemplate.exchange(
-                "http://localhost:" + port + "/login",
-                HttpMethod.POST,
-                loginEntity,
-                JWT.class
-        );
-
-        this.jwt = loginResponse.getBody();
+        this.loginWithAdmin();
     }
 
     @Test
@@ -163,6 +125,48 @@ public class StatisticsApiTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getDailyTickets());
+    }
+
+
+    private void loginWithAdmin() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String saltUrl = "http://localhost:" + port + "/login/salt";
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(saltUrl)
+                .queryParam("username", "admin");
+
+        HttpHeaders saltHeaders = new HttpHeaders();
+        saltHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer ");
+
+        HttpEntity<?> entity = new HttpEntity<>(saltHeaders);
+        ResponseEntity<String> saltResponse = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        String salt = saltResponse.getBody();
+
+        CustomPBKDF2PasswordEncoder encoder = new CustomPBKDF2PasswordEncoder();
+        String password =  this.hashPassword("admin123123",salt);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("admin");
+        loginRequest.setPassword(password);
+
+        HttpHeaders loginHeaders = new HttpHeaders();
+        loginHeaders.setContentType(MediaType.APPLICATION_JSON);
+        loginHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer ");
+
+        HttpEntity<LoginRequest> loginEntity = new HttpEntity<>(loginRequest, loginHeaders);
+
+        ResponseEntity<JWT> loginResponse = restTemplate.exchange(
+                "http://localhost:" + port + "/login",
+                HttpMethod.POST,
+                loginEntity,
+                JWT.class
+        );
+
+        this.jwt = loginResponse.getBody();
     }
 
 
