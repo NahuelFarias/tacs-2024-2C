@@ -11,7 +11,6 @@ const ReservationModal = ({ closeModal, data }) => {
     const reservationModalRef = useRef();
     const actualDate = new Date(data.eventDate).toLocaleString().slice(0, -3).concat("hs");
 
-
     const [totalPrice, setTotalprice] = useState(data.zonePrice);
     const [reservation, setReservation] = useState({ eventId: data.eventId, zone: data.zoneLocation, amount: 1});
 

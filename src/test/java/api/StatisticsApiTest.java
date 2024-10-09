@@ -10,9 +10,13 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.util.UriComponentsBuilder;
 import tacs.App;
-import tacs.dto.*;
+import tacs.dto.CreateEvent;
+import tacs.dto.StatisticsResponse;
+import tacs.dto.EventStatisticsResponse;
+import tacs.dto.JWT;
+import tacs.dto.LocationDTO;
+import tacs.dto.LoginRequest;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
 import tacs.security.CustomPBKDF2PasswordEncoder;
 
@@ -40,7 +44,7 @@ public class StatisticsApiTest {
 
     private NormalUser testUser;
     private Event testEvent;
-    private Location testLocation;
+    private LocationDTO testLocation;
     private JWT jwt;
 
     @BeforeEach
@@ -48,18 +52,17 @@ public class StatisticsApiTest {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia",500,12);
-        Location eastStand = new Location("East Stand", 200, 20);
-        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
-        Location gradaSur = new Location("Grada Sur", 100, 100);
+        LocationDTO preferencia = new LocationDTO("Preferencia", 500.0, 12);
+        LocationDTO eastStand = new LocationDTO("East Stand", 200.0, 20);
+        LocationDTO tribunaNorte = new LocationDTO("Tribuna Norte", 400.0, 17);
+        LocationDTO gradaSur = new LocationDTO("Grada Sur", 100.0, 100);
 
-
-        List<Location> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
+        List<LocationDTO> locations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
         this.testLocation = preferencia;
 
         CreateEvent createEvent = new CreateEvent();
         createEvent.setDate(LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay());
-        createEvent.setName("River vs Boca 2");
+        createEvent.setName("River vs Boca");
         createEvent.setLocations(locations);
 
         HttpHeaders headers = new HttpHeaders();

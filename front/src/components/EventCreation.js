@@ -104,7 +104,7 @@ const EventCreation = () => {
                       id="image"
                       value={imageUrl}
                       onChange={handleImageUrlChange}
-                      placeholder=""
+                      placeholder="Ingrese URL de la imagen portada"
                       className="form-control"
                   />
               </div>

@@ -7,10 +7,11 @@ const Reservations = () => {
     const [reservations, setReservations] = useState([]);
 
     useEffect(() => {
-        getReservations(localStorage.getItem("id")).then(data => {
-            setReservations(data);
-            console.log(data);
-        })
+        getReservations(localStorage.getItem("id"))
+            .then(data => {
+                setReservations(data);
+                // console.log(data);
+            })
             .catch(error => {
                 console.error('Error fetching events:', error);
                 setReservations([]);
@@ -18,21 +19,21 @@ const Reservations = () => {
     }, []);
 
     // Agrupar las reservas por evento y ubicación
-    const groupedReservations = reservations.reduce((acc, reservation) => {
-        const eventId = reservation.event.id;
-        const location = reservation.location.name;
+    const groupedReservations = reservations.reduce((acc, element) => {
+        const eventId = element.event.id;
+        const location = element.event.locations.find(l => l.id == element.reservation.location);
 
         // Verificar si el evento ya existe en el acumulador
         if (!acc[eventId]) {
             acc[eventId] = {
-                eventName: reservation.event.name,
-                date: reservation.event.date,
+                eventName: element.event.name,
+                reservationDate: element.reservation.reservationDate,
                 locations: []
             };
         }
 
         // Verificar si la ubicación ya existe dentro del evento
-        const existingLocation = acc[eventId].locations.find(loc => loc.name === location);
+        const existingLocation = acc[eventId].locations.find(loc => loc.name === location.name);
 
         if (existingLocation) {
             // Si la ubicación ya existe, incrementar el contador
@@ -40,8 +41,8 @@ const Reservations = () => {
         } else {
             // Si no existe, añadir la nueva ubicación con count = 1
             acc[eventId].locations.push({
-                name: reservation.location.name,
-                price: reservation.location.price,
+                name: location.name,
+                price: location.price,
                 count: 1
             });
         }
@@ -51,8 +52,6 @@ const Reservations = () => {
 
     // Convertir el objeto a un array para mapearlo
     const reservationsByEvent = Object.entries(groupedReservations);
-
-    console.log(reservationsByEvent)
 
     return (
         <div className="home-page">

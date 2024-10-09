@@ -26,7 +26,7 @@ public class StatController {
 
     @GetMapping("/events/{id}/tickets")
     @ResponseBody
-    public EventStatisticsResponse getTicketsSales(@PathVariable Integer id) {
+    public EventStatisticsResponse getTicketsSales(@PathVariable String id) {
         return statisticsService.getStatisticsById(id);
     }
 }

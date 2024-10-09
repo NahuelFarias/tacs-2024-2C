@@ -38,13 +38,13 @@ public class UserController {
 
     @GetMapping("/{id}") 
     @ResponseBody
-    public NormalUser getDataUser(@PathVariable Integer id) {
-        return userService.getUsers(id);
+    public NormalUser getDataUser(@PathVariable String id) {
+        return userService.getUser(id);
     }
 
     @GetMapping("/{id}/reserves") 
     @ResponseBody
-    public List<Ticket> getReserves(@PathVariable Integer id) {
+    public List<Ticket> getReserves(@PathVariable String id) {
         return userService.getReservations(id);
     }
 }

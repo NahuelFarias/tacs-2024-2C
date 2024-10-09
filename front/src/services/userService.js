@@ -24,4 +24,5 @@ export const tryCreateUser = (username, password) => {
       }
       throw error;
     });
+  return false
 }

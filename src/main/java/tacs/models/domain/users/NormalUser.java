@@ -1,63 +1,48 @@
 package tacs.models.domain.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import tacs.models.domain.events.Event;
 import tacs.models.domain.events.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
 @NoArgsConstructor
 public class NormalUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Basic
+    private String id;
     @JsonProperty("username")
     public String username;
-    @Basic
     public String hashedPassword;
-    @Basic
     public String salt;
     @JsonProperty("tickets")
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    public List<Ticket> ticketsOwned;
-    @Column
+    private List<String> ticketIds; // Lista de IDs de tickets comprados
     public LocalDateTime lastLogin;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rol_id")
     public Rol rol;
 
     public NormalUser(String username) {
         this.username = username;
-        this.ticketsOwned = new ArrayList<>();
+        this.ticketIds = new ArrayList<>();
         //Usuario normal por defecto
         this.rol = new Rol("ROLE_USER");
     }
     public void bookTicket(Ticket ticket) {
-        this.addTicket(ticket);
-        ticket.changeOwner(this);
+        this.addTicket(ticket.getId());
+        ticket.changeOwner(this.getId());
         ticket.setReservationDate(LocalDateTime.now());
     }
 
-    public void addTicket(Ticket ticket) {
-        this.ticketsOwned.add(ticket);
+    public void addTicket(String ticketId) {
+        this.ticketIds.add(ticketId);
     }
 
-    public List<Ticket> getTicketsOwned() {
-        return this.ticketsOwned;
-    }
-
-    public Optional<Event> searchEvent(String eventName) {
-        List<Event> eventsWithTicketsOwned = this.ticketsOwned.stream().map(Ticket::getEvent)
-                .toList();
-        return eventsWithTicketsOwned.stream().filter(e -> e.getName().equals(eventName))
-                .findFirst();
+    public List<String> getTicketsOwned() {
+        return this.ticketIds;
     }
 
     public void setLastLogin(LocalDateTime lastLogin) {
@@ -68,7 +53,7 @@ public class NormalUser {
         return lastLogin;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 

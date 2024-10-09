@@ -1,55 +1,42 @@
 package tacs.models.domain.events;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDateTime;
 
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "tickets")
 @NoArgsConstructor
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-/*    @Basic
-    private boolean sold;*/
-    @ManyToOne
-    @JoinColumn(name = "location_id",nullable = false)
-    private Location location;
-    @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Event event;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private NormalUser owner;
-    @Column
+    private String id;
+    private String eventId; // ID del evento relacionado
+    private String locationId; // ID de la ubicación relacionada
+    private String userId; // ID del usuario que compró el ticket
     public LocalDateTime reservationDate;
 
-    public Ticket(Event event, Location location) {
-        this.event = event;
-        this.location = location;
-/*        this.sold = false;*/
+    public Ticket(String eventId, String locationId) {
+        this.eventId = eventId;
+        this.locationId = locationId;
     }
 
-    public void changeOwner(NormalUser newOwner) {
-        this.owner = newOwner;
+    public void changeOwner(String newOwner) {
+        this.userId = newOwner;
     }
 
-    public Event getEvent() {
-        return event;
+    public String getEvent() {
+        return eventId;
     }
 
-    public Location getLocation() {
-        return location;
+    public String getLocation() {
+        return locationId;
     }
 
-    public double searchPrice() {
-        return this.location.getPrice();
+    public String getId() {
+        return id;
     }
 
     public LocalDateTime getReservationDate() {
