@@ -1,9 +1,14 @@
 package tacs.models.domain.exception;
 
-public class SoldOutTicketsException extends RuntimeException{
-    String errorCode = "Sold out tickets";
-    @Override
-    public String getMessage() {
-        return "Error code: " + errorCode;
+public class SoldOutTicketsException extends RuntimeException {
+    private String errorCause;
+
+    public SoldOutTicketsException(String errorCause) {
+        super(errorCause);
+        this.errorCause = errorCause;
+    }
+
+    public String getErrorCause() {
+        return errorCause;
     }
 }

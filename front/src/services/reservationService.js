@@ -36,7 +36,6 @@ export const tryCreateReservation = (eventId, userId, zoneLocation, tickets) => 
         }
       })
       .catch(error => {
-        //console.log("error reserving tickets: ", error);
         window.alert(`Error reserving tickets: ${error.response.data.errorCause}`);
         throw error;
       });

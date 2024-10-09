@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NoArgsConstructor;
 import tacs.models.domain.exception.PurchaseUnavailableException;
+import tacs.models.domain.exception.SoldOutTicketsException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,8 +67,12 @@ public class Event {
     public List<Ticket> makeReservation(String locationName, Integer quantityTickets) {
         if(!this.openSale) throw new PurchaseUnavailableException();
         Location location = this.locationByName(locationName);
-        List<Ticket> newTickets = location.makeReservation(this, quantityTickets);
-        return newTickets;
+
+        if (location.getQuantityTickets() < quantityTickets) {
+            throw new SoldOutTicketsException("Not enough tickets left");
+        }
+
+        return location.makeReservation(this, quantityTickets);
     }
 
     public boolean purchaseAvailable() {
