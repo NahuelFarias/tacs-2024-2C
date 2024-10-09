@@ -59,8 +59,12 @@ public class DataInitializer {
         admin.setHashedPassword(encodedPassword2);
         admin.setRol(new Rol("ADMIN"));
 
-        userRepository.save(user);
-        userRepository.save(admin);
+        if (userRepository.findByUsername(admin.username) == null) {
+            userRepository.save(admin);
+        }
+        if (userRepository.findByUsername(user.username) == null) {
+            userRepository.save(user);
+        }
     }
 
     public void generate_initial_data() {
@@ -108,7 +112,11 @@ public class DataInitializer {
 
 
         List<Event> testEvents = new ArrayList<>(Arrays.asList(eventoTest,eventoTest2,eventoTest3,eventoTest4));
-        this.eventRepository.saveAll(testEvents);
+
+
+        testEvents.stream()
+                .filter(e -> eventRepository.findByNormalizedName(e.getName()).isEmpty())
+                .forEach(eventRepository::save);
 
         String encodedPassword2 = new CustomPBKDF2PasswordEncoder().encode("contrasenia123");
         NormalUser usuarioTest= new NormalUser("otrousuario");
