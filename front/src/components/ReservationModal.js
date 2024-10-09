@@ -40,7 +40,7 @@ const ReservationModal = ({ closeModal, data }) => {
         const loginStatus = localStorage.getItem('loggedIn') === "true";
 
         if (loginStatus) {
-            if(tickets > 0 && tickets < data.availableTickets){
+            if(tickets > 0){
                 setIsLoading(true);
                 tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation, tickets)
                     .then(() => {
