@@ -69,7 +69,7 @@ public class Event {
         Location location = this.locationByName(locationName);
 
         if (location.getQuantityTickets() < quantityTickets) {
-            throw new SoldOutTicketsException("Not enough tickets left");
+            throw new SoldOutTicketsException("No quedan suficientes tickets");
         }
 
         return location.makeReservation(this, quantityTickets);
