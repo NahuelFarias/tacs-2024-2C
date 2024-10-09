@@ -62,15 +62,6 @@ public class Location {
         this.id = id;
     }
 
-    //TODO: Chequeo si tenemos tickets para vender
-    public Ticket makeReservation(Event event) {
-        if (this.quantityTickets <= 0) throw new SoldOutTicketsException();
-        Ticket ticket = new Ticket(event.getId(), this.getId());
-        this.quantityTicketsSold++;
-        this.quantityTickets--;
-        return ticket;
-    }
-
     // Sobrescribir equals() para comparar objetos basados en los valores de sus atributos
     @Override
     public boolean equals(Object o) {
@@ -90,6 +81,7 @@ public class Location {
     }
 
     public List<Ticket> makeReservation(Event event, Integer quantityTickets) {
+        if (this.quantityTickets <= 0) throw new SoldOutTicketsException("No quedan suficientes tickets");
         List<Ticket> tickets = IntStream.range(0, quantityTickets)
                 .mapToObj(i -> new Ticket(event.getId(), this.getId()))  // Crear una nueva instancia de Ticket
                 .collect(Collectors.toList());
@@ -97,6 +89,5 @@ public class Location {
         this.setQuantityTickets(this.getQuantityTickets()-quantityTickets);
         return tickets;
     }
-
 
 }
