@@ -9,8 +9,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import tacs.App;
 import tacs.dto.CreateEvent;
+import tacs.dto.LocationDTO;
 import tacs.models.domain.events.Event;
-import tacs.models.domain.events.Location;
 import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDate;
@@ -33,9 +33,9 @@ public class CreateEventApiTest {
 
     private NormalUser testUser;
     private Event testEvent;
-    private Location testLocation;
+    private LocationDTO testLocation;
 
-    private List<Location> testLocations;
+    private List<LocationDTO> testLocations;
     private Map<String, Integer> testTicketsMap;
 
     @BeforeEach
@@ -43,10 +43,10 @@ public class CreateEventApiTest {
         String username = "Pepe Rodriguez";
         this.testUser = new NormalUser(username);
 
-        Location preferencia = new Location("Preferencia",500,12);
-        Location eastStand = new Location("East Stand", 200, 20);
-        Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
-        Location gradaSur = new Location("Grada Sur", 100, 100);
+        LocationDTO preferencia = new LocationDTO("Preferencia",500,12);
+        LocationDTO eastStand = new LocationDTO("East Stand", 200, 20);
+        LocationDTO tribunaNorte = new LocationDTO("Tribuna Norte", 400, 17);
+        LocationDTO gradaSur = new LocationDTO("Grada Sur", 100, 100);
 
         this.testLocations = new ArrayList<>(Arrays.asList(preferencia,eastStand,tribunaNorte,gradaSur));
         this.testLocation = preferencia;

@@ -42,9 +42,8 @@ public class StatisticsTest {
 
         List<Location> locations = new ArrayList<>(Arrays.asList(preferencia, eastStand, tribunaNorte, gradaSur));
 
-        String someImage = "https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg";
-
-        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), locations, someImage);
+        this.testEvent = new Event("River vs Boca", LocalDate.of(2018, Month.DECEMBER, 9).atStartOfDay(), "");
+        testEvent.setLocations(locations);
         this.testLocation = preferencia;
 
 
@@ -87,7 +86,7 @@ public class StatisticsTest {
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
 
-        Ticket ticket = new Ticket(this.testEvent, this.testLocation);
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
         this.testUser.bookTicket(ticket);
         Map<String, List<?>> soldTickets = new HashMap<>();
 
@@ -106,7 +105,7 @@ public class StatisticsTest {
         this.eventStatistics = new EventStatistics();
         this.ticketStatistics = new TicketStatistics();
 
-        Ticket ticket = new Ticket(this.testEvent, this.testLocation);
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
         this.testUser.bookTicket(ticket);
 
         Map<String, List<?>> statisticsTestData = new HashMap<>();
@@ -127,7 +126,7 @@ public class StatisticsTest {
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
 
-        Ticket ticket = new Ticket(this.testEvent, this.testLocation);
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
         this.testUser.bookTicket(ticket);
 
         Map<String, List<?>> statisticFake = new HashMap<>();
@@ -149,7 +148,7 @@ public class StatisticsTest {
         this.statisticsGenerator = new StatisticsGenerator();
         this.ticketStatistics = new TicketStatistics();
 
-        Ticket ticket = new Ticket(this.testEvent, this.testLocation);
+        Ticket ticket = new Ticket(this.testEvent.getId(), this.testLocation.getId());
         this.testUser.bookTicket(ticket);
 
         Map<String, List<?>> statisticFake = new HashMap<>();
