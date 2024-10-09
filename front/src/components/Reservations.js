@@ -58,7 +58,7 @@ const Reservations = () => {
             <div className="events-section container mt-3">
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row tickets">
-                    {reservationsByEvent.map(([eventId, { eventName, reservationDate, locations }]) => {
+                    {reservationsByEvent.map(([eventId, { eventName, date, locations }]) => {
                         // Calcular el precio total sumando todas las locaciones
                         const totalPrice = locations.reduce((sum, loc) => sum + loc.price * loc.count, 0);
 
@@ -67,7 +67,7 @@ const Reservations = () => {
                                 key={eventId}
                                 eventId={eventId}
                                 title={eventName}
-                                reservationDate={reservationDate}
+                                reservationDate={date}
                                 locations={locations}  // Pasar la lista de ubicaciones
                                 totalPrice={totalPrice}  // Precio total por evento
                             />

@@ -16,9 +16,10 @@ const ReservationModal = ({ closeModal, data }) => {
 
     const [tickets, setTickets] = useState(1);
     const handleTickets = (e) => {
-        setTotalprice(e.target.value*data.zonePrice);
-        setTickets(e.target.value);
-        reservation.amount = (e.target.value);
+        if(e.target.value>1 && e.target.value <= data.availableTickets)
+            setTotalprice(e.target.value*data.zonePrice);
+            setTickets(e.target.value);
+            reservation.amount = (e.target.value);
     }
     useEffect(() => {
         const closeReservationModal = (e) => {
@@ -38,18 +39,21 @@ const ReservationModal = ({ closeModal, data }) => {
         const loginStatus = localStorage.getItem('loggedIn') === "true";
 
         if (loginStatus) {
-            setIsLoading(true);
-            tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation, tickets)
-                .then(() => {
-                    setTimeout(() => {
+            if(tickets > 0){
+                setIsLoading(true);
+                tryCreateReservation(data.eventId, localStorage.getItem("id"), data.zoneLocation, tickets)
+                    .then(() => {
+                        setTimeout(() => {
+                            setIsLoading(false);
+                            navigate('/reservations');
+                        }, 1500); // 2 segundos de delay
+                    })
+                    .catch((error) => {
+                        console.error("Error al realizar la reserva:", error);
                         setIsLoading(false);
-                        navigate('/reservations');
-                    }, 2000); // 2 segundos de delay
-                })
-                .catch((error) => {
-                    console.error("Error al realizar la reserva:", error);
-                    setIsLoading(false);
-                });
+                    });
+            }
+
         }
         else {
             navigate("/login", { state: { message: 'Para reservar, debes iniciar sesion.' } })
@@ -59,7 +63,6 @@ const ReservationModal = ({ closeModal, data }) => {
     return (
         <div className="d-flex modal-Background justify-content-center align-items-center">
             <div className="modal-Container p-5 m-5 rounded shadow" ref={reservationModalRef}>
-                <h1 className="text-center text-dark mb-4">Reserva tus asientos</h1>
                 {isLoading ? (
                     <div className="text-center">
                         <h2 className="text-dark">Procesando tu reserva...</h2>
@@ -67,7 +70,10 @@ const ReservationModal = ({ closeModal, data }) => {
                             <span className="visually-hidden">Cargando...</span>
                         </div>
                     </div>
+
                 ) : (
+                    <div>
+                    <h1 className="text-center text-dark mb-4">Reserva tus asientos</h1>
                     <form className="d-flex flex-column justify-content-between" style={{ height: '100%' }}>
                         <div className="mb-4">
                             <h3 className="text-dark">{data.eventName}</h3>
@@ -77,7 +83,7 @@ const ReservationModal = ({ closeModal, data }) => {
                             <div className="mb-3 p-2 border rounded">
                                 <div className="d-flex justify-content-between align-items-center mb-2 text-dark">
                                     <h3>{data.zoneLocation}</h3>
-                                    <h3>{data.zonePrice}$</h3>
+                                    <h3>${data.zonePrice}</h3>
                                 </div>
                                 <div className="d-flex justify-content-between align-items-center mb-2 text-dark">
                                     <h4>Cantidad:</h4>
@@ -85,6 +91,7 @@ const ReservationModal = ({ closeModal, data }) => {
                                         type="number"
                                         placeholder="Tickets available"
                                         max={data.availableTickets}
+                                        min={1}
                                         value={tickets}
                                         onChange={handleTickets}
                                         className="form-control justify-content-end w-50"
@@ -97,13 +104,15 @@ const ReservationModal = ({ closeModal, data }) => {
                                     <h2>Total:</h2>
                                 </div>
                                 <div className="col-6 d-flex justify-content-end">
-                                    <h2>{totalPrice}$</h2>
+                                    <h2>${totalPrice}</h2>
                                 </div>
                             </div>
                         </div>
                         <PrimaryButton type="button" onClick={makeReservation}>Realizar reserva</PrimaryButton>
                         <SecondaryButton className='mt-2' type="button" onClick={() => closeModal(false)}>Cancelar</SecondaryButton>
                     </form>
+                    </div>
+
                 )}
             </div>
         </div>

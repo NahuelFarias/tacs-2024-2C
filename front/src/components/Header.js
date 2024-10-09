@@ -47,7 +47,7 @@ const Header = ({toggleMenu}) => {
 
                 <div className="logo" ref={logoRef}>
                     <img src="/icono.png" alt="Icono" className="logo-icon col-auto btn-outline-light"/>
-                    <h1 className="text-white ml-3" ref={logoRef}>Events</h1>
+                    <h1 className="text-white ml-3" ref={logoRef}>Eventos</h1>
                 </div>
             </div>
 
