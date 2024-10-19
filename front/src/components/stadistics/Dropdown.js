@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Link} from "react-router-dom";
 
 const StatsDropdown = ({onSelection}) => {
     const [selection, setSelection] = useState("Daily");
@@ -23,9 +24,9 @@ const StatsDropdown = ({onSelection}) => {
                             {selection}
                         </button>
                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Daily</a></li>
-                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Weekly</a></li>
-                            <li><a className="dropdown-item" href="#" onClick={selectionHandler}>Yearly</a>
+                            <li><Link className="dropdown-item" to="." onClick={selectionHandler}>Daily</Link></li>
+                            <li><Link className="dropdown-item" to="." onClick={selectionHandler}>Weekly</Link></li>
+                            <li><Link className="dropdown-item" to="." onClick={selectionHandler}>Yearly</Link>
                             </li>
                         </ul>
                     </div>
