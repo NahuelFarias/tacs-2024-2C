@@ -24,7 +24,7 @@ const Reservations = () => {
         if (!acc[eventId]) {
             acc[eventId] = {
                 eventName: element.event.name,
-                reservationDate: element.reservation.reservationDate,
+                eventDate: element.event.date,
                 locations: []
             };
         }
@@ -40,7 +40,7 @@ const Reservations = () => {
                 count: 1
             });
         }
-
+        console.log(acc)
         return acc;
     }, {});
 
@@ -51,7 +51,7 @@ const Reservations = () => {
             <div className="events-section container mt-3">
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row tickets">
-                    {reservationsByEvent.map(([eventId, { eventName, reservationDate, locations }]) => {
+                    {reservationsByEvent.map(([eventId, { eventName, eventDate, locations }]) => {
                         const totalPrice = locations.reduce((sum, loc) => sum + loc.price * loc.count, 0);
 
                         return (
@@ -59,7 +59,7 @@ const Reservations = () => {
                                 key={eventId}
                                 eventId={eventId}
                                 title={eventName}
-                                reservationDate={reservationDate}
+                                eventDate={eventDate}
                                 locations={locations}
                                 totalPrice={totalPrice}
                             />
