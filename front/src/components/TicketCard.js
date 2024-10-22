@@ -3,43 +3,34 @@ import { Card, Button, Accordion } from "react-bootstrap";
 import './TicketCard.css';
 import { useNavigate } from "react-router-dom";
 
-const TicketCard = ({ eventId, title, reservationDate, locations, totalPrice }) => {
-    const navigate = useNavigate();  // Hook para redirigir
+const TicketCard = ({ eventId, title, eventDate, locations, totalPrice }) => {
+    const navigate = useNavigate();
 
     const handleViewEvent = () => {
-        navigate(`/eventDetails/${eventId}`);  // Redirigir a la página del evento con el ID
+        navigate(`/eventDetails/${eventId}`);
     };
 
-    // Supongamos que reservationDate está en formato 'YYYY-MM-DD HH:mm:ss'
-    const [date, timeMiliseconds] = reservationDate.split('T'); // Separa la fecha y la hora
-    const [time] = timeMiliseconds.split('.');
+    const [datePart, timeMiliseconds] = eventDate ? eventDate.split('T') : ['', ''];
+    const [time] = timeMiliseconds ? timeMiliseconds.split('.') : [''];
 
     const formatDate = (dateString) => {
-        // Separa la cadena por el carácter '-'
         const parts = dateString.split('-');
-        
-        // Verifica que la fecha tenga tres partes
         if (parts.length === 3) {
-          return `${parts[0]}/${parts[1]}/${parts[2]}`; // Devuelve el formato deseado
+            return `${parts[0]}/${parts[1]}/${parts[2]}`;
         }
-        
-        return dateString; // Devuelve la fecha original si no está en el formato esperado
-      };
-
-
+        return dateString;
+    };
 
     return (
         <Card className="my-3 myTicket">
             <Card.Body>
                 <Card.Title className="card-title">
-                    {title} - {formatDate(date)}
+                    {title} - {formatDate(datePart)}
                 </Card.Title>
                 <hr />
                 <Card.Text>
                     <strong>Hora:</strong> {time}
                 </Card.Text>
-
-                {/* Accordion para mostrar ubicaciones como tabla */}
                 <Card.Text className="myTicket-text">
                     <strong>Ubicaciones:</strong>
                     <Accordion className="mb-3">
@@ -66,8 +57,6 @@ const TicketCard = ({ eventId, title, reservationDate, locations, totalPrice }) 
                         </Accordion.Item>
                     </Accordion>
                 </Card.Text>
-
-                {/* Precio total por evento */}
                 <Card.Text className="myTicket-text">
                     <strong>Precio final:</strong> ${totalPrice}
                 </Card.Text>
