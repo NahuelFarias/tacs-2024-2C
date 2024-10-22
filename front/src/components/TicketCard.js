@@ -3,14 +3,16 @@ import { Card, Button, Accordion } from "react-bootstrap";
 import './TicketCard.css';
 import { useNavigate } from "react-router-dom";
 
-const TicketCard = ({ eventId, title, reservationDate, locations, totalPrice }) => {
+
+const TicketCard = ({ eventId, title, eventDate, locations, totalPrice }) => {
+
     const navigate = useNavigate();
 
     const handleViewEvent = () => {
         navigate(`/eventDetails/${eventId}`);
     };
 
-    const [datePart, timeMiliseconds] = reservationDate ? reservationDate.split('T') : ['', ''];
+    const [datePart, timeMiliseconds] = eventDate ? eventDate.split('T') : ['', ''];
     const [time] = timeMiliseconds ? timeMiliseconds.split('.') : [''];
 
     const formatDate = (dateString) => {
