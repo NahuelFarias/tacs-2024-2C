@@ -17,7 +17,6 @@ const Reservations = () => {
             });
     }, []);
 
-    // Agrupar las reservas por evento y ubicación
 
     const groupedReservations = reservations.reduce((acc, element) => {
         const eventId = element.event.id;
@@ -30,7 +29,7 @@ const Reservations = () => {
                 locations: []
             };
         }
-        // Verificar si la ubicación ya existe dentro del evento
+
         const existingLocation = acc[eventId].locations.find(loc => loc.name === location.name);
 
         if (existingLocation) {

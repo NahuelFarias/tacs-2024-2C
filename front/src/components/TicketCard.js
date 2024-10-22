@@ -3,7 +3,9 @@ import { Card, Button, Accordion } from "react-bootstrap";
 import './TicketCard.css';
 import { useNavigate } from "react-router-dom";
 
+
 const TicketCard = ({ eventId, title, eventDate, locations, totalPrice }) => {
+
     const navigate = useNavigate();
 
     const handleViewEvent = () => {
