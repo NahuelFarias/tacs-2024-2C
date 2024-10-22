@@ -17,6 +17,8 @@ const Reservations = () => {
             });
     }, []);
 
+    // Agrupar las reservas por evento y ubicación
+
     const groupedReservations = reservations.reduce((acc, element) => {
         const eventId = element.event.id;
         const location = element.event.locations.find(l => l.id == element.reservation.location);
@@ -28,7 +30,7 @@ const Reservations = () => {
                 locations: []
             };
         }
-
+        // Verificar si la ubicación ya existe dentro del evento
         const existingLocation = acc[eventId].locations.find(loc => loc.name === location.name);
 
         if (existingLocation) {
@@ -51,6 +53,7 @@ const Reservations = () => {
             <div className="events-section container mt-3">
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row tickets">
+
                     {reservationsByEvent.map(([eventId, { eventName, eventDate, locations }]) => {
                         const totalPrice = locations.reduce((sum, loc) => sum + loc.price * loc.count, 0);
 
@@ -62,6 +65,7 @@ const Reservations = () => {
                                 eventDate={eventDate}
                                 locations={locations}
                                 totalPrice={totalPrice}
+
                             />
                         );
                     })}
