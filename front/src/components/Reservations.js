@@ -41,7 +41,6 @@ const Reservations = () => {
                 count: 1
             });
         }
-        console.log(acc)
         return acc;
     }, {});
 
