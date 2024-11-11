@@ -29,7 +29,7 @@ public class EventController {
         return eventService.getTicketsForSale(id);
     }
 
-    @PatchMapping("/{id}/close")
+    @PutMapping("/{id}/close")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void setStatusSales(@PathVariable String id) {
