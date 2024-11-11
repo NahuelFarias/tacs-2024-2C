@@ -2,21 +2,37 @@ name: tp-tacs
 services:
   tacs-backend:
     ports:
-      - 8080:8080
-    image: tacs-backend
+      - "8080:8080"
+    build:
+      context: ./
+    depends_on:
+      - mongo
+    networks:
+      - tacs-network
 
   tacs-frontend:
     ports:
-      - 3000:3000
-    image: tacs-frontend
+      - "80:80"
+    build:
+      context: ./front
+    depends_on:
+      - tacs-backend
+    networks:
+      - tacs-network
 
   mongo:
     container_name: mongodb
     ports:
-      - 27017:27017
+      - "27017:27017"
     image: mongo
     volumes:
       - mongo-data:/data/db
+    networks:
+      - tacs-network
+
+networks:
+  tacs-network:
+    driver: bridge
 
 volumes:
   mongo-data:
