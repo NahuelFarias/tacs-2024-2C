@@ -5,58 +5,67 @@ import './Reservations.css'
 import { getEvent } from '../services/eventService';
 
 const Reservations = () => {
-    const [reservations, setReservations] = useState([]);
+    const [reservations, setReservations] = useState();
 
     useEffect(() => {
         getReservations(localStorage.getItem("id"))
             .then(data => {
                 console.log("data: ", data);
                 const reservations = groupReservationsByEvent(data);
+                console.log(reservations);
                 setReservations(reservations);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching events:', error);
                 setReservations([]);
+                setLoading(false);
             });
     }, []);
 
-    function groupReservationsByEvent(reservations) {
+     function groupReservationsByEvent(reservations) {
+        const reservationList = []
         const events = Array.from(new Set(reservations.map(item => item.event)));
         console.log("events: ",events)
-        const eventList = events.map(async item => {
+        events.forEach(async item => {
             const event = item ? { event: item } : null;
+            console.log(event);
             let thisEventName;
             let thisEventDate;
             let thisEventLocations;
 
             thisEventLocations = reservations.filter(reservation => reservation.event === item)
-            groupReservationsByLocation(thisEventLocations)
+            console.log("thisEventLocations: ", thisEventLocations)
+            thisEventLocations = groupReservationsByLocation(thisEventLocations)
 
-            getEvent(event).then(data => {
+            await getEvent(event.event).then(data => {
                 console.log("event data: ",data);
+                console.log("event data.name: ",data.name);
+                console.log("event data.date: ",data.date);
                 thisEventName = data.name;
                 thisEventDate = data.date;
 
-                thisEventLocations.locations.map(itemLocation=>{
+                thisEventLocations.map(itemLocation=>{
                     const location = data.locations.find(location => location.id == itemLocation.location);
                     itemLocation.name = location.name
                     itemLocation.price = location.price
                 })
             });
 
-            console.log("eventList name: ", thisEventName);
-            console.log("eventList date: ", thisEventDate);
-            console.log("eventList locations: ", thisEventLocations);
+            console.log("reservationList event: ", event.event)
+            console.log("reservationList name: ", thisEventName);
+            console.log("reservationList date: ", thisEventDate);
+            console.log("reservationList locations: ", thisEventLocations);
 
-            return {
-            ...event,
+            reservationList.push({
+            event: event.event,
             eventName: thisEventName,
             eventDate: thisEventDate,
             locations: thisEventLocations
-            };
+            });
         })
-        console.log("eventList: ", eventList);
-        return eventList;
+        console.log("reservationList: ", reservationList);
+        return reservationList;
     }
 
     function groupReservationsByLocation(reservations) {
@@ -80,8 +89,12 @@ const Reservations = () => {
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row tickets">
                     {
-                        reservations.map((reservation) => {
-                            console.log("reservations front: ", reservations)
+                        console.log("reservations front: ", reservations)
+                    }
+                    <div>
+                        {reservations[0].event}
+                    </div>
+                    { reservations.map((reservation) => {
                             console.log("reservations front: ", reservation)
                             console.log("eventId card: ", reservation.event)
                             console.log("title card: ", reservation.eventName)
