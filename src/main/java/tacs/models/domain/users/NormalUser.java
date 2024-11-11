@@ -24,6 +24,7 @@ public class NormalUser {
     private List<String> ticketIds; // Lista de IDs de tickets comprados
     public LocalDateTime lastLogin;
     public Rol rol;
+    private String email;
 
     public NormalUser(String username) {
         this.username = username;
@@ -87,5 +88,13 @@ public class NormalUser {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
