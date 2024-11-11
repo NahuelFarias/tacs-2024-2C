@@ -14,12 +14,10 @@ const Reservations = () => {
                 const reservations = groupReservationsByEvent(data);
                 console.log(reservations);
                 setReservations(reservations);
-                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching events:', error);
                 setReservations([]);
-                setLoading(false);
             });
     }, []);
 
