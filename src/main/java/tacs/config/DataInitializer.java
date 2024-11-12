@@ -18,6 +18,14 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -69,9 +77,13 @@ public class DataInitializer {
 
     public void generate_initial_data() {
         Location preferencia = new Location("Preferencia",500,12);
+        preferencia.setId(UUID.randomUUID().toString());
         Location eastStand = new Location("East Stand", 200, 20);
+        eastStand.setId(UUID.randomUUID().toString());
         Location tribunaNorte = new Location("Tribuna Norte", 400, 17);
+        tribunaNorte.setId(UUID.randomUUID().toString());
         Location gradaSur = new Location("Grada Sur", 100, 100);
+        gradaSur.setId(UUID.randomUUID().toString());
 
         String someImage = "https://www.unidiversidad.com.ar/cache/bc764704c45badb463645914de89d182_1000_1100.jpg";
 
@@ -81,9 +93,13 @@ public class DataInitializer {
 
 
         Location preferencia2 = new Location("Preferencia",500,13);
+        preferencia2.setId(UUID.randomUUID().toString());
         Location eastStand2 = new Location("East Stand", 200, 53);
+        eastStand2.setId(UUID.randomUUID().toString());
         Location tribunaNorte2 = new Location("Tribuna Norte", 400, 22);
+        tribunaNorte2.setId(UUID.randomUUID().toString());
         Location gradaSur2 = new Location("Grada Sur", 100, 100);
+        gradaSur2.setId(UUID.randomUUID().toString());
 
         List<Location> testLocations2 = new ArrayList<>(Arrays.asList(preferencia2,eastStand2,tribunaNorte2,gradaSur2));
         Event eventoTest2 = new Event("Recital Generico", LocalDate.of(2017, Month.SEPTEMBER, 23).atStartOfDay(), someImage);
@@ -92,8 +108,11 @@ public class DataInitializer {
 
 
         Location preferencia3 = new Location("Preferencia",500,45);
+        preferencia3.setId(UUID.randomUUID().toString());
         Location eastStand3 = new Location("East Stand", 200, 76);
+        eastStand3.setId(UUID.randomUUID().toString());
         Location tribunaNorte3 = new Location("Zona Super Random", 400, 23);
+        tribunaNorte3.setId(UUID.randomUUID().toString());
 
         List<Location> testLocations3 = new ArrayList<>(Arrays.asList(preferencia3,eastStand3,tribunaNorte3));
         Event eventoTest3 = new Event("Coldplay", LocalDate.of(2022, Month.NOVEMBER, 11).atStartOfDay(),someImage);
@@ -101,9 +120,13 @@ public class DataInitializer {
         eventoTest3.setLocations(testLocations3);
 
         Location preferencia4 = new Location("Preferencia",500,2342);
+        preferencia4.setId(UUID.randomUUID().toString());
         Location eastStand4 = new Location("East Stand", 200, 3546);
+        eastStand4.setId(UUID.randomUUID().toString());
         Location tribunaNorte4 = new Location("Tribuna Norte", 400, 3435);
+        tribunaNorte4.setId(UUID.randomUUID().toString());
         Location gradaSur4 = new Location("Grada Sur", 100, 5555);
+        gradaSur4.setId(UUID.randomUUID().toString());
 
         List<Location> testLocations4 = new ArrayList<>(Arrays.asList(preferencia4,eastStand4,tribunaNorte4,gradaSur4));
         Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),someImage);

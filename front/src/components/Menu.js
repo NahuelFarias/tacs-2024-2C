@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { motion } from 'framer-motion';
 import Cookies from "js-cookie";
 
@@ -56,12 +56,12 @@ const Menu = ({ menuOpen }) => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
               >
-                  {!showReservationsButton && <li><a href="/login" className="text-white">Iniciar Sesión</a></li>}
-                  {!showReservationsButton && <li><a href="/signup" className="text-white">Registrarse</a></li>}
-                  {showStatsButton && <li><a href="/createEvent" className="text-white">Crear evento</a></li>}
-                  {showReservationsButton && <li><a href="/reservations" className="text-white">Ver Mis Reservas</a></li>}
+                  {!showReservationsButton && <li><Link to="/login" className="text-white">Iniciar Sesión</Link></li>}
+                  {!showReservationsButton && <li><Link to="/signup" className="text-white">Registrarse</Link></li>}
+                  {showStatsButton && <li><Link to="/createEvent" className="text-white">Crear evento</Link></li>}
+                  {showReservationsButton && <li><Link to="/reservations" className="text-white">Ver Mis Reservas</Link></li>}
                   {showReservationsButton &&
-                      <li><a href="/" className="text-white" onClick={simpleLogOut}>Cerrar Sesion</a></li>}
+                      <li><Link to="/" className="text-white" onClick={simpleLogOut}>Cerrar Sesion</Link></li>}
               </motion.ul>
           </motion.div>
       )
