@@ -89,7 +89,7 @@ const Registration = () => {
                         className="form-control"
                     />
                 </div>
-                <div className="mb-5">
+                <div className="mb-4">
                     <p className="text-dark input-label">
                         Repeti tu contraseña
                     </p>
@@ -102,7 +102,7 @@ const Registration = () => {
                         className="form-control"
                     />
                 </div>
-                <div className="mb-4">
+                <div className="mb-5">
                     <p className="text-dark input-label">
                         Email
                     </p>
