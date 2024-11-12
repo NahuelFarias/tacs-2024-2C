@@ -10,7 +10,6 @@ const Reservations = () => {
         getReservations(localStorage.getItem("id"))
             .then(data => {
                 setReservations(data);
-                // console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching events:', error);
@@ -18,39 +17,34 @@ const Reservations = () => {
             });
     }, []);
 
-    // Agrupar las reservas por evento y ubicación
+
     const groupedReservations = reservations.reduce((acc, element) => {
         const eventId = element.event.id;
         const location = element.event.locations.find(l => l.id == element.reservation.location);
 
-        // Verificar si el evento ya existe en el acumulador
         if (!acc[eventId]) {
             acc[eventId] = {
                 eventName: element.event.name,
-                reservationDate: element.reservation.reservationDate,
+                eventDate: element.event.date,
                 locations: []
             };
         }
 
-        // Verificar si la ubicación ya existe dentro del evento
         const existingLocation = acc[eventId].locations.find(loc => loc.name === location.name);
 
         if (existingLocation) {
-            // Si la ubicación ya existe, incrementar el contador
             existingLocation.count += 1;
         } else {
-            // Si no existe, añadir la nueva ubicación con count = 1
             acc[eventId].locations.push({
                 name: location.name,
                 price: location.price,
                 count: 1
             });
         }
-
+        console.log(acc)
         return acc;
     }, {});
 
-    // Convertir el objeto a un array para mapearlo
     const reservationsByEvent = Object.entries(groupedReservations);
 
     return (
@@ -58,8 +52,8 @@ const Reservations = () => {
             <div className="events-section container mt-3">
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row tickets">
-                    {reservationsByEvent.map(([eventId, { eventName, date, locations }]) => {
-                        // Calcular el precio total sumando todas las locaciones
+
+                    {reservationsByEvent.map(([eventId, { eventName, eventDate, locations }]) => {
                         const totalPrice = locations.reduce((sum, loc) => sum + loc.price * loc.count, 0);
 
                         return (
@@ -67,9 +61,10 @@ const Reservations = () => {
                                 key={eventId}
                                 eventId={eventId}
                                 title={eventName}
-                                reservationDate={date}
-                                locations={locations}  // Pasar la lista de ubicaciones
-                                totalPrice={totalPrice}  // Precio total por evento
+                                eventDate={eventDate}
+                                locations={locations}
+                                totalPrice={totalPrice}
+
                             />
                         );
                     })}
