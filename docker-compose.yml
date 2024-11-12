@@ -30,6 +30,27 @@ services:
     networks:
       - tacs-network
 
+  mongo-express:
+    container_name: mongo_express
+    ports:
+      - "8081:8081"
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_AUTH_DATABASE: "false"
+      ME_CONFIG_MONGODB_AUTH_USERNAME: ""
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: ""
+      ME_CONFIG_BASICAUTH_USERNAME: "admin"
+      ME_CONFIG_BASICAUTH_PASSWORD: "pass"
+      ME_CONFIG_SITE_BASEURL: "/"
+      ME_CONFIG_BASICAUTH_USERNAME_FILE: ""
+      ME_CONFIG_BASICAUTH_PASSWORD_FILE: ""
+    depends_on:
+      - mongo
+    networks:
+      - tacs-network
+
 networks:
   tacs-network:
     driver: bridge
