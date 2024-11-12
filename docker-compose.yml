@@ -1,14 +1,16 @@
 name: tp-tacs
 services:
   tacs-backend:
+    build: 
+      context: ./
     ports:
       - 8080:8080
-    image: tacs-backend
 
   tacs-frontend:
+    build:
+      context: ./front
     ports:
       - 3000:3000
-    image: tacs-frontend
 
   mongo:
     container_name: mongodb
@@ -18,5 +20,14 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 volumes:
   mongo-data:
+  redis-data:
