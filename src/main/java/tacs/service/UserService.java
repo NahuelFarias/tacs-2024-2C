@@ -1,8 +1,16 @@
 package tacs.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +26,9 @@ import tacs.security.CustomPBKDF2PasswordEncoder;
 public class UserService {
     private final UserRepository userRepository;
     private final TicketRepository ticketsRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public void createUser(String name, String password) {
         String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
@@ -39,17 +50,21 @@ public class UserService {
         return ticketsRepository.findAllByUserId(id);
     }
 
-    //TODO: Meter una cola para mantener consistente las reservas
-    public void reserveTicket(String id, Ticket ticket) {
+    public void makeReservation(String id, List<Ticket> tickets) {
         NormalUser user = this.getUser(id);
-        user.bookTicket(ticket);
-        ticketsRepository.save(ticket);
-        user.addTicket(ticket.getId());
-        userRepository.save(user);
-    }
 
-    //TODO: Meter una cola para mantener consistente las reservas
-    public void reserveTickets(String id, List<Ticket> tickets) {
-        tickets.forEach(ticket -> this.reserveTicket(id, ticket));
+        tickets.forEach(ticket -> ticket.changeOwner(id));
+        tickets.forEach(ticket -> ticket.setReservationDate(LocalDateTime.now()));
+        List<String> ticketIds = tickets.stream().map(Ticket::getId).toList();
+
+        ticketsRepository.saveAll(tickets);
+
+        Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
+
+        Update update = new Update().addToSet("ticketIds").each(ticketIds);
+
+        FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
+
+        NormalUser updatedUser = mongoTemplate.findAndModify(query, update, options, NormalUser.class);
     }
 }

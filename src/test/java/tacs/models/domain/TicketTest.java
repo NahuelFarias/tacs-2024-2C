@@ -56,7 +56,7 @@ public class TicketTest {
     public void reserveTicketOnClosedSaleTest() {
         this.testEvent.closeSale();
         RuntimeException exception = Assertions.assertThrows(PurchaseUnavailableException.class,() -> {
-            this.testEvent.makeReservation("Preferencia",1);
+            this.testEvent.createTickets("Preferencia",1);
         });
         String expectedMessage = "Error code: Purchase Unavailable";
         String actualMessage = exception.getMessage();
@@ -66,7 +66,7 @@ public class TicketTest {
     @Test
     public void reserveTicketOnOutSaleTest() {
         RuntimeException exception = Assertions.assertThrows(SoldOutTicketsException.class,() -> {
-            this.testEvent.makeReservation("Preferencia",2);
+            this.testEvent.createTickets("Preferencia",2);
         });
         String expectedMessage = "No quedan suficientes tickets";
         String actualMessage = exception.getMessage();
