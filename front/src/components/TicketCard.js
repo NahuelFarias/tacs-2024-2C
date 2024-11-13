@@ -50,7 +50,7 @@ const TicketCard = ({ eventId, title, eventDate, locations, totalPrice }) => {
                                         {locations.map((loc, index) => (
                                             <tr key={index}>
                                                 <td>{loc.name}</td>
-                                                <td className="item_table">{loc.count}</td>
+                                                <td className="item_table">{loc.reservations.length}</td>
                                             </tr>
                                         ))}
                                     </tbody>

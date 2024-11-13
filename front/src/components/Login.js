@@ -34,7 +34,6 @@ const Login = () => {
         let salt;
         const saltResult = await getSalt(username);
         if(!saltResult.success) {
-            console.log(saltResult.message)
             setError(saltResult.message)
         }
         else {
@@ -43,11 +42,9 @@ const Login = () => {
 
             const result = await tryAuthenticate(username, hashedPassword)
             if(!result.success) {
-                console.log(result.message)
                 setError(result.message)
             }
             else {
-                console.log("OK")
                 navigate("/")
             }
         }
