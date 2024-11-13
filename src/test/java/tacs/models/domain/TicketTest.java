@@ -48,7 +48,7 @@ public class TicketTest {
 
   @Test
     public void reserveTicketsTest() {
-        this.testUser.bookTicket(this.testTicket);
+        this.testUser.addTickets(List.of(this.testTicket.getId()));
         Assertions.assertEquals(testUser.getTicketsOwned().size(),1);
     }
 
@@ -75,7 +75,7 @@ public class TicketTest {
 
     @Test
     public void getTicketsOwnedTest() {
-        this.testUser.bookTicket(this.testTicket);
+        Assertions.assertEquals(testUser.getTicketsOwned().size(),1);
         List<String> reservationsID = this.testUser.getTicketsOwned();
         Assertions.assertEquals(reservationsID.size(),1);
     }
