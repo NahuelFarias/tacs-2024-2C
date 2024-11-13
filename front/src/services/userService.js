@@ -9,6 +9,7 @@ export const getUsers = () => {
     });
 };
 
+
 export const tryCreateUser = async (username, password, email) => {
     try {
         const response = await fetch('/users', {

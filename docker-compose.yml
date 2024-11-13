@@ -58,6 +58,7 @@ services:
     volumes:
       - redis-data:/data
 
+
 networks:
   tacs-network:
     driver: bridge

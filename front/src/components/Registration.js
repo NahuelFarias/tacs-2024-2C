@@ -48,6 +48,7 @@ const Registration = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+
         const credentialsAreValid = checkCredentials()
 
         if (credentialsAreValid) {
