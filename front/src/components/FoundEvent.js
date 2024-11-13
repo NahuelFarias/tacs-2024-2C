@@ -7,7 +7,6 @@ const FoundEvent = ({ eventId, title, onClose }) => {
 
     const handleDetailsClick = () => {
         // Aquí puedes implementar la lógica para navegar a la página de detalles.
-        // console.log(`Navegando a los detalles del evento: ${title}`);
         navigate(`/eventDetails/${eventId}`);
       };
 

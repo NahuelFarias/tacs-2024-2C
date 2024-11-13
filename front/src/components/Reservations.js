@@ -1,70 +1,88 @@
 import React, { useEffect, useState } from 'react';
 import { getReservations } from '../services/reservationService';
 import TicketCard from "./TicketCard";
-import './Reservations.css'
+import './Reservations.css';
+import { getEvent } from '../services/eventService';
 
 const Reservations = () => {
-    const [reservations, setReservations] = useState([]);
+    const [reservations_front, setReservations] = useState([]);
 
     useEffect(() => {
         getReservations(localStorage.getItem("id"))
-            .then(data => {
-                setReservations(data);
+            .then(async data => {
+                const reservationsData = await groupReservationsByEvent(data); // Cambia el nombre para evitar confusión
+                setReservations(reservationsData); // Actualiza el estado directamente
             })
             .catch(error => {
-                console.error('Error fetching events:', error);
                 setReservations([]);
             });
     }, []);
 
+    async function groupReservationsByEvent(reservations) {
+        const reservationList = [];
+        const events = Array.from(new Set(reservations.map(item => item.event)));
 
-    const groupedReservations = reservations.reduce((acc, element) => {
-        const eventId = element.event.id;
-        const location = element.event.locations.find(l => l.id == element.reservation.location);
 
-        if (!acc[eventId]) {
-            acc[eventId] = {
-                eventName: element.event.name,
-                eventDate: element.event.date,
-                locations: []
-            };
-        }
+        for (const item of events) {
+            const event = item ? { event: item } : null;
 
-        const existingLocation = acc[eventId].locations.find(loc => loc.name === location.name);
+            let thisEventName;
+            let thisEventDate;
+            let thisEventLocations;
 
-        if (existingLocation) {
-            existingLocation.count += 1;
-        } else {
-            acc[eventId].locations.push({
-                name: location.name,
-                price: location.price,
-                count: 1
+            thisEventLocations = reservations.filter(reservation => reservation.event === item);
+            thisEventLocations = groupReservationsByLocation(thisEventLocations);
+
+            const data = await getEvent(event.event);
+
+            thisEventName = data.name;
+            thisEventDate = data.date;
+
+            thisEventLocations = thisEventLocations.map(itemLocation => {
+                const location = data.locations.find(location => location.id === itemLocation.location);
+                return {
+                    ...itemLocation,
+                    name: location.name,
+                    price: location.price,
+                };
+            });
+
+            reservationList.push({
+                event: event.event,
+                eventName: thisEventName,
+                eventDate: thisEventDate,
+                locations: thisEventLocations,
             });
         }
-        console.log(acc)
-        return acc;
-    }, {});
 
-    const reservationsByEvent = Object.entries(groupedReservations);
+        return reservationList;
+    }
+
+    function groupReservationsByLocation(reservations) {
+        const locations = Array.from(new Set(reservations.map(item => item.location)));
+
+        const locationList = locations.map(item => ({
+            location: item,
+            reservations: reservations.filter(reservation => reservation.location === item),
+        }));
+        return locationList;
+    }
 
     return (
         <div className="home-page">
             <div className="events-section container mt-3">
                 <h2 className="text-white">Mis reservas</h2>
                 <div className="row tickets">
-
-                    {reservationsByEvent.map(([eventId, { eventName, eventDate, locations }]) => {
-                        const totalPrice = locations.reduce((sum, loc) => sum + loc.price * loc.count, 0);
-
+                    {reservations_front.map((reservation) => {
+                        const totalPrice = reservation.locations.reduce((sum, loc) => sum + loc.price * loc.reservations.length, 0);
                         return (
                             <TicketCard
-                                key={eventId}
-                                eventId={eventId}
-                                title={eventName}
-                                eventDate={eventDate}
-                                locations={locations}
+                                key={reservation.event}
+                                eventId={reservation.event}
+                                title={reservation.eventName}
+                                eventDate={reservation.eventDate}
+                                locations={reservation.locations}
                                 totalPrice={totalPrice}
-
                             />
                         );
                     })}
