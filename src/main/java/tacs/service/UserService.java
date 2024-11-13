@@ -55,12 +55,12 @@ public class UserService {
 
         tickets.forEach(ticket -> ticket.changeOwner(id));
         tickets.forEach(ticket -> ticket.setReservationDate(LocalDateTime.now()));
-        List<String> ticketIds = tickets.stream().map(Ticket::getId).toList();
 
         ticketsRepository.saveAll(tickets);
 
-        Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
+        List<String> ticketIds = tickets.stream().map(Ticket::getId).toList();
 
+        Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
         Update update = new Update().addToSet("ticketIds").each(ticketIds);
 
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
