@@ -1,24 +1,13 @@
 name: tp-tacs
 services:
   tacs-backend:
-    build: 
-      context: ./
     ports:
       - "8080:8080"
     depends_on:
       - mongo
     networks:
       - tacs-network
-
-  tacs-frontend:
-    build:
-      context: ./front
-    ports:
-      - "80:80"
-    depends_on:
-      - tacs-backend
-    networks:
-      - tacs-network
+    image: "273601268641.dkr.ecr.us-east-2.amazonaws.com/tp-tacs/tacs-backend:latest"
 
   mongo:
     container_name: mongodb
