@@ -7,9 +7,10 @@ import tacs.models.domain.users.NormalUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends MongoRepository<NormalUser, String> {
     List<NormalUser> findAllByLastLoginBetween(LocalDateTime startDate, LocalDateTime endDate);
-    NormalUser findByUsername(String username);
+    Optional<NormalUser> findByUsername(String username);
 }

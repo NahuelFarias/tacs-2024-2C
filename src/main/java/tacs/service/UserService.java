@@ -19,10 +19,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final TicketRepository ticketsRepository;
 
-    public void createUser(String name, String password) {
+    public void createUser(String name, String password, String email) {
+        // Verificar si ya existe un usuario con ese username
+        if (userRepository.findByUsername(name).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con el nombre: " + name);
+        }
+
         String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
         NormalUser newUser = new NormalUser(name);
         newUser.setHashedPassword(encodedPassword);
+        newUser.setEmail(email);
         userRepository.save(newUser);
     }
 
@@ -51,5 +57,11 @@ public class UserService {
     //TODO: Meter una cola para mantener consistente las reservas
     public void reserveTickets(String id, List<Ticket> tickets) {
         tickets.forEach(ticket -> this.reserveTicket(id, ticket));
+    }
+
+    public NormalUser getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                    "Usuario no encontrado con username: " + username));
     }
 }

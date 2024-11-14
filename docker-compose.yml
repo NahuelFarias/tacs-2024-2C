@@ -1,20 +1,20 @@
 name: tp-tacs
 services:
   tacs-backend:
+    build: 
+      context: ./
     ports:
       - "8080:8080"
-    build:
-      context: ./
     depends_on:
       - mongo
     networks:
       - tacs-network
 
   tacs-frontend:
-    ports:
-      - "80:80"
     build:
       context: ./front
+    ports:
+      - "80:80"
     depends_on:
       - tacs-backend
     networks:
@@ -50,6 +50,14 @@ services:
       - mongo
     networks:
       - tacs-network
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 
 networks:
   tacs-network:
@@ -57,3 +65,4 @@ networks:
 
 volumes:
   mongo-data:
+  redis-data:
