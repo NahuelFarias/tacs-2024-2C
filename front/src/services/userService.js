@@ -12,7 +12,7 @@ export const getUsers = () => {
 
 export const tryCreateUser = async (username, password, email) => {
     try {
-        const response = await fetch('/users', {
+        const response = await fetch('http://3.140.245.119:8080/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
