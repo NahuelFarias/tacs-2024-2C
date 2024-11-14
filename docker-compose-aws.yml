@@ -1,0 +1,59 @@
+name: tp-tacs
+services:
+  tacs-backend:
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    networks:
+      - tacs-network
+    image: "273601268641.dkr.ecr.us-east-2.amazonaws.com/tp-tacs/tacs-backend:latest"
+
+  mongo:
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - tacs-network
+
+  mongo-express:
+    container_name: mongo_express
+    ports:
+      - "8081:8081"
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_AUTH_DATABASE: "false"
+      ME_CONFIG_MONGODB_AUTH_USERNAME: ""
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: ""
+      ME_CONFIG_BASICAUTH_USERNAME: "admin"
+      ME_CONFIG_BASICAUTH_PASSWORD: "pass"
+      ME_CONFIG_SITE_BASEURL: "/"
+      ME_CONFIG_BASICAUTH_USERNAME_FILE: ""
+      ME_CONFIG_BASICAUTH_PASSWORD_FILE: ""
+    depends_on:
+      - mongo
+    networks:
+      - tacs-network
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - tacs-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  tacs-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  redis-data:
