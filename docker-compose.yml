@@ -50,14 +50,16 @@ services:
       - mongo
     networks:
       - tacs-network
+
   redis:
     container_name: redis
     image: redis:latest
     ports:
       - "6379:6379"
+    networks:
+      - tacs-network
     volumes:
       - redis-data:/data
-
 
 networks:
   tacs-network:
