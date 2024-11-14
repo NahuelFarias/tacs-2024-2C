@@ -30,9 +30,6 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
     public void createUser(String name, String password, String email) {
         // Verificar si ya existe un usuario con ese username
         if (userRepository.findByUsername(name).isPresent()) {
