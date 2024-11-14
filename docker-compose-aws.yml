@@ -5,6 +5,7 @@ services:
       - "8080:8080"
     depends_on:
       - mongo
+      - redis
     networks:
       - tacs-network
     image: "273601268641.dkr.ecr.us-east-2.amazonaws.com/tp-tacs/tacs-backend:latest"
