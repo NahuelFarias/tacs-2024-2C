@@ -2,9 +2,9 @@ package tacs.models.domain.events;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tacs.models.domain.exception.PurchaseUnavailableException;
-import tacs.models.domain.exception.SoldOutTicketsException;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,14 +16,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Event {
 
+    @Getter
     @Id
     private String id;
-    
+
+    @Getter
     public String name;
     public LocalDateTime date;
     @JsonProperty("open_sale")
     public boolean openSale;
+    @Getter
     public LocalDateTime creationDate;
+
+    @Setter
+    @Getter
     public List<Location> locations;
     @JsonProperty("image_url")
     public String imageUrl;
@@ -78,13 +84,8 @@ public class Event {
         this.openSale = state;
     }
 
-    public List<Ticket> makeReservation(String locationName, Integer quantityTickets) {
-        if(!this.openSale) throw new PurchaseUnavailableException();
+    public List<Ticket> createTickets(String locationName, Integer quantityTickets) {
         Location location = this.locationByName(locationName);
-
-        if (location.getQuantityTickets() < quantityTickets) {
-            throw new SoldOutTicketsException("No quedan suficientes tickets");
-        }
 
         return location.makeReservation(this, quantityTickets);
     }
@@ -93,18 +94,11 @@ public class Event {
         return this.openSale;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public Location locationByName(String nameLocation){
+    public Location locationByName(String locationName){
         return this.locations.stream()
-                .filter(l -> l.getName().equals(nameLocation))
+                .filter(l -> l.getName().equals(locationName))
                 .findFirst()
                 .orElse(null);
     }
 
-    public String getId() {
-        return id;
-    }
 }

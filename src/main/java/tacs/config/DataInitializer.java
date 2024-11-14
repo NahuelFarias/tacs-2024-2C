@@ -20,20 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Component
 public class DataInitializer {
 
@@ -69,10 +55,10 @@ public class DataInitializer {
         admin.setRol(new Rol("ADMIN"));
         admin.setEmail("nfarias@frba.utn.edu.ar");
 
-        if (userRepository.findByUsername(admin.username) == null) {
+        if (userRepository.findByUsername(admin.username).isEmpty()) {
             userRepository.save(admin);
         }
-        if (userRepository.findByUsername(user.username) == null) {
+        if (userRepository.findByUsername(user.username).isEmpty()) {
             userRepository.save(user);
         }
     }
@@ -134,10 +120,8 @@ public class DataInitializer {
         Event eventoTest4 = new Event("Otro evento", LocalDate.of(2019, Month.DECEMBER, 2).atStartOfDay(),someImage);
         eventoTest4.creationDate = LocalDate.of(2024, Month.AUGUST, 24).atTime(11,0);
         eventoTest4.setLocations(testLocations4);
-
-
+        
         List<Event> testEvents = new ArrayList<>(Arrays.asList(eventoTest,eventoTest2,eventoTest3,eventoTest4));
-
 
         testEvents.stream()
                 .filter(e -> eventRepository.findByNormalizedName(e.getName()).isEmpty())

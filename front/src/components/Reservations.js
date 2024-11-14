@@ -10,35 +10,38 @@ const Reservations = () => {
     useEffect(() => {
         getReservations(localStorage.getItem("id"))
             .then(async data => {
-                const reservationsData = await groupReservationsByEvent(data); // Cambia el nombre para evitar confusión
-                setReservations(reservationsData); // Actualiza el estado directamente
+                const reservationsData = await groupReservationsByEvent(data);
+                setReservations(reservationsData);
             })
             .catch(error => {
                 setReservations([]);
             });
     }, []);
 
-    async function groupReservationsByEvent(reservations) {
+    async function groupReservationsByEvent(reservations) { 
         const reservationList = [];
-        const events = Array.from(new Set(reservations.map(item => item.event)));
-
-
+        const events = Array.from(new Set(reservations.map(item => item.eventId)));
+    
         for (const item of events) {
-            const event = item ? { event: item } : null;
-
+            const event = { event: item };
+    
             let thisEventName;
             let thisEventDate;
             let thisEventLocations;
-
-            thisEventLocations = reservations.filter(reservation => reservation.event === item);
+    
+            // Corrected filter by eventId
+            thisEventLocations = reservations.filter(reservation => reservation.eventId === item);
+            
             thisEventLocations = groupReservationsByLocation(thisEventLocations);
-
+    
             const data = await getEvent(event.event);
-
+            
             thisEventName = data.name;
             thisEventDate = data.date;
-
+    
+            // Corrected mapping to use locationId
             thisEventLocations = thisEventLocations.map(itemLocation => {
+
                 const location = data.locations.find(location => location.id === itemLocation.location);
                 return {
                     ...itemLocation,
@@ -46,7 +49,7 @@ const Reservations = () => {
                     price: location.price,
                 };
             });
-
+    
             reservationList.push({
                 event: event.event,
                 eventName: thisEventName,
@@ -54,16 +57,17 @@ const Reservations = () => {
                 locations: thisEventLocations,
             });
         }
-
+    
         return reservationList;
     }
+    
 
     function groupReservationsByLocation(reservations) {
-        const locations = Array.from(new Set(reservations.map(item => item.location)));
+        const locations = Array.from(new Set(reservations.map(item => item.locationId)));
 
         const locationList = locations.map(item => ({
             location: item,
-            reservations: reservations.filter(reservation => reservation.location === item),
+            reservations: reservations.filter(reservation => reservation.locationId === item),
         }));
         return locationList;
     }
