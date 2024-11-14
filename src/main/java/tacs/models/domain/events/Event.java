@@ -59,8 +59,24 @@ public class Event {
         return name;
     }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public List<Location> getLocations()  {
+        return this.locations;
+    }
+
     public void setLocations(List<Location> locations)  {
         this.locations = locations;
+    }
+
+    public boolean isOpenSale() {
+        return this.openSale;
     }
 
     public void closeSale() {
