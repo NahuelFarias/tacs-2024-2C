@@ -22,7 +22,9 @@ public class Event {
 
     @Getter
     public String name;
+    @Getter
     public LocalDateTime date;
+    @Getter
     @JsonProperty("open_sale")
     public boolean openSale;
     @Getter
@@ -32,6 +34,7 @@ public class Event {
     @Getter
     public List<Location> locations;
     @JsonProperty("image_url")
+    @Getter
     public String imageUrl;
 
     public Event(String name, LocalDateTime date, String imageUrl) {

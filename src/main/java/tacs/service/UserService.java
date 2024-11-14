@@ -30,7 +30,12 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public void createUser(String name, String password) {
+    public void createUser(String name, String password, String email) {
+        // Verificar si ya existe un usuario con ese username
+        if (userRepository.findByUsername(name).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con el nombre: " + name);
+        }
+
         String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
         NormalUser newUser = new NormalUser(name);
         newUser.setHashedPassword(encodedPassword);
@@ -67,5 +72,11 @@ public class UserService {
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
 
         NormalUser updatedUser = mongoTemplate.findAndModify(query, update, options, NormalUser.class);
+    }
+
+    public NormalUser getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Usuario no encontrado con username: " + username));
     }
 }
