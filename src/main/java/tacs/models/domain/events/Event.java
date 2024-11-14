@@ -34,8 +34,6 @@ public class Event {
     @JsonProperty("image_url")
     public String imageUrl;
 
-
-
     public Event(String name, LocalDateTime date, String imageUrl) {
         this.name = name;
         this.date = date;
@@ -52,6 +50,30 @@ public class Event {
     @JsonIgnore
     public long getAvailableTickets() {
         return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets).sum();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public List<Location> getLocations()  {
+        return this.locations;
+    }
+
+    public void setLocations(List<Location> locations)  {
+        this.locations = locations;
+    }
+
+    public boolean isOpenSale() {
+        return this.openSale;
     }
 
     public void closeSale() {

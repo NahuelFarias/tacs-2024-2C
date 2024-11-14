@@ -56,7 +56,7 @@ export const tryCreateEvent = (createEvent) => {
 };
 
 export const closeEvent = (eventId) => {
-  return axiosClient.patch(`/events/${eventId}/close`)
+  return axiosClient.put(`/events/${eventId}/close`)
   .then(response => {
     if (response.status === 200) {
       return true

@@ -37,7 +37,8 @@ public class AutenticationService {
     }
 
     public JWT login(LoginRequest loginRequest) {
-        NormalUser normalUser = this.userRepository.findByUsername(loginRequest.getUsername());
+        NormalUser normalUser = this.userRepository.findByUsername(loginRequest.getUsername())
+            .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
         try {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
             Authentication authentication = this.authenticationManager.authenticate(authToken);
@@ -53,11 +54,8 @@ public class AutenticationService {
     }
 
     public String getSalt(String username) {
-        NormalUser normalUser = this.userRepository.findByUsername(username);
-        if (normalUser == null) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
-
+        NormalUser normalUser = this.userRepository.findByUsername(username)
+            .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
         String[] parts = normalUser.getHashedPassword().split(":");
         return parts[0];
     }

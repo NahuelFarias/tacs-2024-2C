@@ -30,10 +30,16 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public void createUser(String name, String password) {
+    public void createUser(String name, String password, String email) {
+        // Verificar si ya existe un usuario con ese username
+        if (userRepository.findByUsername(name).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con el nombre: " + name);
+        }
+
         String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
         NormalUser newUser = new NormalUser(name);
         newUser.setHashedPassword(encodedPassword);
+        newUser.setEmail(email);
         userRepository.save(newUser);
     }
 
@@ -52,19 +58,20 @@ public class UserService {
 
     public void makeReservation(String id, List<Ticket> tickets) {
         NormalUser user = this.getUser(id);
+        user.bookTicket(ticket);
+        ticketsRepository.save(ticket);
+        user.addTicket(ticket.getId());
+        userRepository.save(user);
+    }
 
-        tickets.forEach(ticket -> ticket.changeOwner(id));
-        tickets.forEach(ticket -> ticket.setReservationDate(LocalDateTime.now()));
+    //TODO: Meter una cola para mantener consistente las reservas
+    public void reserveTickets(String id, List<Ticket> tickets) {
+        tickets.forEach(ticket -> this.reserveTicket(id, ticket));
+    }
 
-        ticketsRepository.saveAll(tickets);
-
-        List<String> ticketIds = tickets.stream().map(Ticket::getId).toList();
-
-        Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
-        Update update = new Update().addToSet("ticketIds").each(ticketIds);
-
-        FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
-
-        NormalUser updatedUser = mongoTemplate.findAndModify(query, update, options, NormalUser.class);
+    public NormalUser getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                    "Usuario no encontrado con username: " + username));
     }
 }
