@@ -1,6 +1,7 @@
 # tacs-2024-2C
 
-Documentatción sobre nuestras decisiones de diseño: https://docs.google.com/document/d/1kYmrD5qZtwdmolbWqFbfbLGvZTbov2YZIHsyASKnbuw/edit?usp=sharing
+Documentación sobre nuestras decisiones de diseño: https://docs.google.com/document/d/1kYmrD5qZtwdmolbWqFbfbLGvZTbov2YZIHsyASKnbuw/edit?usp=sharing
+Documentación sobre nuestras decisiones de arquitectura: https://docs.google.com/document/d/1lZdW1pqU6vr3iiSo8r5kPXE0CrkiC1BYGsyH9Pf6xNY/edit?usp=sharing
 
 ## Cómo ejecutar este proyecto
 Prerrequisito para la ejecución: instalar **docker**.
