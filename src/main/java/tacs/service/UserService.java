@@ -34,6 +34,7 @@ public class UserService {
         String encodedPassword = new CustomPBKDF2PasswordEncoder().encode(password);
         NormalUser newUser = new NormalUser(name);
         newUser.setHashedPassword(encodedPassword);
+        newUser.setEmail(email);
         userRepository.save(newUser);
     }
 

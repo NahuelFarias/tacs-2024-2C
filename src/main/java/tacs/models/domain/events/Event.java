@@ -34,8 +34,6 @@ public class Event {
     @JsonProperty("image_url")
     public String imageUrl;
 
-
-
     public Event(String name, LocalDateTime date, String imageUrl) {
         this.name = name;
         this.date = date;

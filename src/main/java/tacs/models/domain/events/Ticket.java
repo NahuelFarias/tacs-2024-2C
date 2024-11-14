@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "tickets")
 @NoArgsConstructor
@@ -13,9 +14,12 @@ public class Ticket {
 
     @Id
     private String id;
-    private String eventId; // ID del evento relacionado
-    private String locationId; // ID de la ubicación relacionada
-    private String userId; // ID del usuario que compró el ticket
+    @Field("eventId")
+    private String eventId;
+    @Field("locationId")
+    private String locationId;
+    @Field("userId")
+    private String userId;
     public LocalDateTime reservationDate;
 
     public Ticket(String eventId, String locationId) {
@@ -27,11 +31,11 @@ public class Ticket {
         this.userId = newOwner;
     }
 
-    public String getEvent() {
+    public String getEventId() {
         return eventId;
     }
 
-    public String getLocation() {
+    public String getLocationId() {
         return locationId;
     }
 
@@ -45,6 +49,10 @@ public class Ticket {
 
     public void setReservationDate(LocalDateTime reservationDate) {
         this.reservationDate = reservationDate;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
 }
