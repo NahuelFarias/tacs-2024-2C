@@ -37,6 +37,7 @@ public class NormalUser {
     @Setter
     @Getter
     public Rol rol;
+    private String email;
 
     public NormalUser(String username) {
         this.username = username;
@@ -51,5 +52,13 @@ public class NormalUser {
 
     public void addTickets(List<String> ticketIds) {
         this.ticketIds.addAll(ticketIds);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

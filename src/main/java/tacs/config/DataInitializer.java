@@ -62,10 +62,12 @@ public class DataInitializer {
         NormalUser user = new NormalUser("user");
         user.setHashedPassword(encodedPassword1);
         user.setRol(new Rol("USER"));
+        user.setEmail("nfarias@frba.utn.edu.ar");
 
         NormalUser admin = new NormalUser("admin");
         admin.setHashedPassword(encodedPassword2);
         admin.setRol(new Rol("ADMIN"));
+        admin.setEmail("nfarias@frba.utn.edu.ar");
 
         if (userRepository.findByUsername(admin.username) == null) {
             userRepository.save(admin);
