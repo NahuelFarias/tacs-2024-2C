@@ -55,6 +55,14 @@ public class Event {
         return (long) this.locations.stream().mapToDouble(Location::getQuantityTickets).sum();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setLocations(List<Location> locations)  {
+        this.locations = locations;
+    }
+
     public void closeSale() {
         this.openSale = false;
     }
