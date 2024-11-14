@@ -9,20 +9,23 @@ export const getUsers = () => {
     });
 };
 
-export const tryCreateUser = (username, password) => {
-  //console.log(`creating user ${username}`)
-  return axiosClient.post('/users', { username, password })
-    .then(response => {
-      if (response.status === 201) {
-        window.alert("account created successfully")
-          return true
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        window.alert(`error creating account: ${error.response.data.errorCause}`);
-      }
-      throw error;
-    });
-  return false
+
+export const tryCreateUser = async (username, password, email) => {
+    try {
+        const response = await fetch('http://3.140.245.119:8080/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                password,
+                email
+            })
+        });
+        return response.ok;
+    } catch (error) {
+        console.error('Error creating user:', error);
+        return false;
+    }
 }

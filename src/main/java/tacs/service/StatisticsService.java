@@ -90,7 +90,7 @@ public class StatisticsService {
 
         // Esto, por ahora propongo simularlo asi, dado que deberia generarse una consulta (dialecto SQL de hibernate)
         // en el repo, y no vamos a utilizar una BBDD de tipo relacional
-        tickets = tickets.stream().filter(t -> t.getEvent().equals(id)).toList();
+        tickets = tickets.stream().filter(t -> t.getEventId().equals(id)).toList();
         TicketStatistics ticketStatistics = new TicketStatistics();
         statisticsGenerator.addStatistics(ticketStatistics);
 

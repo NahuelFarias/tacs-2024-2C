@@ -1,6 +1,7 @@
 package tacs.models.domain.events;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tacs.models.domain.exception.SoldOutTicketsException;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Location {
 
+    @Setter
     @Id
     private String id;
 
@@ -58,10 +60,6 @@ public class Location {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     // Sobrescribir equals() para comparar objetos basados en los valores de sus atributos
     @Override
     public boolean equals(Object o) {
@@ -81,13 +79,9 @@ public class Location {
     }
 
     public List<Ticket> makeReservation(Event event, Integer quantityTickets) {
-        if (this.quantityTickets <= 0) throw new SoldOutTicketsException("No quedan suficientes tickets");
-        List<Ticket> tickets = IntStream.range(0, quantityTickets)
+        return IntStream.range(0, quantityTickets)
                 .mapToObj(i -> new Ticket(event.getId(), this.getId()))  // Crear una nueva instancia de Ticket
                 .collect(Collectors.toList());
-        this.setQuantityTicketsSold(this.getQuantityTicketsSold()+quantityTickets);
-        this.setQuantityTickets(this.getQuantityTickets()-quantityTickets);
-        return tickets;
     }
 
 }

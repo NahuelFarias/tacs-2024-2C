@@ -18,11 +18,8 @@ public class InMemoryUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        NormalUser normalUser = userRepository.findByUsername(username);
-        if (normalUser == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        //System.out.println("User found: " + normalUser.getUsername() + ", Role: " + normalUser.getRol().getNombre());
+        NormalUser normalUser = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new CustomUserDetails(normalUser);
     }
 }

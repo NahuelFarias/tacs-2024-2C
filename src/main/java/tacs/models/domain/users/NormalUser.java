@@ -1,7 +1,9 @@
 package tacs.models.domain.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tacs.models.domain.events.Ticket;
 
 import java.time.LocalDateTime;
@@ -14,16 +16,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 @NoArgsConstructor
 public class NormalUser {
+    @Getter
     @Id
     private String id;
+    @Getter
+    @Setter
     @JsonProperty("username")
     public String username;
+    @Setter
+    @Getter
     public String hashedPassword;
+    @Setter
+    @Getter
     public String salt;
     @JsonProperty("tickets")
     private List<String> ticketIds; // Lista de IDs de tickets comprados
+    @Getter
+    @Setter
     public LocalDateTime lastLogin;
+    @Setter
+    @Getter
     public Rol rol;
+    private String email;
 
     public NormalUser(String username) {
         this.username = username;
@@ -31,61 +45,20 @@ public class NormalUser {
         //Usuario normal por defecto
         this.rol = new Rol("ROLE_USER");
     }
-    public void bookTicket(Ticket ticket) {
-        this.addTicket(ticket.getId());
-        ticket.changeOwner(this.getId());
-        ticket.setReservationDate(LocalDateTime.now());
-    }
-
-    public void addTicket(String ticketId) {
-        this.ticketIds.add(ticketId);
-    }
 
     public List<String> getTicketsOwned() {
         return this.ticketIds;
     }
 
-    public void setLastLogin(LocalDateTime lastLogin) {
-        this.lastLogin = lastLogin;
+    public void addTickets(List<String> ticketIds) {
+        this.ticketIds.addAll(ticketIds);
     }
 
-    public LocalDateTime getLastLogin() {
-        return lastLogin;
+    public String getEmail() {
+        return email;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public void setHashedPassword(String password) {
-        this.hashedPassword = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

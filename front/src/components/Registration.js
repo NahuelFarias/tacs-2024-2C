@@ -8,6 +8,7 @@ const Registration = () => {
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ passwordConfirmation, setPasswordConfirmation ] = useState('');
+    const [ email, setEmail ] = useState('');
     const [ error, setError ] = useState('');
     const navigate = useNavigate()
 
@@ -23,6 +24,9 @@ const Registration = () => {
         setPassword(event.target.value)
     }
 
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    }
 
     const checkCredentials = () => {
         if (username.length < 7) {
@@ -34,6 +38,9 @@ const Registration = () => {
         } else if (password !== passwordConfirmation) {
             setError("Las contraseñas ingresadas no coinciden")
             return false
+        } else if (!email || !email.includes('@')) {
+            setError("Por favor ingrese un email válido")
+            return false
         }
         setError("")
         return true
@@ -41,12 +48,11 @@ const Registration = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        //console.log(`${username} - ${password}`)
 
         const credentialsAreValid = checkCredentials()
 
         if (credentialsAreValid) {
-            const result = tryCreateUser(username, password)
+            const result = tryCreateUser(username, password, email)
             if (result) {
                 navigate("/login", { state: { message: 'Registro exitoso! Por favor, ahora inicia sesión.' } })
             }
@@ -84,7 +90,7 @@ const Registration = () => {
                         className="form-control"
                     />
                 </div>
-                <div className="mb-5">
+                <div className="mb-4">
                     <p className="text-dark input-label">
                         Repeti tu contraseña
                     </p>
@@ -93,6 +99,19 @@ const Registration = () => {
                         id="password-confirmation"
                         value={passwordConfirmation}
                         onChange={handlePasswordConfirmationChange}
+                        placeholder=""
+                        className="form-control"
+                    />
+                </div>
+                <div className="mb-5">
+                    <p className="text-dark input-label">
+                        Email
+                    </p>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={handleEmailChange}
                         placeholder=""
                         className="form-control"
                     />
