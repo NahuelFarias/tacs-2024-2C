@@ -44,22 +44,21 @@ public class UserCommandHandler {
     }
 
     public SendMessage handleSearchCommand(long chatId, String searchQuery) {
-        String searchUrl = "http://localhost:8080/events/search?name=" + searchQuery;
+        String eventsUrl = "http://localhost:8080/events";
+        Event[] events = restTemplate.getForObject(eventsUrl, Event[].class);
 
-        try {
-            Event event = restTemplate.getForObject(searchUrl, Event.class);
-            if (event != null) {
-                StringBuilder responseBuilder = new StringBuilder("Evento encontrado 🎉\n\n");
-                responseBuilder.append(formatEvent(event)).append("\n");
-                return sendMessage(chatId, responseBuilder.toString());
-            } else {
-                return sendMessage(chatId, "No encontramos ningun evento que coincida con la busqueda de '" + searchQuery + "' 😥");
+        StringBuilder responseBuilder = new StringBuilder("Se encontraron los eventos: \n\n");
+        if (events != null && events.length > 0) {
+            for (Event event : events) {
+                if (event.getName().toLowerCase().contains(searchQuery.toLowerCase())) {
+                    responseBuilder.append(formatEvent(event)).append("\n");
+                }
             }
-        } catch (HttpClientErrorException.NotFound e) {
-            return sendMessage(chatId, "No encontramos ningun evento que coincida con la busqueda de '" + searchQuery + "' 😥");
-        } catch (Exception e) {
-            return sendMessage(chatId, "Un error inesperado ocurrio en la busqueda, reintente en unos momentos");
+        } else {
+            responseBuilder.append("No se encontraron eventos 😥");
         }
+
+        return sendMessage(chatId, responseBuilder.toString());
     }
 
     public SendMessage handleEventDetailCommand(long chatId, String eventName) {

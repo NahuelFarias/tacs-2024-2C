@@ -600,9 +600,18 @@ public class Bot extends TelegramWebhookBot {
                 Void.class
             );
             reservationData.remove(chatId);
-            return sendMessage(chatId, "¡Reserva exitosa! Has reservado " + data.quantity + 
+            return sendMessage(chatId, "¡Reserva exitosa! Has reservado " + data.quantity +
                 " tickets para " + data.eventName + " en la ubicación " + data.locationName);
-        } catch (Exception e) {
+        } catch(HttpClientErrorException.NotFound e) {
+            logger.error("Error al crear reserva: " + e.getMessage());
+            reservationData.remove(chatId);
+            return sendMessage(chatId, "La venta del evento fue cerrada.");
+        } catch (HttpClientErrorException.BadRequest e) {
+            logger.error("Error al crear reserva: " + e.getMessage());
+            reservationData.remove(chatId);
+            return sendMessage(chatId, "Ya no quedan suficientes tickets para la ubicación elegida. Por favor iniciar nuevamente el proceso de reserva con /reserve.");
+        }
+        catch (Exception e) {
             logger.error("Error al crear reserva: " + e.getMessage());
             reservationData.remove(chatId);
             return sendMessage(chatId, "Error al realizar la reserva. Por favor, intenta nuevamente con /reserve");
