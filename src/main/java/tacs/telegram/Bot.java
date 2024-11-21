@@ -455,11 +455,21 @@ public class Bot extends TelegramWebhookBot {
 
                 // Si es un intento de login admin
                 if ("admin".equals(data.username)) {
+                    ResponseEntity<Map> response = restTemplate.getForEntity(
+                            "http://localhost:8080/users/search?username=" + messageText,
+                            Map.class
+                    );
+
                     String storedAdminToken = redisTemplate.opsForValue().get("verificationToken:admin");
                     
                     if (storedAdminToken != null && storedAdminToken.equals(messageText)) {
                         adminUsers.put(chatId, true);
-                        loggedInUsers.put(chatId, "admin");
+                        ResponseEntity<Map> userResponse = restTemplate.getForEntity(
+                                "http://localhost:8080/users/search?username=" + data.username,
+                                Map.class
+                        );
+                        String userId = userResponse.getBody().get("id").toString();
+                        loggedInUsers.put(chatId, userId);
                         redisTemplate.delete("verificationToken:admin");
                         loginData.remove(chatId);
                         return sendMessage(chatId, "¡Inicio de sesión como administrador exitoso! 👑");
@@ -469,7 +479,6 @@ public class Bot extends TelegramWebhookBot {
                     }
                 }
 
-                // Obtener el ID del usuario desde el backend
                 ResponseEntity<Map> userResponse = restTemplate.getForEntity(
                     "http://localhost:8080/users/search?username=" + data.username,
                     Map.class
