@@ -1,5 +1,6 @@
 package tacs.telegram;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,6 +32,8 @@ import java.time.Duration;
 
 
 import tacs.dto.CreateReservation;
+import tacs.models.domain.users.NormalUser;
+import tacs.repository.UserRepository;
 import tacs.telegram.handlers.UserCommandHandler;
 import tacs.telegram.handlers.AdminCommandHandler;
 import org.springframework.http.HttpMethod;
@@ -63,6 +66,9 @@ public class Bot extends TelegramWebhookBot {
 
     @Autowired
     private AdminCommandHandler adminCommandHandler;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private Map<Long, RegistrationData> registrationData = new HashMap<>();
 
@@ -479,6 +485,11 @@ public class Bot extends TelegramWebhookBot {
                                 Map.class
                         );
                         String userId = userResponse.getBody().get("id").toString();
+
+                        NormalUser normalUser = userRepository.findByUsername(data.username).get();
+                        normalUser.setLastLogin(LocalDateTime.now());
+                        this.userRepository.save(normalUser);
+
                         loggedInUsers.put(chatId, userId);
                         redisTemplate.delete("verificationToken:admin");
                         loginData.remove(chatId);
@@ -495,6 +506,10 @@ public class Bot extends TelegramWebhookBot {
                     Map.class
                 );
                 String userId = userResponse.getBody().get("id").toString();
+
+                NormalUser normalUser = userRepository.findByUsername(data.username).get();
+                normalUser.setLastLogin(LocalDateTime.now());
+                this.userRepository.save(normalUser);
 
                 redisTemplate.delete("verificationToken:" + data.username);
                 loggedInUsers.put(chatId, userId); // Guardamos el ID en lugar del username
