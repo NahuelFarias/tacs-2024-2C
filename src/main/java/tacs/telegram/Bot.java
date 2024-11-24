@@ -1,5 +1,6 @@
 package tacs.telegram;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,6 +32,8 @@ import java.time.Duration;
 
 
 import tacs.dto.CreateReservation;
+import tacs.models.domain.users.NormalUser;
+import tacs.repository.UserRepository;
 import tacs.telegram.handlers.UserCommandHandler;
 import tacs.telegram.handlers.AdminCommandHandler;
 import org.springframework.http.HttpMethod;
@@ -63,6 +66,9 @@ public class Bot extends TelegramWebhookBot {
 
     @Autowired
     private AdminCommandHandler adminCommandHandler;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private Map<Long, RegistrationData> registrationData = new HashMap<>();
 
@@ -334,13 +340,33 @@ public class Bot extends TelegramWebhookBot {
         CreateUser createUser = new CreateUser(username, password, data.email);
 
         try {
+            // Primera request: Crear el usuario
             restTemplate.postForEntity("http://localhost:8080/users", createUser, Void.class);
-            loggedInUsers.put(chatId, username);
-            registrationData.remove(chatId);
-            return sendMessage(chatId, "¡Registro exitoso! Has iniciado sesión automáticamente.\n" +
-                "Recomendamos borrar el chat para no dejar rastros de tu registro.\n" +
-                "Para desloguearse use el comando /logout");
+            
+            // Segunda request: Obtener el ID del usuario recién creado
+            ResponseEntity<Map> userResponse = restTemplate.getForEntity(
+                "http://localhost:8080/users/search?username=" + username,
+                Map.class
+            );
+            
+            if (userResponse.getBody() != null && userResponse.getBody().containsKey("id")) {
+                String userId = userResponse.getBody().get("id").toString();
+
+                NormalUser normalUser = userRepository.findByUsername(data.username).get();
+                normalUser.setLastLogin(LocalDateTime.now());
+                this.userRepository.save(normalUser);
+
+                loggedInUsers.put(chatId, userId);
+                registrationData.remove(chatId);
+                return sendMessage(chatId, "¡Registro exitoso! Has iniciado sesión automáticamente.\n" +
+                    "Recomendamos borrar el chat para no dejar rastros de tu registro.\n" +
+                    "Para desloguearse use el comando /logout");
+            } else {
+                logger.warn("No se pudo obtener el ID del usuario: " + userResponse.getBody());
+                return sendMessage(chatId, "Error al obtener datos del usuario. Por favor, intente iniciar sesión con /login");
+            }
         } catch (Exception e) {
+            logger.error("Error durante el registro: ", e);
             registrationData.remove(chatId);
             return sendMessage(chatId, "Se ha producido un error durante el registro. Por favor, inténtelo de nuevo más tarde.");
         }
@@ -464,6 +490,11 @@ public class Bot extends TelegramWebhookBot {
                                 Map.class
                         );
                         String userId = userResponse.getBody().get("id").toString();
+
+                        NormalUser normalUser = userRepository.findByUsername(data.username).get();
+                        normalUser.setLastLogin(LocalDateTime.now());
+                        this.userRepository.save(normalUser);
+
                         loggedInUsers.put(chatId, userId);
                         redisTemplate.delete("verificationToken:admin");
                         loginData.remove(chatId);
@@ -480,6 +511,10 @@ public class Bot extends TelegramWebhookBot {
                     Map.class
                 );
                 String userId = userResponse.getBody().get("id").toString();
+
+                NormalUser normalUser = userRepository.findByUsername(data.username).get();
+                normalUser.setLastLogin(LocalDateTime.now());
+                this.userRepository.save(normalUser);
 
                 redisTemplate.delete("verificationToken:" + data.username);
                 loggedInUsers.put(chatId, userId); // Guardamos el ID en lugar del username
@@ -594,6 +629,7 @@ public class Bot extends TelegramWebhookBot {
     private SendMessage createReservation(long chatId) {
         ReservationData data = reservationData.get(chatId);
         String userId = loggedInUsers.get(chatId);
+        
         CreateReservation reservation = new CreateReservation();
         reservation.setName(data.locationName);
         reservation.setQuantityTickets(data.quantity);
