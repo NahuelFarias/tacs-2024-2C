@@ -351,6 +351,11 @@ public class Bot extends TelegramWebhookBot {
             
             if (userResponse.getBody() != null && userResponse.getBody().containsKey("id")) {
                 String userId = userResponse.getBody().get("id").toString();
+
+                NormalUser normalUser = userRepository.findByUsername(data.username).get();
+                normalUser.setLastLogin(LocalDateTime.now());
+                this.userRepository.save(normalUser);
+
                 loggedInUsers.put(chatId, userId);
                 registrationData.remove(chatId);
                 return sendMessage(chatId, "¡Registro exitoso! Has iniciado sesión automáticamente.\n" +
