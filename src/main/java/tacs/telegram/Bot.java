@@ -334,13 +334,28 @@ public class Bot extends TelegramWebhookBot {
         CreateUser createUser = new CreateUser(username, password, data.email);
 
         try {
+            // Primera request: Crear el usuario
             restTemplate.postForEntity("http://localhost:8080/users", createUser, Void.class);
-            loggedInUsers.put(chatId, username);
-            registrationData.remove(chatId);
-            return sendMessage(chatId, "¡Registro exitoso! Has iniciado sesión automáticamente.\n" +
-                "Recomendamos borrar el chat para no dejar rastros de tu registro.\n" +
-                "Para desloguearse use el comando /logout");
+            
+            // Segunda request: Obtener el ID del usuario recién creado
+            ResponseEntity<Map> userResponse = restTemplate.getForEntity(
+                "http://localhost:8080/users/search?username=" + username,
+                Map.class
+            );
+            
+            if (userResponse.getBody() != null && userResponse.getBody().containsKey("id")) {
+                String userId = userResponse.getBody().get("id").toString();
+                loggedInUsers.put(chatId, userId);
+                registrationData.remove(chatId);
+                return sendMessage(chatId, "¡Registro exitoso! Has iniciado sesión automáticamente.\n" +
+                    "Recomendamos borrar el chat para no dejar rastros de tu registro.\n" +
+                    "Para desloguearse use el comando /logout");
+            } else {
+                logger.warn("No se pudo obtener el ID del usuario: " + userResponse.getBody());
+                return sendMessage(chatId, "Error al obtener datos del usuario. Por favor, intente iniciar sesión con /login");
+            }
         } catch (Exception e) {
+            logger.error("Error durante el registro: ", e);
             registrationData.remove(chatId);
             return sendMessage(chatId, "Se ha producido un error durante el registro. Por favor, inténtelo de nuevo más tarde.");
         }
@@ -594,6 +609,7 @@ public class Bot extends TelegramWebhookBot {
     private SendMessage createReservation(long chatId) {
         ReservationData data = reservationData.get(chatId);
         String userId = loggedInUsers.get(chatId);
+        
         CreateReservation reservation = new CreateReservation();
         reservation.setName(data.locationName);
         reservation.setQuantityTickets(data.quantity);
