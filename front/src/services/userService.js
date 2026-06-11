@@ -12,18 +12,8 @@ export const getUsers = () => {
 
 export const tryCreateUser = async (username, password, email) => {
     try {
-        const response = await fetch('http://3.140.245.119:8080/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username,
-                password,
-                email
-            })
-        });
-        return response.ok;
+        await axiosClient.post('/users', { username, password, email });
+        return true;
     } catch (error) {
         console.error('Error creating user:', error);
         return false;
