@@ -1,5 +1,7 @@
 package tacs.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,8 @@ public class EventController {
     @PutMapping("/{id}")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @SecurityRequirement(name = "bearer-jwt")
+    @Operation(summary = "Update event", description = "Requires ADMIN role")
     public Event updateEvent(@PathVariable String id, @RequestBody CreateEvent event) {
         return eventService.updateEvent(id, event);
     }
@@ -39,6 +43,8 @@ public class EventController {
     @PutMapping("/{id}/close")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @SecurityRequirement(name = "bearer-jwt")
+    @Operation(summary = "Close event sales", description = "Requires ADMIN role")
     public void setStatusSales(@PathVariable String id) {
         eventService.setState(id, false);
     }

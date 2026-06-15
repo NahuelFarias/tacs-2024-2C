@@ -8,6 +8,7 @@ import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.NormalUser;
 import tacs.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-jwt")
 public class UserController {
 
     private final UserService userService;
