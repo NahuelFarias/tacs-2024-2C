@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -49,10 +50,18 @@ public class EventService {
     }
 
     public void createEvent(CreateEvent eventDTO) {
+        String rawQuery = "{ \"name\": \"" + eventDTO.getName() + "\" }";
+        if (mongoTemplate.exists(new BasicQuery(rawQuery), Event.class)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Event already exists");
+        }
         Event event = new Event(eventDTO.getName(), eventDTO.getDate(), eventDTO.getImageUrl());
         List<Location> locations = this.convertToLocations(eventDTO.getLocations());
         event.setLocations(locations);
         eventRepository.save(event);
+    }
+
+    public List<Event> filterEvents(String query) {
+        return mongoTemplate.find(new BasicQuery(query), Event.class);
     }
 
     public Event getEvent(String id) {

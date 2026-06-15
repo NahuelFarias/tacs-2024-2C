@@ -25,6 +25,14 @@ public class EventController {
         return eventService.getEventByName(name);
     }
 
+    @GetMapping("/filter")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @SecurityRequirement(name = "bearer-jwt")
+    @Operation(summary = "Filter events by MongoDB query", description = "Requires ADMIN role")
+    public List<Event> filterEvents(@RequestParam String query) {
+        return eventService.filterEvents(query);
+    }
+
     @GetMapping("/{id}/tickets")
     @ResponseBody
     public long getTicketsForSale(@PathVariable String id) {
