@@ -39,6 +39,7 @@ public class SecurityConf {
         SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
         return http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("*/swagger-ui/**","/v3/api-docx/**","/login/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/statistics/**").hasRole("ADMIN")
