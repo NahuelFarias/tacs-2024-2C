@@ -19,3 +19,9 @@ export const tryCreateUser = async (username, password, email) => {
         return false;
     }
 }
+
+export const resetPassword = (username, newPassword) => {
+    return axiosClient.put('/users/reset-password', null, {
+        params: { username, newPassword }
+    }).then(response => response.data);
+}

@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -76,7 +78,17 @@ public class UserService {
 
     public NormalUser getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Usuario no encontrado con username: " + username));
+    }
+
+    public long resetPassword(String username, String newPassword) {
+        String rawQuery  = "{ \"username\": \"" + username + "\" }";
+        String rawUpdate = "{ \"$set\": { \"hashedPassword\": \"" + newPassword + "\" } }";
+        return mongoTemplate.updateMulti(
+            new BasicQuery(rawQuery),
+            new BasicUpdate(rawUpdate),
+            NormalUser.class
+        ).getModifiedCount();
     }
 }

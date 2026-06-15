@@ -59,6 +59,7 @@ const Menu = ({ menuOpen }) => {
                   {!showReservationsButton && <li><Link to="/login" className="text-white">Iniciar Sesión</Link></li>}
                   {!showReservationsButton && <li><Link to="/signup" className="text-white">Registrarse</Link></li>}
                   {showStatsButton && <li><Link to="/createEvent" className="text-white">Crear evento</Link></li>}
+                  {showStatsButton && <li><Link to="/admin" className="text-white">Panel Admin</Link></li>}
                   {showReservationsButton && <li><Link to="/reservations" className="text-white">Ver Mis Reservas</Link></li>}
                   {showReservationsButton &&
                       <li><Link to="/" className="text-white" onClick={simpleLogOut}>Cerrar Sesion</Link></li>}

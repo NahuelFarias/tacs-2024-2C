@@ -12,6 +12,7 @@ import './App.css';
 import EventCreation from './components/EventCreation';
 import StatsOverview from "./components/stadistics/StatsOverview";
 import Reservations from "./components/Reservations";
+import AdminPanel from './components/AdminPanel';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/stats" element={<StatsOverview />}/>
           <Route path="/reservations" element={<Reservations />}/>
           <Route path='/eventDetails/:eventId' element={<EventDetails/>}></Route>
+          <Route path='/admin' element={<AdminPanel/>}></Route>
           {/* <Route path='/event/:id' element={<Home eventos={eventos}/>}/> */}
         </Routes>
 

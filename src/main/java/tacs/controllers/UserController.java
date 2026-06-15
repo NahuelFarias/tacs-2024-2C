@@ -8,8 +8,11 @@ import tacs.models.domain.events.Ticket;
 import tacs.models.domain.users.NormalUser;
 import tacs.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,6 +60,15 @@ public class UserController {
     @ResponseBody
     public List<Ticket> getReserves(@PathVariable String id) {
         return userService.getReservations(id);
+    }
+
+    @PutMapping("/reset-password")
+    @ResponseBody
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @SecurityRequirement(name = "bearer-jwt")
+    @Operation(summary = "Reset user password by username", description = "Requires ADMIN role")
+    public long resetPassword(@RequestParam String username, @RequestParam String newPassword) {
+        return userService.resetPassword(username, newPassword);
     }
 
     @GetMapping("/search")
