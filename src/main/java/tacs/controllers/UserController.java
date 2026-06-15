@@ -64,7 +64,7 @@ public class UserController {
 
     @PutMapping("/reset-password")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearer-jwt")
     @Operation(summary = "Reset user password by username", description = "Requires ADMIN role")
     public long resetPassword(@RequestParam String username, @RequestParam String newPassword) {

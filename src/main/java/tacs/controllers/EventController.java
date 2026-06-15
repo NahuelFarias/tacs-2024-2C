@@ -26,7 +26,7 @@ public class EventController {
     }
 
     @GetMapping("/filter")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearer-jwt")
     @Operation(summary = "Filter events by MongoDB query", description = "Requires ADMIN role")
     public List<Event> filterEvents(@RequestParam String query) {
@@ -41,7 +41,7 @@ public class EventController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearer-jwt")
     @Operation(summary = "Update event", description = "Requires ADMIN role")
     public Event updateEvent(@PathVariable String id, @RequestBody CreateEvent event) {
@@ -50,7 +50,7 @@ public class EventController {
 
     @PutMapping("/{id}/close")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearer-jwt")
     @Operation(summary = "Close event sales", description = "Requires ADMIN role")
     public void setStatusSales(@PathVariable String id) {
