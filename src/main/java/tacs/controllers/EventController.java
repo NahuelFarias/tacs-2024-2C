@@ -29,6 +29,13 @@ public class EventController {
         return eventService.getTicketsForSale(id);
     }
 
+    @PutMapping("/{id}")
+    @ResponseBody
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public Event updateEvent(@PathVariable String id, @RequestBody CreateEvent event) {
+        return eventService.updateEvent(id, event);
+    }
+
     @PutMapping("/{id}/close")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('ADMIN')")

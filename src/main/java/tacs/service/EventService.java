@@ -116,6 +116,15 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    public Event updateEvent(String id, CreateEvent eventDTO) {
+        Event event = this.getEvent(id);
+        event.name = eventDTO.getName();
+        event.date = eventDTO.getDate();
+        event.imageUrl = eventDTO.getImageUrl();
+        event.setLocations(this.convertToLocations(eventDTO.getLocations()));
+        return eventRepository.save(event);
+    }
+
     public long getTicketsForSale(String id) {
         Event event = this.getEvent(id);
         return event.getAvailableTickets();
